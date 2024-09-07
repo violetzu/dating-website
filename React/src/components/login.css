@@ -1,0 +1,53 @@
+.login-body {
+    font-family: Arial, sans-serif; /* 設定全局字體為Arial或無襯線字體 */
+    display: flex; /* 使用flexbox布局 */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    height: 100vh; /* 設置高度為視口高度的100% */
+    margin: 0; /* 移除默認的邊距 */
+    background-color: #f0f0f0; /* 設置背景色為淺灰色 */
+}
+
+.login-title {
+    text-align: center; /* 標題文本居中對齊 */
+    color: #333; /* 設置標題文本顏色為深灰色 */
+}
+
+.login-form {
+    background: white; /* 設置表單背景色為白色 */
+    padding: 20px; /* 設置內邊距為20px */
+    border-radius: 10px; /* 設置邊框圓角為10px */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 設置陰影 */
+    display: flex; /* 使用flexbox布局 */
+    flex-direction: column; /* 子元素按列方向排列 */
+    align-items: center; /* 子元素水平居中 */
+}
+
+.login-input {
+    width: 80%; /* 設置寬度為80% */
+    padding: 10px; /* 設置內邊距為10px */
+    margin: 10px 0; /* 設置上下外邊距為10px，左右外邊距為0 */
+    border: 1px solid #ccc; /* 設置邊框為1px的灰色實線 */
+    border-radius: 5px; /* 設置邊框圓角為5px */
+    font-size: 16px; /* 設置字體大小為16px */
+}
+
+.login-button {
+    width: 80%; /* 設置寬度為80% */
+    padding: 10px; /* 設置內邊距為10px */
+    background-color: #4267b2; /* 設置背景色為深藍色 */
+    color: white; /* 設置文本顏色為白色 */
+    border: none; /* 移除邊框 */
+    border-radius: 5px; /* 設置邊框圓角為5px */
+    font-size: 16px; /* 設置字體大小為16px */
+    cursor: pointer; /* 設置鼠標指針樣式 */
+}
+
+.login-button:hover {
+    background-color: #365899; /* 設置懸停狀態的背景色為更深的藍色 */
+}
+
+.login-link {
+    text-decoration: none; /* 移除超鏈接的下劃線 */
+    color: #4267b2; /* 設置超鏈接顏色 */
+}

@@ -1,0 +1,42 @@
+/* 设置侧边栏的基础样式 */
+.sidebar {
+    background-color: #f0f2f5; /* 背景颜色 */
+    padding: 20px; /* 内边距 */
+    width: 250px; /* 固定宽度 */
+}
+
+/* 设置侧边栏标题的样式 */
+.sidebar h3 {
+    font-size: 18px; /* 字体大小 */
+    margin-bottom: 10px; /* 下边距 */
+    color: #333; /* 字体颜色 */
+}
+
+/* 设置用户详细信息容器的样式 */
+#user-details {
+    margin-top: 20px; /* 顶部外边距 */
+}
+
+/* 设置用户个性签名的样式 */
+#user-bio {
+    font-size: 14px; /* 字体大小 */
+    color: #666; /* 字体颜色 */
+    margin-bottom: 10px; /* 下边距 */
+    line-height: 1.5; /* 行高 */
+}
+
+/* 设置用户标签容器的样式 */
+#user-tags {
+    display: flex; /* 使用弹性盒模型 */
+    flex-wrap: wrap; /* 标签换行 */
+    gap: 5px; /* 标签之间的间距 */
+}
+
+/* 设置单个用户标签的样式 */
+.user-tag {
+    background-color: #007bff; /* 背景颜色 */
+    color: #fff; /* 字体颜色 */
+    padding: 5px 10px; /* 内边距 */
+    border-radius: 3px; /* 圆角 */
+    font-size: 12px; /* 字体大小 */
+}
