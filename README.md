@@ -9,6 +9,8 @@
 
 點擊 http://localhost:xxxx/ 就可以開啟預覽網頁，只要內容有修改就會馬上顯示出來
 
+開發伺服器會連結http://marimo.idv.tw 來取用php及資料庫和貼文圖片等資訊，所以有更新php的話需要先push上來讓我更新才可以存取
+
 文件主要修改只會在src資料夾內 其餘都不該修改
 
 main.jsx不該修改；App.jsx可以添加需要連結的頁面
