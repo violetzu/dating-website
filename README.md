@@ -22,8 +22,6 @@ php文件夾是我們的伺服器php檔
 
 有一個 post_picture 用於存放貼文相片，這個資料夾沒有同步到git上
 
-有一個
-
 index.html 及 asstes資料夾是react導出後的網頁檔案
 
 old是轉換為React開發前的初始版本，現已棄用但可供參考
