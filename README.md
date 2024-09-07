@@ -20,7 +20,7 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 # 其餘文件及資料夾
 php文件夾是我們的伺服器php檔
 
-post_picture是存放被提交的貼文照片
+有一個 post_picture 用於存放貼文相片，這個資料夾沒有同步到git上
 
 index.html 及 asstes資料夾是react導出後的網頁檔案
 
