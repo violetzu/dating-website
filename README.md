@@ -1,6 +1,15 @@
 # React 是主要開發用的資料夾
 開始開發前須先安裝nodejs https://nodejs.org/zh-tw
+
+在自己電腦資料夾 clone 後cd至React目錄
+
+接著輸入 npm run dev 啟動 Node.js 專案的開發伺服器
+
 ![image](https://github.com/user-attachments/assets/82c94567-6101-48b7-bc3f-3f7fd739ef0b)
+
+點擊 http://localhost:xxxx/ 就可以開啟預覽網頁
+
+文件主要修改只會在src資料夾內 其餘都不該修改
 
 
 
