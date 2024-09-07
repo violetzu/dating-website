@@ -11,7 +11,7 @@
 
 文件主要修改只會在src資料夾內 其餘都不該修改
 
-main.jsx不該修改 App.jsx 可以添加需要連結的頁面
+main.jsx不該修改；App.jsx可以添加需要連結的頁面
 
 components 內則是組件部分 目前以Login Home About三大組件組成，當然也能拆成更小的組件
 
