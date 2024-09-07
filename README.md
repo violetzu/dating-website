@@ -1,7 +1,4 @@
-# dating-website
-
-
-React 是主要開發用的文件夾
+#React 是主要開發用的文件夾
 
 php文件夾是我們的伺服器php檔
 
