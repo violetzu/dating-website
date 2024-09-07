@@ -1,4 +1,0 @@
-SetEnv DB_SERVER localhost
-SetEnv DB_USERNAME root
-SetEnv DB_PASSWORD !Zjcm7JRcYIQxsHV
-SetEnv DB_NAME friends
