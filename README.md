@@ -3,7 +3,9 @@
 
 在自己電腦資料夾 clone 後cd至React目錄
 
-接著輸入 npm run dev 啟動 Node.js 專案的開發伺服器
+接著輸入 npm install 安裝 package.json 內列出的所有依賴
+
+再輸入npm run dev 啟動 Node.js 專案的開發伺服器
 
 ![image](https://github.com/user-attachments/assets/82c94567-6101-48b7-bc3f-3f7fd739ef0b)
 
