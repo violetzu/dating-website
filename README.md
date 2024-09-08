@@ -43,6 +43,7 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
    => `git pull origin層級中 名為main分支(branch)(在此main為主幹)`
 
    *遠程倉庫(remote repository)就是指GitHub上看得到的這些"貼文"
+
    *原repository若在自己分支(fork)後有經過編輯，則無法直接上交自己修改過的版本(因為兩邊皆有從同一個原始檔案變更，無法直接用自己更新過的檔案去覆蓋)，故
 
    解決衝突:
