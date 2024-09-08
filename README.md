@@ -23,7 +23,7 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 - php文件夾是我們的伺服器php檔，有修正一定要先發送PR給我來更新，不然存取到的永遠都會是舊的檔案。  
 - 有一個 post_picture 用於存放貼文相片，這個資料夾沒有同步到git上  
 - [index.html](https://github.com/violetzu/dating-website/tree/main/index.html) 及 [asstes資料夾](https://github.com/violetzu/dating-website/tree/main/asstes) 是react導出後的網頁檔案  
-- old是轉換為React開發前的初始版本，現已棄用但可供參考
+- [old](https://github.com/violetzu/dating-website/tree/main/old/)是轉換為React開發前的初始版本，現已棄用但可供參考
 
 
 
