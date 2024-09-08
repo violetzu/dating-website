@@ -3,7 +3,7 @@
 
 - 在自己電腦資料夾 clone 後cd至React目錄 `cd .\React\`
 
-- 接著輸入`npm install` 安裝 package.json 內列出的所有依賴
+- 接著輸入`npm install` 安裝 package.json 內列出的所有依賴(根據 package.json所列的資訊/套件參數 安裝所需套件)
 
 - 再輸入`npm run dev` 啟動 Node.js 專案的開發伺服器
 
@@ -22,10 +22,11 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 # 其餘文件及資料夾
 - php文件夾是我們的伺服器php檔，有修正一定要先發送PR給我來更新，不然存取到的永遠都會是舊的檔案。  
 - 有一個 post_picture 用於存放貼文相片，這個資料夾沒有同步到git上  
-- [index.html](https://github.com/violetzu/dating-website/tree/main/index.html) 及 [asstes資料夾](https://github.com/violetzu/dating-website/tree/main/asstes) 是react導出後的網頁檔案  
+- [index.html](https://github.com/violetzu/dating-website/tree/main/index.html) 及 [assets資料夾](https://github.com/violetzu/dating-website/tree/main/assets) 是react導出後的實際網頁檔案  
 - [old](https://github.com/violetzu/dating-website/tree/main/old/)是轉換為React開發前的初始版本，現已棄用但可供參考
 
-
+我覺得有這張圖比較知道在幹嘛
+![image](https://github.com/user-attachments/assets/d88b1720-4b37-47c2-a8c7-9ee156b5c80a)
 
 # 第一次clone到自己電腦
 `git clone https://github.com/violetzu/dating-website.git `
@@ -37,18 +38,18 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 
 先拉取遠程倉庫的更改並嘗試自動合併：
 `git pull origin main`
+=> git pull 階層為origin中，名為main分支(branch/在此main為主幹)
 
 解決衝突:
 如果在合併過程中出現衝突，Git 會停止拉取操作並要求您手動解決這些衝突。您需要打開相關的文件，查找由 Git 標記的衝突區域（通常會包括 <<<<<<<、======= 和 >>>>>>>），並選擇您希望保留的更改。
 
-
-解決所有衝突後，添加更改到暫存區：
+解決所有衝突後，添加更改到Git裡的暫存區(跟直接ctrl+S儲存於電腦硬碟有所區別，此處主體是Git不是電腦/Git的暫存區不會同步本地電腦)：
 `git add .`
 
-然後提交合併：
+然後提交合併(通常會順便註解)：
 `git commit -m "這裡寫這次提交修改了什麼"`
 
-解決完所有衝突並成功合併後，將修改推送遠程倉庫：
+解決完所有衝突並成功合併後，將修改推送遠程倉庫(remote repository/GitHub上看得到的這些"貼文")：
 `git push origin main`
 
 
