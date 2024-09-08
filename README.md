@@ -25,32 +25,35 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 - [index.html](https://github.com/violetzu/dating-website/tree/main/index.html) 及 [assets資料夾](https://github.com/violetzu/dating-website/tree/main/assets) 是react導出後的實際網頁檔案  
 - [old](https://github.com/violetzu/dating-website/tree/main/old/)是轉換為React開發前的初始版本，現已棄用但可供參考
 
+# 各個指令的交互作用
 我覺得有這張圖比較知道在幹嘛
+來源：[https://ithelp.ithome.com.tw/articles/10271811](https://ithelp.ithome.com.tw/articles/10271811)
 ![image](https://github.com/user-attachments/assets/d88b1720-4b37-47c2-a8c7-9ee156b5c80a)
 
 # 第一次clone到自己電腦
 `git clone https://github.com/violetzu/dating-website.git `
-
-
+意即"連結但不同步"到自己電腦，讓電腦裡的Git有個根可以尋
 
 # 每次修改時(有合作者權限)
 ***修改時請確保目錄在dating-website***
 
-先拉取遠程倉庫的更改並嘗試自動合併：
-`git pull origin main`
+1. 先拉取遠程倉庫的更改並嘗試自動合併：
+   `git pull origin main`
 => git pull 階層為origin中，名為main分支(branch/在此main為主幹)
 
 解決衝突:
 如果在合併過程中出現衝突，Git 會停止拉取操作並要求您手動解決這些衝突。您需要打開相關的文件，查找由 Git 標記的衝突區域（通常會包括 <<<<<<<、======= 和 >>>>>>>），並選擇您希望保留的更改。
 
-解決所有衝突後，添加更改到Git裡的暫存區(跟直接ctrl+S儲存於電腦硬碟有所區別，此處主體是Git不是電腦/Git的暫存區不會同步本地電腦)：
-`git add .`
+2. 解決所有衝突後，添加更改到Git裡的暫存區：
+   `git add .`
 
-然後提交合併(通常會順便註解)：
-`git commit -m "這裡寫這次提交修改了什麼"`
+   *Git裡的暫存區跟直接ctrl+S儲存於電腦硬碟有所區別，此處主體是Git不是電腦/Git的暫存區不會同步本地電腦
 
-解決完所有衝突並成功合併後，將修改推送遠程倉庫(remote repository/GitHub上看得到的這些"貼文")：
-`git push origin main`
+4. 然後提交合併(通常會順便註解)：
+   `git commit -m "這裡寫這次提交修改了什麼"`
+
+5. 解決完所有衝突並成功合併後，將修改推送遠程倉庫(remote repository/GitHub上看得到的這些"貼文")：
+   `git push origin main`
 
 
 
