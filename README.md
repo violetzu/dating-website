@@ -26,30 +26,30 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 - [old](https://github.com/violetzu/dating-website/tree/main/old/)是轉換為React開發前的初始版本，現已棄用但可供參考
 
 # 各個指令的交互作用
-我覺得有這張圖比較知道在幹嘛
-來源：[https://ithelp.ithome.com.tw/articles/10271811](https://ithelp.ithome.com.tw/articles/10271811)
+我覺得有這張圖比較知道在幹嘛 來源：[https://ithelp.ithome.com.tw/articles/10271811](https://ithelp.ithome.com.tw/articles/10271811)
 ![image](https://github.com/user-attachments/assets/d88b1720-4b37-47c2-a8c7-9ee156b5c80a)
 
 # 第一次clone到自己電腦
-`git clone https://github.com/violetzu/dating-website.git `
+1. 抓檔案下來(靜態)到自己電腦：`git clone https://github.com/violetzu/dating-website.git `
 
-抓檔案下來(靜態)到自己電腦
-
-`git remote add upstream 源頭repository網址`
-
-意即"連結但不同步"到自己電腦，讓電腦裡的Git有個根可以尋
+2. (如果是用fork)`git remote add upstream 源頭repository網址`，意即"連結但不同步"到自己電腦，讓電腦裡的Git有個根可以尋
 
 # 每次修改時(有合作者權限)
 ***修改時請確保目錄在dating-website***
 
 1. 先拉取遠程倉庫的更改並嘗試自動合併：
+
    `git pull origin main`
-=> `git pull origin層級中 名為main分支(branch)(在此main為主幹)`
+   => `git pull origin層級中 名為main分支(branch)(在此main為主幹)`
 
-解決衝突:
-如果在合併過程中出現衝突，Git會停止拉取操作並要求您手動解決這些衝突。您需要打開相關的文件，查找由 Git 標記的衝突區域（通常會包括 <<<<<<<、======= 和 >>>>>>>），並選擇您希望保留的更改。
+   *遠程倉庫(remote repository)就是指GitHub上看得到的這些"貼文"
+   *原repository若在自己分支(fork)後有經過編輯，則無法直接上交自己修改過的版本(因為兩邊皆有從同一個原始檔案變更，無法直接用自己更新過的檔案去覆蓋)，故
 
-2. 解決所有衝突後，添加更改到暫存區：
+   解決衝突:
+   
+   如果在合併過程中出現衝突，Git會停止拉取操作(pull)並要求您手動解決這些衝突。您需要打開相關的文件，查找由 Git標記的衝突區域（通常會包括 <<<<<<<、======= 和 >>>>>>>），並選擇您希望保留的更改。
+
+3. 解決所有衝突後，添加更改到暫存區：
    `git add .` => `git add 欲添加的檔案(在此為"當前路徑")`
 
    *這裡的暫存區是指Git在本地端認知的儲存空間，跟直接ctrl+S儲存於電腦硬碟有所區別，也不是GitHub中的repository，此處主體是Git不是電腦/Git的暫存區不會同步本地電腦
@@ -59,7 +59,7 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 
    *提交的同時通常會順便註解
 
-6. 解決完所有衝突並成功合併後，將修改推送遠程倉庫(remote repository/GitHub上看得到的這些"貼文")：
+6. 解決完所有衝突並成功合併後，將修改推送遠程倉庫：
    `git push origin main`
 
 
