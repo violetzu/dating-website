@@ -32,6 +32,11 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 
 # 第一次clone到自己電腦
 `git clone https://github.com/violetzu/dating-website.git `
+
+抓檔案下來(靜態)到自己電腦
+
+`git remote add upstream 源頭repository網址`
+
 意即"連結但不同步"到自己電腦，讓電腦裡的Git有個根可以尋
 
 # 每次修改時(有合作者權限)
@@ -39,7 +44,7 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 
 1. 先拉取遠程倉庫的更改並嘗試自動合併：
    `git pull origin main`
-=> `git pull 階層為origin中 名為main分支(branch)(在此main為主幹)`
+=> `git pull origin層級中 名為main分支(branch)(在此main為主幹)`
 
 解決衝突:
 如果在合併過程中出現衝突，Git會停止拉取操作並要求您手動解決這些衝突。您需要打開相關的文件，查找由 Git 標記的衝突區域（通常會包括 <<<<<<<、======= 和 >>>>>>>），並選擇您希望保留的更改。
