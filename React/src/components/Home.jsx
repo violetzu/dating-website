@@ -202,7 +202,7 @@ function Home() {
     loadPosts();
   }, []);
 
-  // 動作 <抓取當前用戶資訊>
+  // 動作 <登入作業/抓取當前用戶資訊>
   const fetchUserInfo = useCallback(async () => {
     try {
       const response = await fetch('/php/get_user_info.php');
@@ -217,12 +217,16 @@ function Home() {
     }
   }, [navigate]);
 
+  // 動作 <加載貼文>
   const loadPosts = useCallback(async (username = null, limit = 20) => {
     try {
+      // 設置向php回傳貼文顯示的最大數目、位於哪個用戶的個人主頁之參數
       let url = `/php/posts_get.php?limit=${limit}`;
       if (username) {
         url += `&username=${username}`;
       }
+
+      // 送出並擷取php回傳資訊
       const response = await fetch(url);
       const data = await response.json();
       if (data.success) {
@@ -235,6 +239,7 @@ function Home() {
     }
   }, []);
 
+  // 動作 <登出作業>
   const handleLogout = useCallback(async () => {
     try {
       const response = await fetch('/php/logout.php', { method: 'POST' });
@@ -249,13 +254,17 @@ function Home() {
     }
   }, [navigate]);
 
+  // 動作 <送出貼文/重置發文表單>
   const handlePostSubmit = useCallback(async (e, postId = null) => {
     e.preventDefault();
+
+    // 分享貼文時的送出鈕被設置為分享模式，需在此改回預設之純發文模式
     if (isSharingPost) {
       document.getElementById('post-form').onsubmit = handlePostSubmit();
       return;
     }
 
+    // 將貼文內容加入資料庫
     const formData = new FormData();
     formData.append('content', postContent);
     const type = postId ? 'share' : postType;
@@ -270,17 +279,23 @@ function Home() {
     }
 
     try {
+      // 實際送出貼文至後台
       const response = await fetch('/php/post_submit.php', {
         method: 'POST',
         body: formData,
       });
+
       const data = await response.json();
+
+      // 清空表單，重置到預設狀態
       if (data.success) {
         setIsSharingPost(false);
         setPostContent('');
         setPostType('image');
         setPostImage(null);
         setYoutubeUrl('');
+
+        // 實際張貼貼文
         loadPosts(currentViewUsername || null);
       } else {
         alert('分享失敗: ' + data.message);
@@ -290,19 +305,23 @@ function Home() {
     }
   }, [isSharingPost, postContent, postImage, youtubeUrl, postType, currentViewUsername, loadPosts]);
 
+  // ***!!!這個超冗的啦等一下!!!*** 動作 <變更貼文類型>
   const updatePostForm = (type = null) => {
     type = type || postType;
     setPostType(type);
   };
 
+  // 動作 <新增照片>
   const handleFileChange = (e) => {
     setPostImage(e.target.files[0]);
   };
 
+  // ***!!!這個好像也有點冗等一下!!!*** 動作 <用戶名稱連結至個人主頁>
   const handleUsernameClick = (username) => {
     displayUsernameDetails(username);
   };
 
+  // 動作 <顯示用戶個人主頁資訊>
   const displayUsernameDetails = useCallback(async (username) => {
     try {
       const response = await fetch('/php/userdisplay.php', {
@@ -317,8 +336,11 @@ function Home() {
         setUserBio(data.bio);
         setUserTags(data.tags);
         setCurrentViewUsername(username);
+
+        // 加載所選用戶的貼文
         loadPosts(username);
       } else {
+        // 多載於查詢用戶(即username不存在時)
         alert('查無用戶!');
         console.error('Failed to load user details:', data.message);
       }
@@ -327,6 +349,7 @@ function Home() {
     }
   }, []);
 
+  // 動作 <點讚>
   const likePost = useCallback(async (postId, sharedPostId = null) => {
     try {
       const response = await fetch('/php/like_post.php', {
@@ -338,7 +361,10 @@ function Home() {
       });
       const data = await response.json();
       console.log(data.message);
+      // 更新讚數
       updatePostDetails(postId);
+
+      // ?????更新被分享貼文讚數(?
       if (sharedPostId) {
         updatePostDetails(sharedPostId);
       }
@@ -347,6 +373,7 @@ function Home() {
     }
   }, []);
 
+  // 動作 <更新貼文數據>
   const updatePostDetails = useCallback(async (postId) => {
     try {
       const response = await fetch(`/php/post_details_get.php?post_id=${postId}`);
@@ -365,15 +392,19 @@ function Home() {
     }
   }, []);
 
+  // 動作 <開關留言區>
   const toggleComments = (postId) => {
     setPosts((prevPosts) =>
       prevPosts.map((post) =>
         post.id === postId ? { ...post, showComments: !post.showComments } : post
       )
     );
+
+    // 加載當前貼文之所有留言
     loadComments(postId);
   };
 
+  // 動作 <顯示貼文留言>
   const loadComments = useCallback(async (postId) => {
     try {
       const response = await fetch(`/php/comments_get.php?post_id=${postId}`);
@@ -392,7 +423,9 @@ function Home() {
     }
   }, []);
 
+  // 動作 <送出留言>
   const submitComment = useCallback(async (postId, commentContent, sharedPostId = null) => {
+    // 避免空白留言
     if (!commentContent.trim()) {
       alert('留言內容不能為空！');
       return;
@@ -407,9 +440,16 @@ function Home() {
       });
       const data = await response.json();
       if (data.success) {
+        // 重置留言打字區
         document.getElementById(`comment-content-${postId}`).value = ''; // 清空輸入框
+
+        // 實際張貼留言
         loadComments(postId);
+
+        // 更新留言數
         updatePostDetails(postId);
+
+        // ?????更新被分享貼文留言數(?
         if (sharedPostId) {
           updatePostDetails(sharedPostId);
         }
@@ -421,16 +461,23 @@ function Home() {
     }
   }, [loadComments, updatePostDetails]);
 
+  // 動作 <分享貼文>
   const sharePost = (postId) => {
+    // ***!!!這個絕對是冗的!!!*** 設置貼文類型
     setIsSharingPost(true);
+
+    // 跳到頁面最上方(因為發文表單在頁面最上方)
     window.scrollTo(0, 0);
+
+    // ***!!!這個絕對是冗的，重複了!!!*** 更新貼文類型
     updatePostForm('share');
     alert("sharing post!"); //LOOK AT ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    // 變更送出按鈕行為(被永久改為分享貼文的模式，故會在表單重置時改回來)
     document.getElementById('post-form').onsubmit = (e) => handlePostSubmit(e, postId);
   };
 
-  
-
+  // ***!!!其實好像不用這樣設!!!*** 動作 <左上角之個人資料快捷鍵>
   const loadPostsOrSetting = () => {
     if (currentViewUsername === thisUsername) {
       navigate('/about');
@@ -439,6 +486,7 @@ function Home() {
     }
   };
 
+  // ***!!!應該要塞到送出貼文的動作!!!*** 動作 <重置發文表單>
   const resetPostForm = () => {
     setCurrentViewUsername('');
     setPostContent('');
@@ -451,6 +499,7 @@ function Home() {
 
   return (
     <>
+      {/* 主頁的基本架構(最原始的框架) */}
       <Header
         currentViewUsername={currentViewUsername}
         thisUsername={thisUsername}
