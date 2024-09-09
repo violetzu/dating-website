@@ -67,12 +67,13 @@ const PostForm = ({ handlePostSubmit, postContent, setPostContent, postType, set
   </form>
 );
 
-// 元件 <貼文本體>
+// 元件 <貼文>
 const Post = ({ post, handleUsernameClick, likePost, toggleComments, sharePost, submitComment, loadComments }) => {
   // 從資料庫抓讚數
   const likesText = getLikesText(post.liked_by_user, post.likes_count);
 
   return (
+    // 貼文本體
     <div className="post" id={`post-${post.id}`} key={post.id}>
       <div className="post-header">
         <a href="#!" className="post-username" onClick={() => handleUsernameClick(post.username)}>
@@ -80,11 +81,15 @@ const Post = ({ post, handleUsernameClick, likePost, toggleComments, sharePost, 
         </a>
         <span className="post-datetime">{post.created_at}</span>
       </div>
+
+      {/* 貼文內文(caption) */}
       <div className="post-content">{post.content}</div>
 
-      {/* post.url? */}
+      {/* 照片、YT、分享只會擇一顯示 */}
+      {/* 照片 */}
       {post.type === 'image' && post.url && <div className="post-image"><img src={post.url} alt="Post Image" /></div>}
       
+      {/* 鑲嵌的youtube影片 */}
       {post.type === 'youtube' && <div className="post-youtube" dangerouslySetInnerHTML={{ __html: post.url }} />}
       
       {/* 貼文屬性為'share'時才有的區塊 */}
@@ -157,10 +162,13 @@ function getLikesText(likedByUser, likesCount) {
   }
 }
 
+// 元件 <側欄>
 const Sidebar = ({ currentViewUsername, userBio, userTags }) => (
   <aside className="sidebar">
     <h3 id="username-sidebar">{currentViewUsername ? currentViewUsername : '私訊區域'}</h3>
     <div id="sidebar-item"></div>
+
+    {/* 進入各用戶個人主頁欲顯示之細項 */}
     {currentViewUsername && (
       <div id="user-details">
         <p id="user-bio">{userBio}</p>
@@ -174,12 +182,13 @@ const Sidebar = ({ currentViewUsername, userBio, userTags }) => (
   </aside>
 );
 
+// 架構 <主頁> 串聯全部元件與動作，相當於main
 function Home() {
   const [thisUsername, setThisUsername] = useState('');
   const [posts, setPosts] = useState([]);
   const [postContent, setPostContent] = useState('');
-  const [postType, setPostType] = useState('image');
-  const [postImage, setPostImage] = useState(null);
+  const [postType, setPostType] = useState('image'); //貼文類型
+  const [postImage, setPostImage] = useState(null); //照片來源
   const [youtubeUrl, setYoutubeUrl] = useState('');
   const [isSharingPost, setIsSharingPost] = useState(false);
   const [currentViewUsername, setCurrentViewUsername] = useState('');
@@ -193,6 +202,7 @@ function Home() {
     loadPosts();
   }, []);
 
+  // 動作 <抓取當前用戶資訊>
   const fetchUserInfo = useCallback(async () => {
     try {
       const response = await fetch('/php/get_user_info.php');
