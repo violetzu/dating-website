@@ -30,9 +30,13 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 ![image](https://github.com/user-attachments/assets/d88b1720-4b37-47c2-a8c7-9ee156b5c80a)
 
 # 第一次clone到自己電腦
-1. 抓檔案下來(靜態)到自己電腦：`git clone https://github.com/violetzu/dating-website.git `
+1. 抓檔案下來(靜態)到自己電腦：`git clone https://github.com/violetzu/dating-website.git`
 
-2. (如果是用fork)`git remote add upstream 源頭repository網址`，意即"連結但不同步"到自己電腦，讓電腦裡的Git有個根可以尋
+   *如果是用fork/不是原始repository還需要做下兩步，意即"連結但不同步"到自己電腦，讓電腦裡的Git有個根可以尋：
+   
+2. `git remote add upstream https://github.com/violetzu/dating-website.git` => `git remote add upstream層級 源頭repository網址`
+   
+3. `git remote -v`
 
 # 每次修改時(有合作者權限)
 ***修改時請確保目錄在dating-website***
@@ -40,11 +44,11 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 1. 先拉取遠程倉庫的更改並嘗試自動合併：
 
    `git pull origin main`
-   => `git pull origin層級中 名為main分支(branch)(在此main為主幹)`
+   => `git pull origin層級中 名為main的分支(branch，名詞)(在此main其實為主幹)`
 
    *遠程倉庫(remote repository)就是指GitHub上看得到的這些"貼文"
 
-   *原repository若在自己分支(fork)後有經過編輯，則無法直接上交自己修改過的版本(因為兩邊皆有從同一個原始檔案變更，無法直接用自己更新過的檔案去覆蓋)，故
+   *原repository若在自己分支(fork，動詞)後有經過編輯，則無法直接上交自己修改過的版本(因為兩邊皆有從同一個原始檔案變更，無法直接用自己更新過的檔案去覆蓋)，故
 
    解決衝突:
    
