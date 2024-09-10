@@ -69,7 +69,7 @@ const PostForm = ({ handlePostSubmit, postContent, setPostContent, postType, set
 
 // 元件 <貼文>
 const Post = ({ post, handleUsernameClick, likePost, toggleComments, sharePost, submitComment, loadComments }) => {
-  // 從資料庫抓讚數
+  // 讚數顯示文字
   const likesText = getLikesText(post.liked_by_user, post.likes_count);
 
   return (
@@ -153,7 +153,7 @@ const Post = ({ post, handleUsernameClick, likePost, toggleComments, sharePost, 
   );
 };
 
-// 動作 <抓讚數>
+// 動作 <改變讚數顯示文字>
 function getLikesText(likedByUser, likesCount) {
   if (likedByUser) {
     return likesCount > 1 ? `你和其他${likesCount - 1}人說讚` : '你說讚';

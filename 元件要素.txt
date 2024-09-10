@@ -1,0 +1,44 @@
+!!!資料庫格式!!!
+[post]
+~id
+~username
+~content => 建議改成caption或text
+~type => 不會儲存share作為type
+~url
+~created_at
+~share_count
+~likes_count
+~comments_count
+~shared_post
+
+
+
+標有+的property由外部(上層)傳入
+
+[PostObj]
+properties:
++postType => text/img/yt
++onShare => postId(被分享的貼文)/null
++post(包含Info, Content) => grab from database
+
+methods:
++checkUserPage => 檢視用戶主頁
+
+-countLikes, countComments, countShares(getPostInfo) => 從資料庫回傳貼文各個細項之數量
+
+-pickLike(點讚) => 變更資料庫讚數
+
+-submitComment(留言) => 送出留言至資料庫
+-showComments(控制顯示留言) => 從資料庫抓所有留言並顯示
+
+-sharePost(焚想) => 在發文表單填上postId，靜待編輯
+
+[PostForm]
+properties:
+~postType => text/img/yt
+~onShare => postId(被分享的貼文)/null
+~caption, imgURL_ytURL(postContent) => ready to send to database
+
+methods:
+-submitPost => 送出貼文內容至資料庫
+-resetForm => 重置(清空)表單
