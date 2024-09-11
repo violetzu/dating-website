@@ -1,17 +1,22 @@
 !!!資料庫格式!!!
 [post]
-~id
-~username
-~content => 建議改成caption或text
-~type => 不會儲存share作為type
+~id (INT, PK)＃貼文ID
+~username (VARCHAR 10)
+~content (TEXT) ＃貼文文字
+~type (varchar 50) #貼文url類型 (image 的話url就是圖片路徑；share的話就是被分享的貼文id；youtube就是分享的youtube嵌入連結) => 不會儲存share作為type
+~url (VARCHAR) => 就放連結或路徑就好了
+~created_at (DATETIME) ＃建立時間
+~share_count #被分享次數
+ => 加上shared_post
+
+[post when submit]
+~content
+~type
 ~url
-~created_at
-~share_count
-~likes_count
-~comments_count
-~shared_post
-
-
+~
+~
+~
+ => 新增shared_post
 
 標有+的property由外部(上層)傳入
 
@@ -29,7 +34,8 @@ methods:
 -pickLike(點讚) => 變更資料庫讚數
 
 -submitComment(留言) => 送出留言至資料庫
--showComments(控制顯示留言) => 從資料庫抓所有留言並顯示
+-loadComments => 從資料庫抓所有留言
+-showComments(控制顯示留言) => 顯示所有留言
 
 -sharePost(焚想) => 在發文表單填上postId，靜待編輯
 

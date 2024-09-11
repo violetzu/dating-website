@@ -15,6 +15,7 @@ $username = $_SESSION['username'];
 $content = $_POST['content'];
 $type = $_POST['type'];
 $url = $_POST['url'] ?? null;
+$shared_post = $_POST['shared_post'] ?? null;
 
 if ($type === 'image' && isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
     $uploadDir = '../post_picture/';  // 確保這個目錄存在且有寫入權限
@@ -26,16 +27,16 @@ if ($type === 'image' && isset($_FILES['image']) && $_FILES['image']['error'] ==
 }
 
 // 將貼文數據插入到數據庫
-$sql = "INSERT INTO Posts (username, content, type, url, created_at) VALUES (?, ?, ?, ?, NOW())";
+$sql = "INSERT INTO Posts (username, content, type, url, created_at, shared_post) VALUES (?, ?, ?, ?, NOW(), ?)";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('ssss', $username, $content, $type, $url);
 $stmt->execute();
 
 if ($stmt->affected_rows > 0) {
-    if ($type === 'share' && $url) {
+    if (isset($type)) {
         $updateShareCountSql = "UPDATE Posts SET share_count = share_count + 1 WHERE id = ?";
         $updateStmt = $conn->prepare($updateShareCountSql);
-        $updateStmt->bind_param('i', $url);
+        $updateStmt->bind_param('i', $shared_post);
         $updateStmt->execute();
     }
     echo json_encode(['success' => true, 'message' => '貼文發布成功']);

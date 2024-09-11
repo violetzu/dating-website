@@ -118,7 +118,7 @@ const Post = ({ post, handleUsernameClick, likePost, toggleComments, sharePost, 
 
       {/* 互動工具列(點讚、留言、轉發) */}
       <div className="post-actions">
-        <button onClick={() => likePost(post.id, post.type === 'share' ? post.shared_post.id : null)}>{post.liked_by_user ? '收回讚' : '點讚'}</button>
+        <button onClick={() => likePost(post.id)}>{post.liked_by_user ? '收回讚' : '點讚'}</button>
         <button onClick={() => toggleComments(post.id)}>留言</button>
         <button onClick={() => sharePost(post.id)}>轉發</button>
       </div>
@@ -350,7 +350,7 @@ function Home() {
   }, []);
 
   // 動作 <點讚>
-  const likePost = useCallback(async (postId, sharedPostId = null) => {
+  const likePost = useCallback(async (postId) => {
     try {
       const response = await fetch('/php/like_post.php', {
         method: 'POST',
@@ -361,13 +361,9 @@ function Home() {
       });
       const data = await response.json();
       console.log(data.message);
+      
       // 更新讚數
       updatePostDetails(postId);
-
-      // ?????更新被分享貼文讚數(?
-      if (sharedPostId) {
-        updatePostDetails(sharedPostId);
-      }
     } catch (error) {
       console.error('解析 JSON 失敗:', error);
     }

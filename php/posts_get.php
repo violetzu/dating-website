@@ -15,7 +15,7 @@ $username = isset($_GET['username']) ? $_GET['username'] : null;
 
 // 基本查詢語句，根據是否有username參數決定查詢條件
 $query = "
-    SELECT posts.id, posts.username, posts.content, posts.type, posts.url, posts.created_at, posts.share_count,
+    SELECT posts.id, posts.username, posts.content, posts.type, posts.url, posts.created_at, posts.share_count, posts.shared_post,
            COUNT(DISTINCT likes.id) AS likes_count,
            COUNT(DISTINCT comments.id) AS comments_count
     FROM posts
@@ -61,8 +61,8 @@ while ($row = $result->fetch_assoc()) {
     $row['liked_by_user'] = $like_result->fetch_assoc()['liked_by_user'];
     
     // 如果帖子是分享類型，查詢被分享的帖子
-    if ($row['type'] === 'share') {
-        $shared_post_id = $row['url'];
+    if ($row['shared_post'] != null) {
+        $shared_post_id = $row['shared_post'];
         $shared_post_query = "
             SELECT posts.id, posts.username, posts.content, posts.type, posts.url, posts.created_at, posts.share_count,
                    COUNT(DISTINCT likes.id) AS likes_count,
