@@ -53,3 +53,49 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 
 
 
+
+
+# 資料庫結構 (MySQL)
+資料庫名稱:friends
+
+ 表 Users: 存儲用戶資訊。  
+- id (INT, PK)＃用戶ID
+- username (VARCHAR 10)＃用戶名稱(帳號)
+- password (VARCHAR 60)＃密碼(php hash後)
+- email(VARCHAR 320)
+- bio (VARCHAR 200)#個性簽名
+- identity(INT)#0是管理員 1是一般使用者
+
+表 Tags:存儲全部的興趣標籤
+- id (INT, PK) - 標籤ID
+- tag (VARCHAR 10) - 標籤名稱
+
+表 User_Tags :連結使用者與興趣標籤
+- id (INT, PK) 
+- username (VARCHAR 10) - 用戶ID，引用 Users 表的 "username"
+- tag (VARCHAR 10)  - 標籤ID，引用 Tags 表的" tag"
+
+
+表 Posts: 存儲貼文資訊。
+- id (INT, PK)＃貼文ID
+- username (VARCHAR 10)
+- content (TEXT) ＃貼文文字
+- type 	(varchar 50) #貼文url類型 (image 的話url就是圖片路徑；share的話就是被分享的貼文id；youtube就是分享的youtube嵌入連結)
+- url (VARCHAR)  
+- created_at (DATETIME)  ＃建立時間
+- share_count	#被分享次數
+
+Comments: 存儲留言資訊。
+- id (INT, PK)#留言編號 
+- post_id (INT, FK)＃貼文ID 引用Posts表的"id” 
+- username (VARCHAR 10)＃用戶ID 引用Users表的”username” 
+- comment (TEXT 100)＃文字留言 
+- created_at (DATETIME)＃建立時間 
+
+Likes: 存儲點愛心的資訊。
+- id (INT, PK)#
+- post_id (INT, FK)＃貼文ID 引用Posts表的"id” 
+- username(VARCHAR 10)
+
+
+
