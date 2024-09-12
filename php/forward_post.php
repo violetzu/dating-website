@@ -1,16 +1,8 @@
 <?php
-session_start();
+include 'db_connect.php'; //連接資料庫
+include 'session.php'; //確保登入
 
-header("Content-Type: application/json");
-
-include 'db_connect.php';
-
-if (!isset($_SESSION['username'])) {
-    echo json_encode(['success' => false, 'message' => '未登入']);
-    exit();
-}
-
-$user_id = $_SESSION['user_id'];  // 假设你的会话中存储了用户ID
+$user_id = $_SESSION['user_id'];
 $original_post_id = $_POST['original_post_id'];
 $forward_text = $_POST['forward_text'];
 

@@ -8,11 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type");
 
 include 'db_connect.php';
 
-// 獲取請求主體數據
-$requestBody = file_get_contents('php://input');
-
-// 解析 JSON 格式的請求主體數據
-$input = json_decode($requestBody, true);
+$input = json_decode(file_get_contents('php://input'), true); 
 
 // 獲取用戶名和密碼參數
 $user = $input['username'] ?? '';

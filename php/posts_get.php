@@ -1,14 +1,6 @@
 <?php
-session_start();
-
-header("Content-Type: application/json");
-
-include 'db_connect.php';  // 確保此文件中定義了與數據庫的連接
-
-if (!isset($_SESSION['username'])) {
-    echo json_encode(['success' => false, 'message' => '未登入']);
-    exit();
-}
+include 'db_connect.php'; //連接資料庫
+include 'session.php'; //確保登入
 
 $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 20;
 $username = isset($_GET['username']) ? $_GET['username'] : null;
