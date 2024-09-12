@@ -1,12 +1,6 @@
 <?php
-session_start();
-header("Content-Type: application/json");
-include 'db_connect.php';
-
-if (!isset($_SESSION['username'])) {
-    echo json_encode(['success' => false, 'message' => '未登入']);
-    exit();
-}
+include 'db_connect.php'; //連接資料庫
+include 'session.php'; //確保登入
 
 // 接收从客户端传来的 post_id 参数
 $post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : 0;

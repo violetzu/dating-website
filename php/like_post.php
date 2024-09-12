@@ -1,16 +1,9 @@
 <?php
-session_start();
-header("Content-Type: application/json");
-include 'db_connect.php';
+include 'db_connect.php'; //連接資料庫
+include 'session.php'; //確保登入
 
-if (!isset($_SESSION['username'])) {
-    http_response_code(401);
-    echo json_encode(['success' => false, 'message' => '未登入']);
-    exit();
-}
+$input = json_decode(file_get_contents('php://input'), true); 
 
-$requestBody = file_get_contents('php://input');
-$input = json_decode($requestBody, true);
 $post_id = $input['post_id'];
 $username = $_SESSION['username'];
 

@@ -1,14 +1,7 @@
 <?php
-session_start();
+include 'session.php';  // 包含 session 管理檔案
 
-header("Content-Type: application/json");
+$username = $_SESSION['username'];  // 從 session 中獲取用戶名
 
-if (!isset($_SESSION['username'])) {
-    echo json_encode(['success' => false, 'message' => '未登入']);
-    exit();
-}
-
-$username = $_SESSION['username'];
-
-echo json_encode(['success' => true, 'username' => $username]);
+echo json_encode(['success' => true, 'username' => $username]);  // 輸出用戶名
 ?>

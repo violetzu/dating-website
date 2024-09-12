@@ -1,9 +1,6 @@
 <?php
-session_start();
-
-header("Content-Type: application/json");
-
-include 'db_connect.php';
+include 'db_connect.php'; //連接資料庫
+include 'session.php'; //確保登入
 
 $post_id = $_GET['post_id'];
 

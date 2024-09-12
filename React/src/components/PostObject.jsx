@@ -1,6 +1,6 @@
 // !!!NEW VERSION!!!
 // 元件 <貼文> 組成：postType(貼文類型), onShare(是否處於分享的狀態), postContent(貼文內容)
-const Post = ({checkUserPage, post, setShareLink}) => {
+const Post = ({checkUserPage, post, setPostType, setytURL_sharedPost}) => {
     // 動作 <抓讚數>
     function getLikeText(likedByUser, likes_count) {
         if (likedByUser) {
@@ -116,8 +116,11 @@ const Post = ({checkUserPage, post, setShareLink}) => {
 
     // 動作 <分享貼文>
     const sharePost = (postId) => {
-        // ***!!!這個絕對是冗的!!!*** 設置貼文類型
-        setShareLink(postId);
+        // 設置貼文類型
+        setPostType('share');
+
+        // 存入欲分享之貼文id
+        setytURL_sharedPost(postId);
 
         // 跳到頁面最上方(因為發文表單在頁面最上方)
         window.scrollTo(0, 0);
@@ -145,8 +148,8 @@ const Post = ({checkUserPage, post, setShareLink}) => {
                 : <div className="post-youtube" dangerouslySetInnerHTML={{ __html: post.url }} />) //Youtube
             }
 
-            {/* 若有被分享之貼文才顯示 */}
-            {post.shared_post && (
+            {/* 貼文屬性為'share'時才有的區塊(才會有.shared_post) */}
+            {post.type === 'share' && post.shared_post && (
                 <div className="shared-post-container">
                     {/* !!![生成]內嵌貼文物件(被分享的貼文)!!! */}
                     <Post
@@ -171,7 +174,7 @@ const Post = ({checkUserPage, post, setShareLink}) => {
                 <button onClick={() => sharePost(post.id)}>轉發</button>
             </div>
 
-            {/* "post.showComments"由"toggleComments(post.id)"所操控，是否顯示留言與發言 */}
+            {/* "post.showComments"由"showComments(post.id)"所操控，是否顯示留言與發言 */}
             {post.showComments && (
                 // 貼文id為xxx之留言區
                 <div className="comments" id={`comments-${post.id}`}>
