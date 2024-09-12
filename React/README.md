@@ -1,8 +1,21 @@
-# React + Vite
+# 網頁架構
+## 主頁 Login.jsx
+登入和註冊介面共用，輸入帳號密碼後點擊“登入或註冊”向後端 login_register.php 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+發送請求，後端串接mysql資料庫查詢帳號密碼是否存在，如不存在即未註冊過便在資料庫註冊新帳號並跳轉到個人資料中心，存在就切換到登入後主頁
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 登入後主頁 Home.jsx
+包含私訊、配對和個人看板的連結 等功能選擇介面。推播用戶的近期貼文，予以轉發、留言、點愛心；點選"轉發"會將頁面跳轉到個人看板，並在編輯貼文的面板預置原始貼文的連結。右上角為個人資料中心並顯示目前登入之帳號
+進入這個頁面時檢查登入資訊，如已登入便請求用戶資料並顯示，未登入跳轉到登入介面。
+自動載入全部追蹤對象前十則推文
+
+## 個人資料中心 About.jsx
+：修改個人資料（興趣喜好？。(興趣可以的話做標籤提供選擇，方便配對相同興趣時使用
+進入這個頁面時檢查登入資訊，如已登入便請求用戶資料並顯示，未登入跳轉到登入介面。
+依登入之帳號請求剩餘資料庫之欄位(登入資料/用戶ID、帳密 以外的欄位)作為可修改欄位預設內容，修改後按下下方”儲存“按鈕儲存修改後資料至資料庫並回到登入後主頁，按下”取消“則保留原本的資料並回到登入後主頁。
+
+## 個人看板 - 允許用戶編輯後發布含相片的貼文，並可指定發文對象（如追蹤者）。
+
+
+私訊介面 - 聊天功能，並提供回到主頁的超連結。（或許用 Firebase（加一個chatgpt的聊天機器人
