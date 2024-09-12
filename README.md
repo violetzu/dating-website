@@ -47,7 +47,7 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
    `git add .`
 
 2-2. 然後提交合併：
-   `git commit -m "這裡寫這次提交修改了什麼"`
+   `git commit -m "這裡寫這次提交修改了什麼"` `git commit -m "comit"` 
 
 3. 解決完所有衝突並成功合併後，將修改推送遠程倉庫：
    `git push origin main`
