@@ -32,7 +32,7 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
 # 第一次clone到自己電腦
 1. 抓檔案下來(靜態)到自己電腦：`git clone https://github.com/violetzu/dating-website.git`
 
-   *如果是用fork/不是原始repository還需要做下兩步，意即"連結但不同步"到自己電腦，讓電腦裡的Git有個根可以尋：
+   *如果是用fork(不是用原始repository的branch)還需要做下兩步，意即"連結但不同步"到自己電腦，讓電腦裡的Git有個根可以尋：
    
 2. `git remote add upstream https://github.com/violetzu/dating-website.git` => `git remote add upstream層級 源頭repository網址`
    
