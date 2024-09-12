@@ -122,7 +122,7 @@ const Post = ({checkUserPage, post, setShareLink}) => {
         // 跳到頁面最上方(因為發文表單在頁面最上方)
         window.scrollTo(0, 0);
 
-        alert("sharing post " + postId + " !"); //LOOK AT ME!!!!!!!
+        //alert("sharing post " + postId + " !"); //LOOK AT ME!!!!!!!
     };
 
     const likesText = getLikeText(post.likedByUser, post.likes_count)
