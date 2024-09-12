@@ -1,13 +1,11 @@
-//put this outside
-const [shareLink, setShareLink] = useState(null);
+const [postType, setPostType] = useState('image'); //貼文類型
+const [ytURL_sharedPost, setytURL_sharedPost] = useState(''); //youtube網址或被分享貼文的id
 
-//裡面還是放數字// !!!NEW VERSION!!!
+// !!!NEW VERSION!!!
 // 元件 <發文區塊>(打字、貼照片、轉PO)
-const PostForm = (shareLink, setShareLink) => {
+const PostForm = () => {
     const [postContent, setPostContent] = useState('');
-    const [postType, setPostType] = useState('image'); //貼文類型
     const [postImage, setPostImage] = useState(null); //照片來源(資料型態為blob, 儲存的是"檔案"物件)
-    const [youtubeUrl, setYoutubeUrl] = useState('');
 
     // 動作 <送出貼文/重置發文表單>
     const submitPost = useCallback(async (e) => {
@@ -24,8 +22,8 @@ const PostForm = (shareLink, setShareLink) => {
 
         if (type === 'image' && postImage) {
             formData.append('image', postImage); //先存整個照片檔，之後再從後台把url設成照片本地路徑
-        } else if (type === 'youtube' && youtubeUrl) {
-            formData.append('url', youtubeUrl);
+        } else if (type === 'youtube' && ytURL_sharedPost) {
+            formData.append('url', ytURL_sharedPost);
         }
 
         try {
@@ -43,7 +41,7 @@ const PostForm = (shareLink, setShareLink) => {
                 setPostContent('');
                 setPostType('image');
                 setPostImage(null);
-                setYoutubeUrl('');
+                setytURL_sharedPost('');
 
                 // 實際張貼貼文
                 loadPosts(currentViewUsername || null);
@@ -53,7 +51,7 @@ const PostForm = (shareLink, setShareLink) => {
         } catch (error) {
             console.error('解析 JSON 失敗:', error);
         }
-    }, [postContent, postType, postImage, youtubeUrl, shareLink, currentViewUsername, loadPosts]);
+    }, [postContent, postType, postImage, ytURL_sharedPost, currentViewUsername, loadPosts]);
 
     return (
         <form id="post-form" onSubmit={submitPost}>
@@ -61,7 +59,7 @@ const PostForm = (shareLink, setShareLink) => {
             <textarea id="post-content" value={postContent} onChange={(e) => setPostContent(e.target.value)} placeholder="分享新鮮事..." />
 
             {/* 轉貼不可添加圖片 / youtube */}
-            {shareLink && (
+            {postType != 'share' && (
                 <>
                     {/* 變更貼文屬性('image' / 'youtube') */}
                     <select id="post-type" value={postType} onChange={(e) => setPostType(e.target.value)}>
@@ -79,14 +77,16 @@ const PostForm = (shareLink, setShareLink) => {
                     {/* 貼文屬性為'youtube'時才有的選項 */}
                     {postType === 'youtube' && (
                         <div id="youtube-input">
-                            <input type="text" id="youtube-url" value={youtubeUrl} onChange={(e) => setYoutubeUrl(e.target.value)} placeholder="請由youtube分享的嵌入複製完整程式碼貼上" />
+                            <input type="text" id="youtube-url" value={ytURL_sharedPost} onChange={(e) => setytURL_sharedPost(e.target.value)} placeholder="請由youtube分享的嵌入複製完整程式碼貼上" />
                         </div>
                     )}
-
-                    <div id="share-info">
-                        <p>正在分享貼文編號{shareLink}</p>
-                    </div>
                 </>
+            )}
+
+            {postType === 'share' && (
+                <div id="share-info">
+                    <p>正在分享貼文編號{shareLink}</p>
+                </div>
             )}
 
             <button type="submit">發布</button>
