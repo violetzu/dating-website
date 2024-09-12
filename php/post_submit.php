@@ -8,7 +8,7 @@ $type = $_POST['type'];
 $url = $_POST['url'] ?? null;
 
 if ($type === 'image' && isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-    $uploadDir = '../post_picture/';  // 確保這個目錄存在且有寫入權限
+    $uploadDir = '../post_picture/'; 
     $imageName = time() . '_' . $_FILES['image']['name'];
     $uploadFile = $uploadDir . basename($imageName);
     if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
@@ -22,7 +22,9 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param('ssss', $username, $content, $type, $url);
 $stmt->execute();
 
+
 if ($stmt->affected_rows > 0) {
+    // 如果是分享的話將被分享的貼文的分享數+1
     if ($type === 'share' && $url) {
         $updateShareCountSql = "UPDATE Posts SET share_count = share_count + 1 WHERE id = ?";
         $updateStmt = $conn->prepare($updateShareCountSql);
