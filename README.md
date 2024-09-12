@@ -68,9 +68,6 @@ components 內則是組件部分 目前以Login Home About三大組件組成，�
    `git push origin main`
 
 
-
-
-
 # 資料庫結構 (MySQL)
 資料庫名稱:friends
 
