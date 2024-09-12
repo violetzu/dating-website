@@ -5,6 +5,7 @@ import './login.css';
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // 防止多次提交
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,39 +15,46 @@ function Login() {
     };
   }, []);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    if (isSubmitting) return;  // 防止多次提交
+    setIsSubmitting(true);
 
-    const requestData = JSON.stringify({ 
-      username, 
-      password 
-    });
+    try {
+      const requestData = JSON.stringify({ 
+        username, 
+        password 
+      });
 
-    fetch('/php/login_register.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: requestData
-    })
-    .then(response => {
+      const response = await fetch('/php/login_register.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: requestData
+      });
+
       if (!response.ok) {
         throw new Error('請求失敗，狀態碼: ' + response.status);
       }
-      return response.json();
-    })
-    .then(responseData => {
+
+      const responseData = await response.json();
+
       if (responseData.success && responseData.action === 'login') {
-          navigate('/home');
+        navigate('/home');
       } else if (responseData.success && responseData.action === 'register') {
-          navigate('/about');
+        navigate('/about');
+      } else if (responseData.success && responseData.action === 'admin') {
+        navigate('/admin');
       } else {
         alert(responseData.message);
       }
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('請求過程中發生錯誤:', error);
-    });
+      alert('伺服器錯誤，請稍後再試。');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -60,8 +68,10 @@ function Login() {
         onChange={(e) => setUsername(e.target.value)} 
         placeholder="帳號" 
         autoComplete="username"
+        aria-label="帳號"  // 提高無障礙性
         required
         className="login-input"
+        disabled={isSubmitting}  // 提交時禁用輸入框
       />
       <input 
         type="password" 
@@ -70,10 +80,18 @@ function Login() {
         onChange={(e) => setPassword(e.target.value)} 
         placeholder="密碼" 
         autoComplete="current-password"
+        aria-label="密碼"  // 提高無障礙性
         required
         className="login-input"
+        disabled={isSubmitting}  // 提交時禁用輸入框
       />
-      <button type="submit" className="login-button">登入或註冊</button>
+      <button 
+        type="submit" 
+        className="login-button" 
+        disabled={isSubmitting} // 提交時禁用按鈕
+      >
+        {isSubmitting ? '登入中...' : '登入或註冊'}
+      </button>
     </form>
   );
 }
