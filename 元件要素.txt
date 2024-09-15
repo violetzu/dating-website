@@ -22,8 +22,8 @@
 
 [PostObj]
 properties:
-+postType => text/img/yt
-+onShare => postId(被分享的貼文)/null
++postType => img/yt/share
++url =>
 +post(包含Info, Content) => grab from database
 
 methods:
