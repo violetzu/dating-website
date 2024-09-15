@@ -1,6 +1,6 @@
 # React 是主要開發用的資料夾
-- 開始開發前須先安裝nodejs https://nodejs.org/zh-tw  
-
+- 開始開發前須先安裝nodejs https://nodejs.org/zh-tw 
+- 未安裝git先安裝git https://git-scm.com/downloads
 - 在自己電腦資料夾 clone 後cd至React目錄 `cd .\React\`
 
 - 接著輸入`npm install` 安裝 package.json 內列出的所有依賴(根據 package.json所列的資訊/套件參數 安裝所需套件)
@@ -15,7 +15,8 @@
 
 文件主要修改只會在 [src資料夾內](https://github.com/violetzu/dating-website/tree/main/React/src) 其餘都不該修改  
 main.jsx不該修改；App.jsx可以添加需要連結的頁面  
-components 內則是組件部分 目前以Login Home About三大組件組成，當然也能拆成更小的組件
+components 內則是組件部分 目前以Login Home About三大組件組成，當然也能拆成更小的組件  
+react網頁架構及資料庫架構都會放在 [React內的readme](https://github.com/violetzu/dating-website/tree/main/React/README.md)
 
 
 
