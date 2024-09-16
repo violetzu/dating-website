@@ -1,3 +1,5 @@
+the moral of the story is 亂改變數名稱是個餿主意我很抱歉>< 我現在都改回來了有夠白癡哈哈
+
 !!!資料庫格式!!!
 [post]
 ~id (INT, PK)＃貼文ID

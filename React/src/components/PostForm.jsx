@@ -32,7 +32,7 @@ const PostForm = ({ submitPost, postContent, setPostContent, postType, setPostTy
 
             {postType === 'share' && (
                 <div id="share-info">
-                    <p>正在分享貼文編號{shareLink}</p>
+                    <p>正在分享貼文編號{ytURL_sharedPost}</p>
                 </div>
             )}
 

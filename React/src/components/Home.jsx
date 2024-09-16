@@ -83,7 +83,6 @@ function Home() {
   // 動作 <重置發文表單>
   const resetPostForm = () => {
     setCurrentViewUsername('');
-    setShareLink(null);
     setPostContent('');
     setPostType('image');
     setPostImage(null);
@@ -264,13 +263,11 @@ function Home() {
     formData.append('content', postContent);
     formData.append('type', postType);
 
-    if (shareLink != null) {
-      formData.append('shared_post', shareLink);
-    }
-
-    if (type === 'image' && postImage) {
+    if (postType === 'image' && postImage) {
       formData.append('image', postImage); //先存整個照片檔，之後再從後台把url設成照片本地路徑
-    } else if (type === 'youtube' && ytURL_sharedPost) {
+    } else if (postType === 'youtube' && ytURL_sharedPost) {
+      formData.append('url', ytURL_sharedPost);
+    } else if (postType === 'share') {
       formData.append('url', ytURL_sharedPost);
     }
 
@@ -283,13 +280,9 @@ function Home() {
 
       const data = await response.json();
 
-      // 清空表單，重置到預設狀態
+      // 清空表單，重置到預設狀態並發布
       if (data.success) {
-        //清空
         resetPostForm();
-
-        // 實際張貼貼文
-        loadPosts();
       } else {
         alert('分享失敗: ' + data.message);
       }

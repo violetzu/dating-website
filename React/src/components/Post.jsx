@@ -1,6 +1,6 @@
 // 元件 <貼文> checkUserName用在PO文用戶名稱處
 const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submitComment, sharePost }) => {
-    const likesText = getLikeText(post.likedByUser, post.likes_count)
+    const likesText = getLikeText(post.liked_by_user, post.likes_count)
 
     return (
         <div className="post" id={`post-${post.id}`} key={post.id}>
