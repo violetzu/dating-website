@@ -5,7 +5,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './home.css';
 import './userdetails.css';
-import { Header, Sidebar } from './Header_SideBar';
+import { Header, Sidebar } from './Header_Sidebar';
 import PostForm from './PostForm';
 import Post from './Post';
 
