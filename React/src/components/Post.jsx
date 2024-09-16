@@ -1,219 +1,5 @@
-// !!!NEW VERSION!!!
-// 動作 <抓讚數>
-function getLikeText(likedByUser, likes_count) {
-    if (likedByUser) {
-        return likes_count > 1 ? `你和其他${likes_count - 1}人說讚` : '你說讚';
-    } else {
-        return likes_count > 0 ? `${likes_count}人說讚` : '成為第一個說讚的人';
-    }
-}
-
-// 動作 <點讚>
-const pickLike = useCallback(async (postId = null) => {
-    try {
-        const response = await fetch('/php/like_post.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ post_id: postId }),
-        });
-        
-        const data = await response.json();
-        console.log(data.message);
-
-        // 更新讚數
-        updatePostDetails(postId);
-    } catch (error) {
-        console.error('解析 JSON 失敗:', error);
-    }
-}, []);
-
-// 動作 <更新貼文數據>
-const updatePostDetails = useCallback(async (postId) => {
-    try {
-        const response = await fetch(`/php/post_details_get.php?post_id=${postId}`);
-        const data = await response.json();
-        if (data.success) {
-            setPosts((prevPosts) =>
-                prevPosts.map((post) =>
-                    post.id === postId ? { ...post, ...data.post } : post
-                )
-            );
-        } else {
-            console.error('更新貼文詳情失敗: ' + data.message);
-        }
-    } catch (error) {
-        console.error('解析 JSON 失敗:', error);
-    }
-}, []);
-
-// 動作 <開關留言區>
-const showComments = (postId) => {
-    setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-            post.id === postId ? { ...post, showComments: !post.showComments } : post
-        )
-    );
-
-    // 加載當前貼文之所有留言
-    loadComments(postId);
-};
-
-// 動作 <顯示貼文留言>
-const loadComments = useCallback(async (postId) => {
-    try {
-        const response = await fetch(`/php/comments_get.php?post_id=${postId}`);
-        const data = await response.json();
-        if (data.success) {
-            setPosts((prevPosts) =>
-                prevPosts.map((post) =>
-                    post.id === postId ? { ...post, comments: data.comments } : post
-                )
-            );
-        } else {
-            console.error('獲取留言失敗: ' + data.message);
-        }
-    } catch (error) {
-        console.error('解析 JSON 失敗:', error);
-    }
-}, []);
-
-// 動作 <送出留言>
-const submitComment = useCallback(async (postId, commentContent) => {
-    // 避免空白留言
-    if (!commentContent.trim()) {
-        alert('留言內容不能為空！');
-        return;
-    }
-    try {
-        const response = await fetch('/php/comment_submit.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ post_id: postId, comment: commentContent }),
-        });
-        const data = await response.json();
-        if (data.success) {
-            // 重置留言打字區
-            document.getElementById(`comment-content-${postId}`).value = ''; // 清空輸入框
-
-            // 實際張貼留言
-            loadComments(postId);
-
-            // 更新留言數
-            updatePostDetails(postId);
-        } else {
-            alert('留言失敗: ' + data.message);
-        }
-    } catch (error) {
-        console.error('解析 JSON 失敗:', error);
-    }
-}, [loadComments, updatePostDetails]);
-
-// 動作 <分享貼文>
-const sharePost = (postId) => {
-    // 設置貼文類型
-    setPostType('share');
-
-    // 存入欲分享之貼文id
-    setytURL_sharedPost(postId);
-
-    // 跳到頁面最上方(因為發文表單在頁面最上方)
-    window.scrollTo(0, 0);
-
-    alert("sharing post " + postId + " !"); //LOOK AT ME!!!!!!!
-};
-
-// 元件 <發文區塊>(打字、貼照片、轉PO) resetPostForm, loadPosts用在submitPost
-const PostForm = (resetPostForm, loadPosts, postType, setPostType, postContent, setPostContent, postImage, setPostImage, ytURL_sharedPost, setytURL_sharedPost) => {
-    // 動作 <送出貼文/重置發文表單>
-    const submitPost = useCallback(async (e) => {
-        e.preventDefault();
-
-        // 將貼文內容加入資料庫
-        const formData = new FormData();
-        formData.append('content', postContent);
-        formData.append('type', postType);
-
-        if (shareLink != null) {
-            formData.append('shared_post', shareLink);
-        }
-
-        if (type === 'image' && postImage) {
-            formData.append('image', postImage); //先存整個照片檔，之後再從後台把url設成照片本地路徑
-        } else if (type === 'youtube' && ytURL_sharedPost) {
-            formData.append('url', ytURL_sharedPost);
-        }
-
-        try {
-            // 實際送出貼文至後台
-            const response = await fetch('/php/post_submit.php', {
-                method: 'POST',
-                body: formData,
-            });
-
-            const data = await response.json();
-
-            // 清空表單，重置到預設狀態
-            if (data.success) {
-                //清空
-                resetPostForm();
-
-                // 實際張貼貼文
-                loadPosts();
-            } else {
-                alert('分享失敗: ' + data.message);
-            }
-        } catch (error) {
-            console.error('解析 JSON 失敗:', error);
-        }
-    }, [postContent, postType, postImage, ytURL_sharedPost, loadPosts]);
-
-    return (
-        <form id="post-form" onSubmit={submitPost}>
-            {/* 內文(content) */}
-            <textarea id="post-content" value={postContent} onChange={(e) => setPostContent(e.target.value)} placeholder="分享新鮮事..." />
-
-            {/* 轉貼不可添加圖片 / youtube */}
-            {postType != 'share' && (
-                <>
-                    {/* 變更貼文屬性('image' / 'youtube') */}
-                    <select id="post-type" value={postType} onChange={(e) => setPostType(e.target.value)}>
-                        <option value="image">圖片</option>
-                        <option value="youtube">YouTube</option>
-                    </select>
-
-                    {/* 貼文屬性為'image'時才有的選項 */}
-                    {postType === 'image' && (
-                        <div id="image-input">
-                            <input type="file" id="post-image" accept="image/*" onChange={ (e) => setPostImage(e.target.files[0])} />
-                        </div>
-                    )}
-
-                    {/* 貼文屬性為'youtube'時才有的選項 */}
-                    {postType === 'youtube' && (
-                        <div id="youtube-input">
-                            <input type="text" id="youtube-url" value={ytURL_sharedPost} onChange={(e) => setytURL_sharedPost(e.target.value)} placeholder="請由youtube分享的嵌入複製完整程式碼貼上" />
-                        </div>
-                    )}
-                </>
-            )}
-
-            {postType === 'share' && (
-                <div id="share-info">
-                    <p>正在分享貼文編號{shareLink}</p>
-                </div>
-            )}
-
-            <button type="submit">發布</button>
-        </form>
-    );
-};
-
 // 元件 <貼文> checkUserName用在PO文用戶名稱處
-const Post = (post, checkUserPage) => {
+const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submitComment, sharePost }) => {
     const likesText = getLikeText(post.likedByUser, post.likes_count)
 
     return (
@@ -226,13 +12,13 @@ const Post = (post, checkUserPage) => {
             </div>
 
             {/* 貼文內文(caption) */}
-            <div className="post-content">{post.caption}</div>
+            <div className="post-content">{post.content}</div>
 
-            {/* 若有鑲嵌URL則依其類型顯示"照片(image)"或"Youtube" */}
-            {post.url && (post.type === 'image'
-                ? <div className="post-image"><img src={post.url} alt="Post Image" /></div> //照片
-                : <div className="post-youtube" dangerouslySetInnerHTML={{ __html: post.url }} />) //Youtube
-            }
+            {/* 照片、YT、分享只會擇一顯示 */}
+            {/* 照片 */}
+            {post.type === 'image' && post.url && <div className="post-image"><img src={post.url} alt="Post Image" /></div>}
+            {/* 鑲嵌的youtube影片 */}
+            {post.type === 'youtube' && <div className="post-youtube" dangerouslySetInnerHTML={{ __html: post.url }} />}
 
             {/* 貼文屬性為'share'時才有的區塊(才會有.shared_post) */}
             {post.type === 'share' && post.shared_post && (
@@ -241,6 +27,12 @@ const Post = (post, checkUserPage) => {
                     <Post
                         key={`shared-${post.id}-${post.shared_post.id}`}
                         post={post.shared_post}
+                        checkUserPage={checkUserPage}
+                        pickLike={pickLike}
+                        getLikeText={getLikeText}
+                        showComments={showComments}
+                        submitComment={submitComment}
+                        sharePost={sharePost}
                     />
                 </div>
             )}
@@ -289,4 +81,4 @@ const Post = (post, checkUserPage) => {
     );
 };
 
-export {PostForm, Post};
+export default Post;
