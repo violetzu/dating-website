@@ -148,7 +148,6 @@ h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
 }
 
 .post-header {
@@ -157,11 +156,12 @@ h2 {
 
 .post-header .post-username {
     color: #4267b2;
+    font-size: 20px;
 }
 
 .post-header .post-datetime {
     color: #65676b;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .post-content {
@@ -179,6 +179,7 @@ h2 {
 .post-footer {
     font-size: 14px;
     color: #65676b;
+    margin-top: 16px;
 }
 
 .post-footer .likes-count,
