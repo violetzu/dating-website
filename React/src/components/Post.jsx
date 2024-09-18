@@ -1,6 +1,6 @@
 // 元件 <貼文> checkUserName用在PO文用戶名稱處
-const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submitComment, sharePost }) => {
-    const likesText = getLikeText(post.liked_by_user, post.likes_count)
+const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submitComment, sharePost, isShared = false }) => {
+    const likesText = getLikeText(post.liked_by_user, post.likes_count, isShared);
 
     return (
         <div className="post" id={`post-${post.id}`} key={post.id}>
@@ -33,6 +33,7 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
                         showComments={showComments}
                         submitComment={submitComment}
                         sharePost={sharePost}
+                        isShared={true}
                     />
                 </div>
             )}
@@ -44,38 +45,42 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
                 <span className="shares-count">{post.share_count}次分享</span>
             </div>
 
-            {/* 互動工具列(點讚、留言、轉發) */}
-            <div className="post-actions">
-                <button onClick={() => pickLike(post.id)}>{post.liked_by_user ? '收回讚' : '點讚'}</button>
-                <button onClick={() => showComments(post.id)}>留言</button>
-                <button onClick={() => sharePost(post.id)}>轉發</button>
-            </div>
-
-            {/* "post.showComments"由"showComments(post.id)"所操控，是否顯示留言與發言 */}
-            {post.showComments && (
-                // 貼文id為xxx之留言區
-                <div className="comments" id={`comments-${post.id}`}>
-
-                    {/* 從資料庫抓已有的留言 */}
-                    {post.comments && post.comments.map(comment => (
-                        // 元件 <單個留言本體>
-                        <div className="comment" key={comment.id}>
-                            <div className="comment-header">
-                                <span className="comment-username" onClick={() => checkUserPage(comment.username)}>
-                                    {comment.username}
-                                </span>
-                                <span className="comment-datetime">{comment.created_at}</span>
-                            </div>
-                            <div className="comment-content">{comment.comment}</div>
-                        </div>
-                    ))}
-
-                    {/* 發言區塊 */}
-                    <div className="comment-form">
-                        <textarea id={`comment-content-${post.id}`} placeholder="發表留言..." />
-                        <button onClick={() => submitComment(post.id, document.getElementById(`comment-content-${post.id}`).value)}>留言</button>
+            {!isShared && (
+                <>
+                    {/* 互動工具列(點讚、留言、轉發) */}
+                    <div className="post-actions">
+                        <button onClick={() => pickLike(post.id)}>{post.liked_by_user ? '收回讚' : '點讚'}</button>
+                        <button onClick={() => showComments(post.id)}>留言</button>
+                        <button onClick={() => sharePost(post.id)}>轉發</button>
                     </div>
-                </div>
+
+                    {/* "post.showComments"由"showComments(post.id)"所操控，是否顯示留言與發言 */}
+                    {post.showComments && (
+                        // 貼文id為xxx之留言區
+                        <div className="comments" id={`comments-${post.id}`}>
+
+                            {/* 從資料庫抓已有的留言 */}
+                            {post.comments && post.comments.map(comment => (
+                                // 元件 <單個留言本體>
+                                <div className="comment" key={comment.id}>
+                                    <div className="comment-header">
+                                        <span className="comment-username" onClick={() => checkUserPage(comment.username)}>
+                                            {comment.username}
+                                        </span>
+                                        <span className="comment-datetime">{comment.created_at}</span>
+                                    </div>
+                                    <div className="comment-content">{comment.comment}</div>
+                                </div>
+                            ))}
+
+                            {/* 發言區塊 */}
+                            <div className="comment-form">
+                                <textarea id={`comment-content-${post.id}`} placeholder="發表留言..." />
+                                <button onClick={() => submitComment(post.id, document.getElementById(`comment-content-${post.id}`).value)}>留言</button>
+                            </div>
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );
