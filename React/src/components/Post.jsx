@@ -5,7 +5,7 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
     return (
         <div className="post" id={`post-${post.id}`} key={post.id}>
             <div className="post-header">
-                <span className="post-username" onClick={() => checkUserPage(post.username)}>
+                <span className="post-username" onClick={() => checkUserPage(post.username)} style={{ cursor: 'pointer' }}>
                     {post.username}
                 </span>
                 <span className="post-datetime">{post.created_at}</span>

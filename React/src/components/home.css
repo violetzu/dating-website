@@ -5,8 +5,6 @@
     box-sizing: border-box;
 }
 
-
-
 /* 基础布局 */
 body {
     font-family: Arial, sans-serif;
@@ -97,6 +95,25 @@ h2 {
 
 #post-form:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+#post-type {
+    margin-top: 10px;
+}
+
+#youtube-input {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+#youtube-url {
+    width: 90%;
+    max-width: 600px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 #post-content {
@@ -265,7 +282,7 @@ h2 {
 
 /* 被分享貼文的外框的樣式 */
 .shared-post-container {
-    border: 2px solid #4267b2;
+    border: 1px solid #4267b2;
     border-radius: 8px;
     background-color: #f0f2f5;
 }
@@ -285,21 +302,7 @@ h2 {
 }
 
 /* 被分享貼文的樣式 */
-.post .post {
-    margin-bottom: 0; /* 一般貼文以下方的margin作分隔，塞在分享框裡不需要 */
-}
-
-#youtube-input {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-}
-
-#youtube-url {
-    width: 90%;
-    max-width: 600px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+.shared-post-container .post {
+    box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1);
+    margin: 0; /* 一般貼文以下方的margin作分隔，塞在分享框裡不需要 */
 }
