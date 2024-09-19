@@ -128,9 +128,11 @@ function Home() {
   }, []);
 
   // 動作 <抓讚數>
-  function getLikeText(likedByUser, likes_count) {
+  function getLikeText(likedByUser, likes_count, isShared) {
     if (likedByUser) {
       return likes_count > 1 ? `你和其他${likes_count - 1}人說讚` : '你說讚';
+    } if (isShared) {
+      return `${likes_count}人說讚`;
     } else {
       return likes_count > 0 ? `${likes_count}人說讚` : '成為第一個說讚的人';
     }
