@@ -1,3 +1,6 @@
+重要的React實作樣貌 aka 別人都怎麼寫：https://github.com/suochantsao/meetup-react-sample[https://github.com/suochantsao/meetup-react-sample]
+sincerely sorry for my literal dumbass didn't understand this earlier, I'll try to refine our code again QQ. could still be extremely bad tho. I'M SORRY-
+
 # 各個指令的交互作用
 我覺得有這張圖比較知道在幹嘛 來源：[https://ithelp.ithome.com.tw/articles/10271811](https://ithelp.ithome.com.tw/articles/10271811)
 ![image](https://github.com/user-attachments/assets/d88b1720-4b37-47c2-a8c7-9ee156b5c80a)
