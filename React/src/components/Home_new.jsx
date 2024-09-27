@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import './home.css';
 import './userdetails.css';
 import { Header, Sidebar } from './Header_Sidebar';
-import PostFormContext from './PostForm';
-import PostsContext from './Posts';
+import PostFormContext from './PostForm_new';
+import PostsContext from './Posts_new';
 
 // 架構 <主頁> 串聯全部元件與動作，相當於main
 function Home() {

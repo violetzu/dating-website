@@ -7,7 +7,7 @@ import './home.css';
 import './userdetails.css';
 import { Header, Sidebar } from './Header_Sidebar';
 import PostForm from './PostForm';
-import Post from './Posts';
+import Post from './Post';
 
 // 架構 <主頁> 串聯全部元件與動作，相當於main
 function Home() {
