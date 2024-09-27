@@ -1,7 +1,7 @@
 import { createContext, useState, useContext } from "react";
 
 const PostFormContext = createContext({
-    PostForm: () => {},
+    PostForm: ({}), //這個是HTML元件
     resetPostForm: ({loadPosts}) => {},
     sharePost: (postId) => {}
 });

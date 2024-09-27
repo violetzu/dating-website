@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 
 const PostsContext = createContext({
-    Posts: ({ checkUserPage, sharePost }) => {},
+    Posts: ({ checkUserPage, sharePost }), //這個是HTML元件
     loadPosts: (username) => {}
 });
 

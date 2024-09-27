@@ -92,8 +92,7 @@ function Home() {
       checkUserPage(thisUsername);
     }
   };
-
-
+  
   return (
     <>
       <Header
@@ -110,9 +109,12 @@ function Home() {
         <div className="main-content">
           <h2 id="posts-title">{currentViewUsername ? `${currentViewUsername}的貼文` : '推薦貼文'}</h2>
           {(currentViewUsername === thisUsername || currentViewUsername === '') && (
-            PostFormCtx.PostForm
+            <PostFormCtx.PostForm/>
           )}
-          {PostsCtx.Posts(checkUserPage, PostFormCtx.sharePost)}
+          <PostsCtx.Posts
+            checkUserPage={checkUserPage}
+            sharePost={PostFormCtx.sharePost}
+          />
         </div>
         <Sidebar
           currentViewUsername={currentViewUsername}
