@@ -92,6 +92,23 @@ function Login() {
       >
         {isSubmitting ? '登入中...' : '登入或註冊'}
       </button>
+      <a>  </a>
+      <a
+          href="https://github.com/violetzu/dating-website"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            marginTop: '20px',  // 增加頂部的外邊距
+            display: 'inline-block',  // 保證外邊距有效
+            padding: '10px 20px',
+            backgroundColor: '#333',
+            color: 'white',
+            textDecoration: 'none',
+            borderRadius: '5px',
+          }}
+        >
+          Visit my GitHub
+        </a>
     </form>
   );
 }
