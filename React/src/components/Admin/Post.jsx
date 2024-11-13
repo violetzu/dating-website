@@ -37,7 +37,7 @@ const Post = ({ post, checkUserPage, showComments, isShared = false }) => {
             {/* 貼文資訊(info) */}
             <div className="post-footer">
                 <span className="likes-count">{likesText}</span>
-                <span className="comments-count" onClick={() => showComments(post.id)}>{post.comments_count}則留言</span>
+                <span className="comments-count" onClick={() => showComments(post.id)} style={{ cursor: 'pointer' }}>{post.comments_count}則留言</span>
                 <span className="shares-count">{post.share_count}次分享</span>
             </div>
 

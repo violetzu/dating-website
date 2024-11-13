@@ -152,39 +152,6 @@ function MenuComponent() {
     }
   }, []);
 
-  // 動作 <送出留言>
-  const submitComment = useCallback(async (postId, commentContent) => {
-    // 避免空白留言
-    if (!commentContent.trim()) {
-      alert('留言內容不能為空！');
-      return;
-    }
-    try {
-      const response = await fetch('/php/comment_submit.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ post_id: postId, comment: commentContent }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        // 重置留言打字區
-        document.getElementById(`comment-content-${postId}`).value = ''; // 清空輸入框
-
-        // 實際張貼留言
-        loadComments(postId);
-
-        // 更新留言數
-        updatePostDetails(postId);
-      } else {
-        alert('留言失敗: ' + data.message);
-      }
-    } catch (error) {
-      console.error('解析 JSON 失敗:', error);
-    }
-  }, [loadComments, updatePostDetails]);
-
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
   };
@@ -222,12 +189,12 @@ function MenuComponent() {
             ))}
           </div>
         </div>
+        <Sidebar
+          currentViewUsername={currentViewUsername}
+          userBio={userBio}
+          userTags={userTags}
+        />
       </div>
-      <Sidebar
-        currentViewUsername={currentViewUsername}
-        userBio={userBio}
-        userTags={userTags}
-      />
     </>
   );
 }
