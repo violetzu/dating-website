@@ -1,5 +1,5 @@
 // 元件 <貼文> checkUserName用在PO文用戶名稱處
-const Post = ({ post, checkUserPage, showComments, isShared = false }) => {
+const Post = ({ post, checkUserPage, showComments, showWhoLiked, isShared = false }) => {
     const likesText = `${post.likes_count}人說讚`;
 
     return (
@@ -36,7 +36,7 @@ const Post = ({ post, checkUserPage, showComments, isShared = false }) => {
 
             {/* 貼文資訊(info) */}
             <div className="post-footer">
-                <span className="likes-count">{likesText}</span>
+                <span className="likes-count" onClick={() => showWhoLiked(post.id)} style={{ cursor: 'pointer' }}>{likesText}</span>
                 <span className="comments-count" onClick={() => showComments(post.id)} style={{ cursor: 'pointer' }}>{post.comments_count}則留言</span>
                 <span className="shares-count">{post.share_count}次分享</span>
             </div>
@@ -59,6 +59,24 @@ const Post = ({ post, checkUserPage, showComments, isShared = false }) => {
                                         <span className="comment-datetime">{comment.created_at}</span>
                                     </div>
                                     <div className="comment-content">{comment.comment}</div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {/* "post.showWhoLiked"由"showWhoLiked(post.id)"所操控 */}
+                    {post.showWhoLiked && (
+                        // 貼文id為xxx之留言區
+                        <div className="wholiked" id={`likedUser-${post.id}`}>
+
+                            {/* 從資料庫抓已有的留言 */}
+                            {post.wholiked && post.wholiked.map(likedUser => (
+                                // 元件 <單個留言本體>
+                                <div className="comment" key={likedUser.id}>
+                                    <div className="comment-header">
+                                        <span className="comment-username" onClick={() => checkUserPage(likedUser.username)}>
+                                            <b>No. {likedUser.id}: </b>{likedUser.username}
+                                        </span>
+                                    </div>
                                 </div>
                             ))}
                         </div>
