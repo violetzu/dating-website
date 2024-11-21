@@ -153,35 +153,35 @@ function MenuComponent() {
   }, []);
 
   // 動作 <開關點讚用戶名單>
-  const showWhoLiked = (postId) => {
-    setPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === postId ? { ...post, showWhoLiked: !post.showWhoLiked } : post
-      )
-    );
+  // const showWhoLiked = (postId) => {
+  //   setPosts((prevPosts) =>
+  //     prevPosts.map((post) =>
+  //       post.id === postId ? { ...post, showWhoLiked: !post.showWhoLiked } : post
+  //     )
+  //   );
 
-    // 加載當前貼文之所有留言
-    loadLikedUsers(postId);
-  };
+  //   // 加載當前貼文之所有留言
+  //   loadLikedUsers(postId);
+  // };
 
-  // 動作 <查看點讚用戶名單>
-  const loadLikedUsers = useCallback(async (postId) => {
-    try {
-      const response = await fetch(`/php/post_details_who_liked.php?post_id=${postId}`);
-      const data = await response.json();
-      if (data.success) {
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, wholiked: data.names } : post
-          )
-        );
-      } else {
-        console.error('獲取按讚用戶失敗: ' + data.message);
-      }
-    } catch (error) {
-      console.error('解析 JSON 失敗:', error);
-    }
-  }, []);
+  // // 動作 <查看點讚用戶名單>
+  // const loadLikedUsers = useCallback(async (postId) => {
+  //   try {
+  //     const response = await fetch(`/php/post_details_who_liked.php?post_id=${postId}`);
+  //     const data = await response.json();
+  //     if (data.success) {
+  //       setPosts((prevPosts) =>
+  //         prevPosts.map((post) =>
+  //           post.id === postId ? { ...post, wholiked: data.names } : post
+  //         )
+  //       );
+  //     } else {
+  //       console.error('獲取按讚用戶失敗: ' + data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('解析 JSON 失敗:', error);
+  //   }
+  // }, []);
 
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
@@ -216,7 +216,7 @@ function MenuComponent() {
                 post={post}
                 checkUserPage={checkUserPage}
                 showComments={showComments}
-                showWhoLiked={showWhoLiked}
+                // showWhoLiked={showWhoLiked}
               />
             ))}
           </div>

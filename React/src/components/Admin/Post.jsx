@@ -1,5 +1,5 @@
 // 元件 <貼文> checkUserName用在PO文用戶名稱處
-const Post = ({ post, checkUserPage, showComments, showWhoLiked, isShared = false }) => {
+const Post = ({ post, checkUserPage, showComments, /*showWhoLiked,*/ isShared = false }) => {
     const likesText = `${post.likes_count}人說讚`;
 
     return (
@@ -36,7 +36,7 @@ const Post = ({ post, checkUserPage, showComments, showWhoLiked, isShared = fals
 
             {/* 貼文資訊(info) */}
             <div className="post-footer">
-                <span className="likes-count" onClick={() => showWhoLiked(post.id)} style={{ cursor: 'pointer' }}>{likesText}</span>
+                {/* <span className="likes-count" onClick={() => showWhoLiked(post.id)} style={{ cursor: 'pointer' }}>{likesText}</span> */}
                 <span className="comments-count" onClick={() => showComments(post.id)} style={{ cursor: 'pointer' }}>{post.comments_count}則留言</span>
                 <span className="shares-count">{post.share_count}次分享</span>
             </div>
