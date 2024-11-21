@@ -193,6 +193,12 @@ h2 {
     margin-top: 10px;
 }
 
+.post-youtube {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
 .post-footer {
     font-size: 14px;
     color: #65676b;
