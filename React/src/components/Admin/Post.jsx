@@ -89,10 +89,10 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                         {/* 從資料庫抓有點讚的用戶 */}
                         {post.wholiked && post.wholiked.map(likedUser => (
                             // 元件 <單個用戶名>
-                            <div className="comment" key={id}>
+                            <div className="comment" key={likedUser.id}>
                                 <div className="comment-header">
-                                    <span className="comment-username" onClick={() => checkUserPage(username)}>
-                                        <b>No. {id}: </b>{username}
+                                    <span className="comment-username" onClick={() => checkUserPage(likedUser.username)}>
+                                        <b>No. {likedUser.id}: </b>{likedUser.username}
                                     </span>
                                 </div>
                             </div>
@@ -101,16 +101,16 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                     </div>
 
                     {/* 貼文id為xxx之分享用戶 */}
-                    <div className="whoshared statistic-box" id={`likedUser-${post.id}`}>
+                    <div className="whoshared statistic-box" id={`sharedUser-${post.id}`}>
                         <h4>分享用戶</h4>
 
                         {/* 從資料庫抓有點讚的用戶 */}
                         {post.whoshared && post.whoshared.map(sharedUser => (
                             // 元件 <單個用戶名>
-                            <div className="comment" key={id}>
+                            <div className="comment" key={sharedUser.id}>
                                 <div className="comment-header">
-                                    <span className="comment-username" onClick={() => checkUserPage(username)}>
-                                        <b>No. {id}: </b>{username}
+                                    <span className="comment-username" onClick={() => checkUserPage(sharedUser.username)}>
+                                        <b>No. {sharedUser.id}: </b>{sharedUser.username}
                                     </span>
                                 </div>
                             </div>

@@ -165,11 +165,6 @@ function MenuComponent() {
           )
         );
       } else {
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, wholiked: false } : post
-          )
-        );
         console.log('獲取按讚用戶失敗: ' + data.message);
         // console.error('獲取按讚用戶失敗: ' + data.message); //php修正後要改成這個
       }
@@ -190,11 +185,6 @@ function MenuComponent() {
           )
         );
       } else {
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, whoshared: false } : post
-          )
-        );
         console.log('獲取分享用戶失敗: ' + data.message);
         // console.error('獲取分享用戶失敗: ' + data.message); //php修正後要改成這個
       }
