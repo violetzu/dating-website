@@ -9,7 +9,7 @@ $post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : 0;
 $names = [];
 
 // 從likes資料表中選擇特定post_id的按讚者名稱
-$stmt = $conn->prepare("SELECT id, username FROM Likes WHERE post_id = ?"); //$stmt回傳的是連線狀態而已
+$stmt = $conn->prepare("SELECT likes.id, likes.username FROM likes WHERE likes.post_id = ?"); //$stmt回傳的是連線狀態而已
 
 //確保連線成功
 if (!$stmt) {
@@ -22,16 +22,12 @@ $stmt->bind_param("i", $post_id); // "i" 表示 post_id 是一個整數(避免�
 $stmt->execute();
 $result = $stmt->get_result();
 
-if ($result->num_rows > 0) {
-    // 檢查結果集中是否有資料
-    while ($row = $result->fetch_assoc()) {
-        // 逐行讀取結果集中的資料
-        $names[] = $row;  // 將每一行的資料添加到用戶名陣列中
-    }
-    echo json_encode(['success' => true, 'names' => $names]);  // 返回包含"按讚者名稱陣列"(aka $tags)的 JSON 對象(這行把欲傳輸的資料們轉成JSON格式)
-} else {
-    echo json_encode(['success' => false, 'message' => '沒有用戶點過讚']);  // 如果沒有資料，返回錯誤訊息
+// 改成跟comments_get.php一樣寫法
+while ($row = $result->fetch_assoc()) {
+    // 逐行讀取結果集中的資料
+    $names[] = $row;  // 將每一行的資料添加到用戶名陣列中
 }
+echo json_encode(['success' => true, 'names' => $names]);  // 返回包含"按讚者名稱陣列"的 JSON 對象(這行把欲傳輸的資料們轉成JSON格式)
 
 $stmt->close();
 $conn->close();
