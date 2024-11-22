@@ -1,15 +1,13 @@
-the moral of the story is 亂改變數名稱是個餿主意我很抱歉>< 我現在都改回來了有夠白癡哈哈
-
 [使用React的friendly reminder]
-。不論如何，對於一個component所需的 1.函式 或 2.其他component，除了1、2是定義於此component之內的情況，其餘狀況則仍只能以此component的參數項將1、2引入才可正常使用
-。但是對於類似函式的component(只有資料傳遞，沒有HTML回傳)，只要是在同一層定義的，即使沒有特別引入也可以相互使用彼此
-。state變數最好是放在最上層才能正常使用
+。不論如何，對於一個component(A)所需的 1.函式 或 2.其他component(B, C, ...)，除了1、2是定義於"A"之內的情況，
+  既使"A"在被import進來後與"B, C, ..."位在同一階層，仍只能以"A"的參數項將1、2引入才可正常使用
 
-綜合以上，切分的結果大概只能像現在這樣(沒什麼意義LOL)，大概只有翻檔案時翻比較快而已
+。為避免在不同檔案間交互context(A引用B，B同時也引用A，豈不是邏輯爆炸，雖然我也不知道真的這樣做會怎樣；context可以視為import或reference的概念)，
+  實在難以歸類的component會先放在其中一個檔案，其他檔案的component也要用到的話才會在最上層(ex: Home.jsx)使用時一併用參數的形式引入
 
-Home_new.jsx是我自己試驗時用的檔案，目前已同步到Home.jsx
-Post元件在Post.jsx
-PostForm元件在PostForm.jsx
+Home_new.jsx是我自己試驗時用的檔案，目前未同步到Home.jsx，但是運作正常
+Post系列元件在Posts_new.jsx
+PostForm系列元件在PostForm_new.jsx
 Header、Sidebar元件在Header_Sidebar.jsx
 
 !!!資料庫格式!!!

@@ -1,16 +1,11 @@
-// 動態部件放這裡 => 會變動的資料(ex: state)、有功能的元件(ex: funtion, funtion-like)
-// 最後的整體靜態架構也放這裡 => home頁面
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './home.css';
-import './userdetails.css';
-import { Header, Sidebar } from './Header_Sidebar';
-import PostForm from './PostForm';
+import { Header } from './Header_Sidebar';
 import Post from './Post';
+import './admin.css';
 
-// 架構 <主頁> 串聯全部元件與動作，相當於main
-function Home() {
+function MenuComponent() {
+  const [selectedMenu, setSelectedMenu] = useState(null);
   const navigate = useNavigate();
   const [thisUsername, setThisUsername] = useState('');
   const [currentViewUsername, setCurrentViewUsername] = useState('');
@@ -23,12 +18,12 @@ function Home() {
   const [postImage, setPostImage] = useState(null); //照片來源(資料型態為blob, 儲存的是"檔案"物件)
   const [ytURL_sharedPost, setytURL_sharedPost] = useState(''); //youtube網址或被分享貼文的id
 
+
   useEffect(() => {
     fetchUserInfo();
     loadPosts();
   }, []);
 
-  // 動作 <登入作業/抓取當前用戶資訊(其實只是抓名字)>
   const fetchUserInfo = useCallback(async () => {
     try {
       const response = await fetch('/php/get_user_info.php');
@@ -80,25 +75,6 @@ function Home() {
     }
   }, [navigate]);
 
-  // 動作 <重置發文表單>
-  const resetPostForm = () => {
-    setCurrentViewUsername('');
-    setPostContent('');
-    setPostType('image');
-    setPostImage(null);
-    setytURL_sharedPost('');
-    loadPosts();
-  };
-
-  // 動作 <左上角之個人頁面/資料快捷鍵>
-  const myUserPage_settings = () => {
-    if (currentViewUsername === thisUsername) {
-      navigate('/about');
-    } else {
-      checkUserPage(thisUsername);
-    }
-  };
-
   // 動作 <顯示用戶個人主頁資訊>
   const checkUserPage = useCallback(async (username) => {
     try {
@@ -124,36 +100,6 @@ function Home() {
       }
     } catch (error) {
       console.error('Error fetching user details:', error);
-    }
-  }, []);
-
-  // 動作 <抓讚數>
-  function getLikeText(likedByUser, likes_count) {
-    if (likedByUser) {
-      return likes_count > 1 ? `你和其他${likes_count - 1}人說讚` : '你說讚';
-    } else {
-      return likes_count > 0 ? `${likes_count}人說讚` : '成為第一個說讚的人';
-    }
-  }
-
-  // 動作 <點讚>
-  const pickLike = useCallback(async (postId = null) => {
-    try {
-      const response = await fetch('/php/like_post.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ post_id: postId }),
-      });
-
-      const data = await response.json();
-      console.log(data.message);
-
-      // 更新讚數
-      updatePostDetails(postId);
-    } catch (error) {
-      console.error('解析 JSON 失敗:', error);
     }
   }, []);
 
@@ -207,140 +153,86 @@ function Home() {
     }
   }, []);
 
-  // 動作 <送出留言>
-  const submitComment = useCallback(async (postId, commentContent) => {
-    // 避免空白留言
-    if (!commentContent.trim()) {
-      alert('留言內容不能為空！');
-      return;
-    }
-    try {
-      const response = await fetch('/php/comment_submit.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ post_id: postId, comment: commentContent }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        // 重置留言打字區
-        document.getElementById(`comment-content-${postId}`).value = ''; // 清空輸入框
+  // // 動作 <查看點讚用戶名單>
+  // const loadLikedUsers = useCallback(async (postId) => {
+  //   try {
+  //     const response = await fetch(`/php/post_details_who_liked.php?post_id=${postId}`);
+  //     const data = await response.json();
+  //     if (data.success) {
+  //       setPosts((prevPosts) =>
+  //         prevPosts.map((post) =>
+  //           post.id === postId ? { ...post, wholiked: data.names } : post
+  //         )
+  //       );
+  //     } else {
+  //       console.error('獲取按讚用戶失敗: ' + data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('解析 JSON 失敗:', error);
+  //   }
+  // }, []);
 
-        // 實際張貼留言
-        loadComments(postId);
+    // // 動作 <查看分享用戶名單>
+  // const loadSharedUsers = useCallback(async (postId) => {
+  //   try {
+  //     const response = await fetch(`/php/post_details_who_shared.php?post_id=${postId}`);
+  //     const data = await response.json();
+  //     if (data.success) {
+  //       setPosts((prevPosts) =>
+  //         prevPosts.map((post) =>
+  //           post.id === postId ? { ...post, whoshared: data.names } : post
+  //         )
+  //       );
+  //     } else {
+  //       console.error('獲取分享用戶失敗: ' + data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('解析 JSON 失敗:', error);
+  //   }
+  // }, []);
 
-        // 更新留言數
-        updatePostDetails(postId);
-      } else {
-        alert('留言失敗: ' + data.message);
-      }
-    } catch (error) {
-      console.error('解析 JSON 失敗:', error);
-    }
-  }, [loadComments, updatePostDetails]);
-
-  // 動作 <分享貼文>
-  const sharePost = (postId) => {
-    // 設置貼文類型
-    setPostType('share');
-
-    // 存入欲分享之貼文id
-    setytURL_sharedPost(postId);
-
-    // 跳到頁面最上方(因為發文表單在頁面最上方)
-    window.scrollTo(0, 0);
-
-    alert("sharing post " + postId + " !"); //LOOK AT ME!!!!!!!
+  const handleMenuClick = (menu) => {
+    setSelectedMenu(menu);
   };
 
-    // 動作 <送出貼文/重置發文表單>
-  const submitPost = useCallback(async (e) => {
-    e.preventDefault();
-
-    // 將貼文內容加入資料庫
-    const formData = new FormData();
-    formData.append('content', postContent);
-    formData.append('type', postType);
-
-    if (postType === 'image' && postImage) {
-      formData.append('image', postImage); //先存整個照片檔，之後再從後台把url設成照片本地路徑
-    } else if (postType === 'youtube' && ytURL_sharedPost) {
-      formData.append('url', ytURL_sharedPost);
-    } else if (postType === 'share') {
-      formData.append('url', ytURL_sharedPost);
-    }
-
-    try {
-      // 實際送出貼文至後台
-      const response = await fetch('/php/post_submit.php', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      // 清空表單，重置到預設狀態並發布
-      if (data.success) {
-        resetPostForm();
-      } else {
-        alert('分享失敗: ' + data.message);
-      }
-    } catch (error) {
-      console.error('解析 JSON 失敗:', error);
-    }
-  }, [postContent, postType, postImage, ytURL_sharedPost, loadPosts]);
-
   return (
-    <>
+    <div className='admin'>
       <Header
-        currentViewUsername={currentViewUsername}
         thisUsername={thisUsername}
         logout={logout}
-        resetPostForm={resetPostForm}
-        myUserPage_settings={myUserPage_settings}
         searchName={searchName}
         setSearchName={setSearchName}
         checkUserPage={checkUserPage}
       />
+      <h1>管理員介面</h1>
+      <p>點留言數就可以顯示留言呦<br/>這裡先放一個主頁狀況的overveiw而已<br/>之後應該還要像下面的選單一樣可以查看用戶之類的(or刪貼文嗎?)<hr/></p>
+      <ul>
+        <li onClick={() => handleMenuClick('Menu1')}>發文及留言統計</li>
+        <li onClick={() => handleMenuClick('Menu2')}>選單二</li>
+        <li onClick={() => handleMenuClick('Menu3')}>用戶查詢</li>
+        <li onClick={() => handleMenuClick('Menu4')}>選單四</li>
+      </ul>
+      <div>
+        {selectedMenu && <p>你選擇了: {selectedMenu}</p>}
+      </div>
       <div className="container">
         <div className="main-content">
           <h2 id="posts-title">{currentViewUsername ? `${currentViewUsername}的貼文` : '推薦貼文'}</h2>
-          {(currentViewUsername === thisUsername || currentViewUsername === '') && (
-            <PostForm
-              submitPost={submitPost}
-              postContent={postContent}
-              setPostContent={setPostContent}
-              postType={postType}
-              setPostType={setPostType}
-              setPostImage={setPostImage}
-              ytURL_sharedPost={ytURL_sharedPost}
-              setytURL_sharedPost={setytURL_sharedPost}
-            />
-          )}
           <div id="posts">
             {posts.map(post => (
               <Post
                 key={post.id}
                 post={post}
                 checkUserPage={checkUserPage}
-                pickLike={pickLike}
-                getLikeText={getLikeText}
                 showComments={showComments}
-                submitComment={submitComment}
-                sharePost={sharePost}
+                // showWhoLiked={showWhoLiked}
               />
             ))}
           </div>
         </div>
-        <Sidebar
-          currentViewUsername={currentViewUsername}
-          userBio={userBio}
-          userTags={userTags}
-        />
       </div>
-    </>
+    </div>
   );
 }
 
-// export default Home;
+export default MenuComponent;
