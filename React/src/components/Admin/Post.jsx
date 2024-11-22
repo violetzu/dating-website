@@ -1,9 +1,9 @@
 // 元件 <貼文> checkUserName用在PO文用戶名稱處
-const Post = ({ post, checkUserPage, showComments /* , loadLikedUsers, loadSharedUsers */, isShared = false }) => {
+const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUsers, isShared = false }) => {
     const likesText = `${post.likes_count}人說讚`;
 
-    // loadLikedUsers(post.id);
-    // loadSharedUsers(post.id);
+    () => loadLikedUsers(post.id);
+    () => loadSharedUsers(post.id);
 
     return (
         <div className="post" id={`post-${post.id}`} key={post.id}>
@@ -74,7 +74,7 @@ const Post = ({ post, checkUserPage, showComments /* , loadLikedUsers, loadShare
                     )}
 
                     {/* 貼文id為xxx之點讚用戶 */}
-                    <div className="wholiked statistic-box" id={`likedUser-${post.id}`}>
+                    <div className="wholiked statistic-box" id={`wholiked-${post.id}`}>
                         <h4>點讚用戶</h4>
 
                         {/* 實驗元件 <單個用戶名> */}
@@ -89,31 +89,33 @@ const Post = ({ post, checkUserPage, showComments /* , loadLikedUsers, loadShare
                         {/* 從資料庫抓有點讚的用戶 */}
                         {post.wholiked && post.wholiked.map(likedUser => (
                             // 元件 <單個用戶名>
-                            <div className="comment" key={likedUser.id}>
+                            <div className="comment" key={id}>
                                 <div className="comment-header">
-                                    <span className="comment-username" onClick={() => checkUserPage(likedUser.username)}>
-                                        <b>No. {likedUser.id}: </b>{likedUser.username}
+                                    <span className="comment-username" onClick={() => checkUserPage(username)}>
+                                        <b>No. {id}: </b>{username}
                                     </span>
                                 </div>
                             </div>
                         ))}
+                        {!post.wholiked && <span>沒有用戶點讚</span>}
                     </div>
 
                     {/* 貼文id為xxx之分享用戶 */}
-                    <div className="wholiked statistic-box" id={`likedUser-${post.id}`}>
+                    <div className="whoshared statistic-box" id={`likedUser-${post.id}`}>
                         <h4>分享用戶</h4>
 
                         {/* 從資料庫抓有點讚的用戶 */}
-                        {post.wholiked && post.wholiked.map(likedUser => (
+                        {post.whoshared && post.whoshared.map(sharedUser => (
                             // 元件 <單個用戶名>
-                            <div className="comment" key={likedUser.id}>
+                            <div className="comment" key={id}>
                                 <div className="comment-header">
-                                    <span className="comment-username" onClick={() => checkUserPage(likedUser.username)}>
-                                        <b>No. {likedUser.id}: </b>{likedUser.username}
+                                    <span className="comment-username" onClick={() => checkUserPage(username)}>
+                                        <b>No. {id}: </b>{username}
                                     </span>
                                 </div>
                             </div>
                         ))}
+                        {!post.whoshared && <span>沒有用戶分享</span>}
                     </div>
                 </div>
             )}

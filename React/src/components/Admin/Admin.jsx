@@ -153,43 +153,55 @@ function MenuComponent() {
     }
   }, []);
 
-  // // 動作 <查看點讚用戶名單>
-  // const loadLikedUsers = useCallback(async (postId) => {
-  //   try {
-  //     const response = await fetch(`/php/post_details_who_liked.php?post_id=${postId}`);
-  //     const data = await response.json();
-  //     if (data.success) {
-  //       setPosts((prevPosts) =>
-  //         prevPosts.map((post) =>
-  //           post.id === postId ? { ...post, wholiked: data.names } : post
-  //         )
-  //       );
-  //     } else {
-  //       console.error('獲取按讚用戶失敗: ' + data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error('解析 JSON 失敗:', error);
-  //   }
-  // }, []);
+  // 動作 <查看點讚用戶名單>
+  const loadLikedUsers = useCallback(async (postId) => {
+    try {
+      const response = await fetch(`/php/post_details_who_liked.php?post_id=${postId}`);
+      const data = await response.json();
+      if (data.success) {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, wholiked: data.names } : post
+          )
+        );
+      } else {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, wholiked: false } : post
+          )
+        );
+        console.log('獲取按讚用戶失敗: ' + data.message);
+        // console.error('獲取按讚用戶失敗: ' + data.message); //php修正後要改成這個
+      }
+    } catch (error) {
+      console.error('解析 JSON 失敗:', error);
+    }
+  }, []);
 
-    // // 動作 <查看分享用戶名單>
-  // const loadSharedUsers = useCallback(async (postId) => {
-  //   try {
-  //     const response = await fetch(`/php/post_details_who_shared.php?post_id=${postId}`);
-  //     const data = await response.json();
-  //     if (data.success) {
-  //       setPosts((prevPosts) =>
-  //         prevPosts.map((post) =>
-  //           post.id === postId ? { ...post, whoshared: data.names } : post
-  //         )
-  //       );
-  //     } else {
-  //       console.error('獲取分享用戶失敗: ' + data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error('解析 JSON 失敗:', error);
-  //   }
-  // }, []);
+    // 動作 <查看分享用戶名單>
+  const loadSharedUsers = useCallback(async (postId) => {
+    try {
+      const response = await fetch(`/php/post_details_who_shared.php?post_id=${postId}`);
+      const data = await response.json();
+      if (data.success) {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, whoshared: data.names } : post
+          )
+        );
+      } else {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, whoshared: false } : post
+          )
+        );
+        console.log('獲取分享用戶失敗: ' + data.message);
+        // console.error('獲取分享用戶失敗: ' + data.message); //php修正後要改成這個
+      }
+    } catch (error) {
+      console.error('解析 JSON 失敗:', error);
+    }
+  }, []);
 
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
@@ -205,7 +217,7 @@ function MenuComponent() {
         checkUserPage={checkUserPage}
       />
       <h1>管理員介面</h1>
-      <p>點留言數就可以顯示留言呦<br/>這裡先放一個主頁狀況的overveiw而已<br/>之後應該還要像下面的選單一樣可以查看用戶之類的(or刪貼文嗎?)<hr/></p>
+      <p>點留言數就可以顯示留言呦<br/>這裡先放一個主頁狀況的overveiw而已<br/>之後應該還要像下面的選單一樣可以查看用戶之類的(or刪貼文嗎?)</p><hr/>
       <ul>
         <li onClick={() => handleMenuClick('Menu1')}>發文及留言統計</li>
         <li onClick={() => handleMenuClick('Menu2')}>選單二</li>
@@ -225,7 +237,8 @@ function MenuComponent() {
                 post={post}
                 checkUserPage={checkUserPage}
                 showComments={showComments}
-                // showWhoLiked={showWhoLiked}
+                loadLikedUsers={loadLikedUsers}
+                loadSharedUsers={loadSharedUsers}
               />
             ))}
           </div>
