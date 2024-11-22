@@ -1,0 +1,243 @@
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 基础布局 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #4267b2;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/*  */
+.header-left {
+    flex: 1;
+}
+
+.header-middle {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+}
+
+.header-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+header input[type="text"] {
+    width: 70%;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+header button {
+    background-color: #365899;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+header button:hover {
+    background-color: #29487d;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.main-content {
+    width: 100%;
+}
+
+h2 {
+    color: #4267b2;
+}
+
+/* 其他貼文樣式 */
+.admin .post {
+    display: flex;
+    box-shadow: none;
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.post-main {
+    flex: 1;
+    height: fit-content;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+.post-statistic {
+    flex: 1;
+    display: flex;
+    max-height: 200px;
+    /* 暫時用別的顏色區分 */
+    background-color: #96addc;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-left: 10px;
+}
+
+.statistic-box {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #4267b2 #96addc; /* 前者為滑塊(會動的那塊)，後者為捲軸的底 */
+    padding: 3px;
+}
+
+.wholiked {
+    flex: 1;
+}
+
+.comments {
+    flex: 2;
+}
+
+.post-header,
+.post-footer,
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-header {
+    font-weight: bold;
+}
+
+.post-header .post-username {
+    color: #4267b2;
+    font-size: 20px;
+}
+
+.post-header .post-datetime {
+    color: #65676b;
+    font-size: 12px;
+}
+
+.post-content {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.post-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.post-footer {
+    font-size: 14px;
+    color: #65676b;
+    margin-top: 16px;
+}
+
+.post-footer .likes-count,
+.post-footer .comments-count,
+.post-footer .shares-count {
+    margin-right: 15px;
+}
+
+.post-actions button {
+    background: none;
+    border: none;
+    color: #4267b2;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.post-actions button:hover {
+    background-color: #e4e6eb;
+}
+
+/* 留言區域 */
+.comment {
+    border-top: 1px solid #eee;
+    padding-top: 5px;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.admin .comment-header .comment-username {
+    color: #29487d;
+    font-weight: bold;
+}
+
+.admin .comment-header .comment-datetime {
+    color: #3d4e70;
+    font-size: 12px;
+}
+
+.admin .comment-content {
+    font-size: 12px;
+}
+
+/* 被分享貼文的外框的樣式 */
+.shared-post-container {
+    border: 1px solid #4267b2;
+    border-radius: 8px;
+    background-color: #f0f2f5;
+}
+
+.shared-post-footer {
+    font-size: 14px;
+    color: #65676b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.shared-post-footer .likes-count,
+.shared-post-footer .comments-count,
+.shared-post-footer .shares-count {
+    margin-right: 15px;
+}
+
+/* 被分享貼文的樣式 */
+.shared-post-container .post {
+    box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1);
+    margin: 0; /* 一般貼文以下方的margin作分隔，塞在分享框裡不需要 */
+}
