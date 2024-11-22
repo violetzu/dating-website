@@ -107,7 +107,7 @@ function Login() {
             borderRadius: '5px',
           }}
         >
-          Visit my GitHub
+          GitHub
         </a>
     </form>
   );
