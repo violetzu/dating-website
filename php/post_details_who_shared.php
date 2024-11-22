@@ -9,7 +9,7 @@ $post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : 0;
 $names = [];
 
 // 從Posts資料表中選擇type為"share"且分享的貼文為post_id的分享者名稱
-$stmt = $conn->prepare("SELECT id, username FROM Posts WHERE type = 'share' and url = ?"); //$stmt回傳的是連線狀態而已
+$stmt = $conn->prepare("SELECT posts.id, posts.username FROM posts WHERE posts.type = 'share' and posts.url = ?"); //$stmt回傳的是連線狀態而已
 
 //確保連線成功
 if (!$stmt) {

@@ -9,7 +9,7 @@ $post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : 0;
 $names = [];
 
 // 從likes資料表中選擇特定post_id的按讚者名稱
-$stmt = $conn->prepare("SELECT id, username FROM Likes WHERE post_id = ?"); //$stmt回傳的是連線狀態而已
+$stmt = $conn->prepare("SELECT likes.id, likes.username FROM likes WHERE likes.post_id = ?"); //$stmt回傳的是連線狀態而已
 
 //確保連線成功
 if (!$stmt) {
