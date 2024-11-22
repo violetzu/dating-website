@@ -9,7 +9,7 @@ $post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : 0;
 $names = [];
 
 // 從likes資料表中選擇特定post_id的按讚者名稱
-$stmt = $conn->prepare("SELECT id, username FROM Likes WHERE post_id = ?"); //$stmt回傳的是連線狀態而已
+$stmt = $conn->prepare("SELECT id, username FROM Posts WHERE type = 'share' and url = ?"); //$stmt回傳的是連線狀態而已
 
 //確保連線成功
 if (!$stmt) {
@@ -30,7 +30,7 @@ if ($result->num_rows > 0) {
     }
     echo json_encode(['success' => true, 'names' => $names]);  // 返回包含"按讚者名稱陣列"(aka $tags)的 JSON 對象(這行把欲傳輸的資料們轉成JSON格式)
 } else {
-    echo json_encode(['success' => false, 'message' => '沒有用戶點過讚']);  // 如果沒有資料，返回錯誤訊息
+    echo json_encode(['success' => false, 'message' => '沒有用戶分享此貼文']);  // 如果沒有資料，返回錯誤訊息
 }
 
 $stmt->close();

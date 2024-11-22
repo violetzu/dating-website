@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Header, Sidebar } from './Header_Sidebar';
+import { Header } from './Header_Sidebar';
 import Post from './Post';
+import './admin.css';
 
 function MenuComponent() {
   const [selectedMenu, setSelectedMenu] = useState(null);
@@ -152,18 +153,6 @@ function MenuComponent() {
     }
   }, []);
 
-  // 動作 <開關點讚用戶名單>
-  // const showWhoLiked = (postId) => {
-  //   setPosts((prevPosts) =>
-  //     prevPosts.map((post) =>
-  //       post.id === postId ? { ...post, showWhoLiked: !post.showWhoLiked } : post
-  //     )
-  //   );
-
-  //   // 加載當前貼文之所有留言
-  //   loadLikedUsers(postId);
-  // };
-
   // // 動作 <查看點讚用戶名單>
   // const loadLikedUsers = useCallback(async (postId) => {
   //   try {
@@ -183,12 +172,31 @@ function MenuComponent() {
   //   }
   // }, []);
 
+    // // 動作 <查看分享用戶名單>
+  // const loadSharedUsers = useCallback(async (postId) => {
+  //   try {
+  //     const response = await fetch(`/php/post_details_who_shared.php?post_id=${postId}`);
+  //     const data = await response.json();
+  //     if (data.success) {
+  //       setPosts((prevPosts) =>
+  //         prevPosts.map((post) =>
+  //           post.id === postId ? { ...post, whoshared: data.names } : post
+  //         )
+  //       );
+  //     } else {
+  //       console.error('獲取分享用戶失敗: ' + data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('解析 JSON 失敗:', error);
+  //   }
+  // }, []);
+
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
   };
 
   return (
-    <>
+    <div className='admin'>
       <Header
         thisUsername={thisUsername}
         logout={logout}
@@ -197,6 +205,7 @@ function MenuComponent() {
         checkUserPage={checkUserPage}
       />
       <h1>管理員介面</h1>
+      <p>點留言數就可以顯示留言呦<br/>這裡先放一個主頁狀況的overveiw而已<br/>之後應該還要像下面的選單一樣可以查看用戶之類的(or刪貼文嗎?)<hr/></p>
       <ul>
         <li onClick={() => handleMenuClick('Menu1')}>發文及留言統計</li>
         <li onClick={() => handleMenuClick('Menu2')}>選單二</li>
@@ -221,13 +230,8 @@ function MenuComponent() {
             ))}
           </div>
         </div>
-        <Sidebar
-          currentViewUsername={currentViewUsername}
-          userBio={userBio}
-          userTags={userTags}
-        />
       </div>
-    </>
+    </div>
   );
 }
 

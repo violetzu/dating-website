@@ -72,77 +72,57 @@ header button:hover {
 }
 
 .main-content {
-    width: 70%;
-}
-
-.sidebar {
-    width: 25%;
+    width: 100%;
 }
 
 h2 {
     color: #4267b2;
 }
 
-/* 貼文區域表單美化 */
-#post-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    margin-bottom: 20px;
-    transition: box-shadow 0.3s;
-}
-
-#post-form:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
-#post-type {
-    margin-top: 10px;
-}
-
-#youtube-input {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-}
-
-#youtube-url {
-    width: 90%;
-    max-width: 600px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-#post-content {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    transition: border-color 0.3s;
-}
-
-#post-content:focus {
-    border-color: #4267b2;
-}
-
-#post-image {
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
 /* 其他貼文樣式 */
-.post {
+.admin .post {
+    display: flex;
+    box-shadow: none;
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.post-main {
+    flex: 1;
+    height: fit-content;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    margin-bottom: 20px;
+}
+
+.post-statistic {
+    flex: 1;
+    display: flex;
+    max-height: 200px;
+    /* 暫時用別的顏色區分 */
+    background-color: #96addc;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-left: 10px;
+}
+
+.statistic-box {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #4267b2 #96addc; /* 前者為滑塊(會動的那塊)，後者為捲軸的底 */
+    padding: 3px;
+}
+
+.wholiked {
+    flex: 1;
+}
+
+.comments {
+    flex: 2;
 }
 
 .post-header,
@@ -221,49 +201,18 @@ h2 {
     margin-bottom: 5px;
 }
 
-.comment-header .comment-username {
-    color: #4267b2;
+.admin .comment-header .comment-username {
+    color: #29487d;
     font-weight: bold;
 }
 
-.comment-header .comment-datetime {
-    color: #65676b;
-    font-size: 14px;
+.admin .comment-header .comment-datetime {
+    color: #3d4e70;
+    font-size: 12px;
 }
 
-.comment-content {
-    font-size: 16px;
-}
-
-.comment-form {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.comment-form textarea {
-    flex: 1;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin-right: 10px;
-    font-size: 14px;
-}
-
-.comment-form button {
-    background-color: #4267b2;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.comment-form button:hover {
-    background-color: #365899;
+.admin .comment-content {
+    font-size: 12px;
 }
 
 /* 被分享貼文的外框的樣式 */
