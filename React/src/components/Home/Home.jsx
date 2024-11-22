@@ -253,7 +253,7 @@ function Home() {
     // 跳到頁面最上方(因為發文表單在頁面最上方)
     window.scrollTo(0, 0);
 
-    alert("sharing post " + postId + " !"); //LOOK AT ME!!!!!!!
+    //alert("sharing post " + postId + " !"); //LOOK AT ME!!!!!!!
   };
 
     // 動作 <送出貼文/重置發文表單>
