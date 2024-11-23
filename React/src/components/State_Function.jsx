@@ -1,3 +1,4 @@
+//test!!!
 import React, { createContext, useState } from 'react';
 
 // a portal for component to enter the domain(aka Global_Domian) which provides states and functions
