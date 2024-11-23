@@ -23,11 +23,9 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                 {/* 照片 */}
                 {post.type === 'image' && post.url && <div className="post-image"><img src={post.url} alt="Post Image" /></div>}
                 {/* 鑲嵌的youtube影片 */}
-                {post.type === 'youtube' && <div className="post-youtube" dangerouslySetInnerHTML={{ __html: post.url }} />}{post.type === 'youtube' && (
+                {post.type === 'youtube' && (
                     <div className="post-youtube">
                         <iframe
-                            width="560"
-                            height="315"
                             src={`https://www.youtube.com/embed/${post.url}`}
                             title="YouTube video player"
                             frameBorder="0"
