@@ -23,7 +23,19 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                 {/* 照片 */}
                 {post.type === 'image' && post.url && <div className="post-image"><img src={post.url} alt="Post Image" /></div>}
                 {/* 鑲嵌的youtube影片 */}
-                {post.type === 'youtube' && <div className="post-youtube" dangerouslySetInnerHTML={{ __html: post.url }} />}
+                {post.type === 'youtube' && <div className="post-youtube" dangerouslySetInnerHTML={{ __html: post.url }} />}{post.type === 'youtube' && (
+                    <div className="post-youtube">
+                        <iframe
+                            width="560"
+                            height="315"
+                            src={`https://www.youtube.com/embed/${post.url}`}
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        />
+                    </div>
+                )}
 
                 {/* 貼文屬性為'share'時才有的區塊(才會有.shared_post) */}
                 {post.type === 'share' && post.shared_post && (
@@ -88,7 +100,6 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                                 </div>
                             </div>
                         ))}
-                        {!post.wholiked && <span>沒有用戶點讚</span>}
                     </div>
 
                     {/* 貼文id為xxx之分享用戶 */}
@@ -106,7 +117,6 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                                 </div>
                             </div>
                         ))}
-                        {!post.whoshared && <span>沒有用戶分享</span>}
                     </div>
                 </div>
             )}

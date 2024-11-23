@@ -52,6 +52,14 @@ function MenuComponent() {
       const data = await response.json();
       if (data.success) {
         setPosts(data.posts);
+
+        // bc chat says so(直接用data.posts確保下面兩個元件使用的是完全更新的posts state)
+        // Once posts are loaded, load the liked and shared users for each post
+        // Assuming posts contain a unique post ID
+        data.posts.forEach((post) => {
+          loadLikedUsers(post.id);  // Call loadLikedUsers after posts are loaded
+          loadSharedUsers(post.id); // Call loadSharedUsers after posts are loaded
+        });
       } else {
         console.error('獲取貼文失敗:', data.message);
       }
@@ -225,8 +233,6 @@ function MenuComponent() {
                 post={post}
                 checkUserPage={checkUserPage}
                 showComments={showComments}
-                // {...loadLikedUsers(post.id)}
-                // {...loadSharedUsers(post.id)}
               />
             ))}
           </div>

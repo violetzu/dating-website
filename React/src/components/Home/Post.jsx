@@ -21,16 +21,16 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
             {post.type === 'youtube' && (
                 <div className="post-youtube">
                     <iframe
-                    width="560"
-                    height="315"
-                    src={`https://www.youtube.com/embed/${post.url}`}
-                    title="YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
+                        width="560"
+                        height="315"
+                        src={`https://www.youtube.com/embed/${post.url}`}
+                        title="YouTube video player"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
                     />
                 </div>
-                )}
+            )}
 
 
 
