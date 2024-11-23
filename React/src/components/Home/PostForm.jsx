@@ -24,7 +24,7 @@ const PostForm = ({ submitPost, postContent, setPostContent, postType, setPostTy
                     {/* 貼文屬性為'youtube'時才有的選項 */}
                     {postType === 'youtube' && (
                         <div id="youtube-input">
-                            <input type="text" id="youtube-url" value={ytURL_sharedPost} onChange={(e) => setytURL_sharedPost(e.target.value)} placeholder="請由youtube分享的嵌入複製完整程式碼貼上" />
+                            <input type="text" id="youtube-url" value={ytURL_sharedPost} onChange={(e) => setytURL_sharedPost(e.target.value)} placeholder="請輸入youtube影片連結" />
                         </div>
                     )}
                 </>

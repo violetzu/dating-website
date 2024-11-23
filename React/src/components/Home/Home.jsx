@@ -267,8 +267,19 @@ function Home() {
 
     if (postType === 'image' && postImage) {
       formData.append('image', postImage); //先存整個照片檔，之後再從後台把url設成照片本地路徑
-    } else if (postType === 'youtube' && ytURL_sharedPost) {
-      formData.append('url', ytURL_sharedPost);
+    }else if (postType === 'youtube' && ytURL_sharedPost) {
+      // 使用正則表達式提取 YouTube 影片 ID
+      const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+      const match = ytURL_sharedPost.match(ytRegex);
+    
+      if (match && match[1]) {
+        const videoId = match[1];
+        formData.append('url', videoId);
+      } else {
+        alert("無法提取影片 ID，URL 格式不正確");
+        return; // 提前返回，避免提交無效的資料
+      }
+
     } else if (postType === 'share') {
       formData.append('url', ytURL_sharedPost);
     }
