@@ -22,7 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# garbage
-./components/*_new.jsx
-./components/State_Function.jsx
