@@ -17,4 +17,8 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    // 輸出目錄為上一級目錄
+    outDir: '../'
+  }
 });

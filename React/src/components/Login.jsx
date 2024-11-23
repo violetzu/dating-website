@@ -85,6 +85,14 @@ function Login() {
         className="login-input"
         disabled={isSubmitting}  // 提交時禁用輸入框
       />
+      <div className="password-options">
+        <a 
+          href="/forget_password" 
+          className="forget-password-link"
+        >
+          忘記密碼嗎?
+        </a>
+      </div>
       <button 
         type="submit" 
         className="login-button" 
@@ -92,7 +100,7 @@ function Login() {
       >
         {isSubmitting ? '登入中...' : '登入或註冊'}
       </button>
-      <a>  </a>
+      {/* <a>  </a> */}
       <a
           href="https://github.com/violetzu/dating-website"
           target="_blank"
