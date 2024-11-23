@@ -7,5 +7,6 @@
 /php/composer.lock
 /post_picture/
 /hMailServer/
+/WebSocket/node_modules/
 .htaccess
 vite.svg

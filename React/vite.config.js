@@ -1,8 +1,20 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { rmSync } from 'fs';
+
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    // 在構建開始前清空 ../assets 文件夾
+    {
+      name: 'clear-assets',
+      apply: 'build',
+      buildStart() {
+        rmSync('../assets', { recursive: true, force: true });
+      },
+    },
+  ],
   server: {
     proxy: {
       '/php': {
@@ -18,7 +30,8 @@ export default defineConfig({
     },
   },
   build: {
-    // 輸出目錄為上一級目錄
-    outDir: '../'
-  }
+    // 構建於 ../
+    outDir: '../',
+    emptyOutDir: false,
+  },
 });
