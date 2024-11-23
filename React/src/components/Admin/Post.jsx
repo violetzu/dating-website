@@ -2,8 +2,8 @@
 const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUsers, isShared = false }) => {
     const likesText = `${post.likes_count}人說讚`;
 
-    () => loadLikedUsers(post.id);
-    () => loadSharedUsers(post.id);
+    // loadLikedUsers(post.id);
+    // loadSharedUsers(post.id);
 
     return (
         <div className="post" id={`post-${post.id}`} key={post.id}>
@@ -77,22 +77,13 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                     <div className="wholiked statistic-box" id={`wholiked-${post.id}`}>
                         <h4>點讚用戶</h4>
 
-                        {/* 實驗元件 <單個用戶名> */}
-                        <div className="comment">
-                            <div className="comment-header">
-                                <span className="comment-username" onClick={() => checkUserPage(likedUser.username)}>
-                                    <b>No. 1: </b>yee
-                                </span>
-                            </div>
-                        </div>
-
                         {/* 從資料庫抓有點讚的用戶 */}
                         {post.wholiked && post.wholiked.map(likedUser => (
                             // 元件 <單個用戶名>
                             <div className="comment" key={likedUser.id}>
                                 <div className="comment-header">
                                     <span className="comment-username" onClick={() => checkUserPage(likedUser.username)}>
-                                        <b>No. {likedUser.id}: </b>{likedUser.username}
+                                        {likedUser.username}
                                     </span>
                                 </div>
                             </div>
@@ -110,7 +101,7 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                             <div className="comment" key={sharedUser.id}>
                                 <div className="comment-header">
                                     <span className="comment-username" onClick={() => checkUserPage(sharedUser.username)}>
-                                        <b>No. {sharedUser.id}: </b>{sharedUser.username}
+                                        {sharedUser.username}
                                     </span>
                                 </div>
                             </div>
