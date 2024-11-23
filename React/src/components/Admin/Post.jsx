@@ -2,8 +2,8 @@
 const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUsers, isShared = false }) => {
     const likesText = `${post.likes_count}人說讚`;
 
-    () => loadLikedUsers(post.id);
-    () => loadSharedUsers(post.id);
+    // loadLikedUsers(post.id);
+    // loadSharedUsers(post.id);
 
     return (
         <div className="post" id={`post-${post.id}`} key={post.id}>
@@ -23,7 +23,17 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                 {/* 照片 */}
                 {post.type === 'image' && post.url && <div className="post-image"><img src={post.url} alt="Post Image" /></div>}
                 {/* 鑲嵌的youtube影片 */}
-                {post.type === 'youtube' && <div className="post-youtube" dangerouslySetInnerHTML={{ __html: post.url }} />}
+                {post.type === 'youtube' && (
+                    <div className="post-youtube">
+                        <iframe
+                            src={`https://www.youtube.com/embed/${post.url}`}
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        />
+                    </div>
+                )}
 
                 {/* 貼文屬性為'share'時才有的區塊(才會有.shared_post) */}
                 {post.type === 'share' && post.shared_post && (
@@ -77,27 +87,17 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                     <div className="wholiked statistic-box" id={`wholiked-${post.id}`}>
                         <h4>點讚用戶</h4>
 
-                        {/* 實驗元件 <單個用戶名> */}
-                        <div className="comment">
-                            <div className="comment-header">
-                                <span className="comment-username" onClick={() => checkUserPage(likedUser.username)}>
-                                    <b>No. 1: </b>yee
-                                </span>
-                            </div>
-                        </div>
-
                         {/* 從資料庫抓有點讚的用戶 */}
                         {post.wholiked && post.wholiked.map(likedUser => (
                             // 元件 <單個用戶名>
                             <div className="comment" key={likedUser.id}>
                                 <div className="comment-header">
                                     <span className="comment-username" onClick={() => checkUserPage(likedUser.username)}>
-                                        <b>No. {likedUser.id}: </b>{likedUser.username}
+                                        {likedUser.username}
                                     </span>
                                 </div>
                             </div>
                         ))}
-                        {!post.wholiked && <span>沒有用戶點讚</span>}
                     </div>
 
                     {/* 貼文id為xxx之分享用戶 */}
@@ -110,12 +110,11 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                             <div className="comment" key={sharedUser.id}>
                                 <div className="comment-header">
                                     <span className="comment-username" onClick={() => checkUserPage(sharedUser.username)}>
-                                        <b>No. {sharedUser.id}: </b>{sharedUser.username}
+                                        {sharedUser.username}
                                     </span>
                                 </div>
                             </div>
                         ))}
-                        {!post.whoshared && <span>沒有用戶分享</span>}
                     </div>
                 </div>
             )}

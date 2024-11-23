@@ -52,6 +52,14 @@ function MenuComponent() {
       const data = await response.json();
       if (data.success) {
         setPosts(data.posts);
+
+        // bc chat says so(直接用data.posts確保下面兩個元件使用的是完全更新的posts state)
+        // Once posts are loaded, load the liked and shared users for each post
+        // Assuming posts contain a unique post ID
+        data.posts.forEach((post) => {
+          loadLikedUsers(post.id);  // Call loadLikedUsers after posts are loaded
+          loadSharedUsers(post.id); // Call loadSharedUsers after posts are loaded
+        });
       } else {
         console.error('獲取貼文失敗:', data.message);
       }
@@ -165,15 +173,14 @@ function MenuComponent() {
           )
         );
       } else {
-        console.log('獲取按讚用戶失敗: ' + data.message);
-        // console.error('獲取按讚用戶失敗: ' + data.message); //php修正後要改成這個
+        console.error('獲取按讚用戶失敗: ' + data.message); //php修正後要改成這個
       }
     } catch (error) {
       console.error('解析 JSON 失敗:', error);
     }
   }, []);
 
-    // 動作 <查看分享用戶名單>
+  // 動作 <查看分享用戶名單>
   const loadSharedUsers = useCallback(async (postId) => {
     try {
       const response = await fetch(`/php/post_details_who_shared.php?post_id=${postId}`);
@@ -185,8 +192,7 @@ function MenuComponent() {
           )
         );
       } else {
-        console.log('獲取分享用戶失敗: ' + data.message);
-        // console.error('獲取分享用戶失敗: ' + data.message); //php修正後要改成這個
+        console.error('獲取分享用戶失敗: ' + data.message); //php修正後要改成這個
       }
     } catch (error) {
       console.error('解析 JSON 失敗:', error);
@@ -207,7 +213,7 @@ function MenuComponent() {
         checkUserPage={checkUserPage}
       />
       <h1>管理員介面</h1>
-      <p>點留言數就可以顯示留言呦<br/>這裡先放一個主頁狀況的overveiw而已<br/>之後應該還要像下面的選單一樣可以查看用戶之類的(or刪貼文嗎?)</p><hr/>
+      <p>點留言數就可以顯示留言呦<br />這裡先放一個主頁狀況的overveiw而已<br />之後應該還要像下面的選單一樣可以查看用戶之類的(or刪貼文嗎?)</p><hr />
       <ul>
         <li onClick={() => handleMenuClick('Menu1')}>發文及留言統計</li>
         <li onClick={() => handleMenuClick('Menu2')}>選單二</li>
@@ -227,8 +233,6 @@ function MenuComponent() {
                 post={post}
                 checkUserPage={checkUserPage}
                 showComments={showComments}
-                loadLikedUsers={loadLikedUsers}
-                loadSharedUsers={loadSharedUsers}
               />
             ))}
           </div>
