@@ -50,7 +50,7 @@
   - tag (VARCHAR 10) 
 
 
-- 表 Posts: 存儲貼文資訊。
+- 表 posts: 存儲貼文資訊。
   - id (INT, PK)＃貼文ID
   - username (VARCHAR 10)
   - content (TEXT) ＃貼文文字
@@ -59,19 +59,19 @@
   - created_at (DATETIME)  ＃建立時間
   - share_count	(INT) #被分享次數
 
-- 表comments: 存儲留言資訊。
+- 表 comments: 存儲留言資訊。
   - id (INT, PK)#留言編號 
   - post_id (INT, FK)＃貼文ID 引用Posts表的"id” 
   - username (VARCHAR 10)＃用戶ID 引用Users表的”username” 
   - comment (TEXT)＃文字留言 
   - created_at (DATETIME)＃建立時間 
 
-- 表likes: 存儲點愛心的資訊。
+- 表 likes: 存儲點愛心的資訊。
   - id (INT, PK)#
   - post_id (INT, FK)＃貼文ID 引用Posts表的"id” 
   - username (VARCHAR 10)
 
- - 表password_resets: 存儲忘記密碼重置用的token。
+- 表 password_resets: 存儲忘記密碼重置用的token。
   - id (INT, PK)#
   - username(VARCHAR 10)
   - token (VARCHAR 20) #token
