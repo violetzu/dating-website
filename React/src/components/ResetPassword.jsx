@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
 import './login.css';
 
 function ResetPassword() {
@@ -10,16 +9,14 @@ function ResetPassword() {
   const navigate = useNavigate();
   const query = new URLSearchParams(useLocation().search);
   const token = query.get('token');
-  
-  useEffect(() => {
-    console.log('Token:', token);
-  }, [token]);
 
   const handleResetPassword = async () => {
     try {
       const response = await axios.post('/php/reset_password.php', { token, newPassword });
-      setMessage(response.data.message);
-      if (response.data.message === '密碼重置成功。') {
+      const { message } = response.data;
+      setMessage(message);
+      
+      if (message === '密碼重置成功。') {
         alert('密碼重置成功，請重新登入。');
         navigate('/login');
       }

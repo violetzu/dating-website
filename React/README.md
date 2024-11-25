@@ -74,7 +74,7 @@
 - 表 password_resets: 存儲忘記密碼重置用的token。
   - id (INT, PK)#
   - username(VARCHAR 10)
-  - token (VARCHAR 20) #token
+  - token (VARCHAR 32) #token
   - expiry_time (DATETIME) ＃到期時間 
   - created_at (TIMESTAMP) #預設CURRENT_TIMESTAMP	
 
