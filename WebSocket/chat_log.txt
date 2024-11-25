@@ -1,3 +1,5 @@
-{"username":"marimo","message":"123"}
-{"username":"marimo","message":"456"}
-{"username":"123","message":"123"}
+{"username":"小白","message":"123"}
+{"username":"小白","message":"456"}
+{"username":"小白","message":"我愛軟體工程"}
+{"username":"marimo","message":"好懶得做喔"}
+{"username":"marimo","message":"：（"}

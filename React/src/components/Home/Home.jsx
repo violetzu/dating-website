@@ -8,6 +8,7 @@ import './userdetails.css';
 import { Header, Sidebar } from './Header_Sidebar';
 import PostForm from './PostForm';
 import Post from './Post';
+import { fetchUsername } from '../general_function';
 
 // 架構 <主頁> 串聯全部元件與動作，相當於main
 function Home() {
@@ -21,7 +22,7 @@ function Home() {
   const [postType, setPostType] = useState('image'); //貼文類型
   const [postContent, setPostContent] = useState('');
   const [postImage, setPostImage] = useState(null); //照片來源(資料型態為blob, 儲存的是"檔案"物件)
-  const [ytURL_sharedPost, setytURL_sharedPost] = useState(''); //youtube網址或被分享貼文的id
+  const [sharedPost_URL, setsharedPost_URL] = useState(''); //youtube網址或被分享貼文的id
 
   useEffect(() => {
     fetchUserInfo();
@@ -30,17 +31,7 @@ function Home() {
 
   // 動作 <登入作業/抓取當前用戶資訊(其實只是抓名字)>
   const fetchUserInfo = useCallback(async () => {
-    try {
-      const response = await fetch('/php/get_user_info.php');
-      const data = await response.json();
-      if (data.success) {
-        setThisUsername(data.username);
-      } else {
-        navigate('/login');
-      }
-    } catch (error) {
-      console.error('解析 JSON 失敗:', error);
-    }
+    fetchUsername(setThisUsername);
   }, [navigate]);
 
   // 動作 <加載貼文>
@@ -86,7 +77,7 @@ function Home() {
     setPostContent('');
     setPostType('image');
     setPostImage(null);
-    setytURL_sharedPost('');
+    setsharedPost_URL('');
     loadPosts();
   };
 
@@ -248,7 +239,7 @@ function Home() {
     setPostType('share');
 
     // 存入欲分享之貼文id
-    setytURL_sharedPost(postId);
+    setsharedPost_URL(postId);
 
     // 跳到頁面最上方(因為發文表單在頁面最上方)
     window.scrollTo(0, 0);
@@ -256,32 +247,55 @@ function Home() {
     //alert("sharing post " + postId + " !"); //LOOK AT ME!!!!!!!
   };
 
-    // 動作 <送出貼文/重置發文表單>
+  // 動作 <送出貼文/重置發文表單>
   const submitPost = useCallback(async (e) => {
     e.preventDefault();
 
     // 將貼文內容加入資料庫
     const formData = new FormData();
     formData.append('content', postContent);
-    formData.append('type', postType);
 
-    if (postType === 'image' && postImage) {
-      formData.append('image', postImage); //先存整個照片檔，之後再從後台把url設成照片本地路徑
-    }else if (postType === 'youtube' && ytURL_sharedPost) {
-      // 使用正則表達式提取 YouTube 影片 ID
+    // 自動檢測 postType
+    if (postType === 'URL' && sharedPost_URL) {
+      // YouTube 檢測
       const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-      const match = ytURL_sharedPost.match(ytRegex);
-    
-      if (match && match[1]) {
-        const videoId = match[1];
+      const ytMatch = sharedPost_URL.match(ytRegex);
+      if (ytMatch && ytMatch[1]) {
+        const videoId = ytMatch[1];
+        formData.append('type', 'youtube');
         formData.append('url', videoId);
-      } else {
-        alert("無法提取影片 ID，URL 格式不正確");
-        return; // 提前返回，避免提交無效的資料
+      } 
+      // Instagram 檢測
+      else {
+        const igRegex = /(?:https?:\/\/)?(?:www\.)?instagram\.com\/p\/([a-zA-Z0-9_-]+)/;
+        const igMatch = sharedPost_URL.match(igRegex);
+        if (igMatch && igMatch[1]) {
+          const postId = igMatch[1];
+          formData.append('type', 'instagram');
+          formData.append('url', postId);
+        } 
+        // X 檢測
+        else {
+          const xRegex = /(?:https?:\/\/)?(?:www\.)?x\.com\/(?:[^\/]+)\/status\/([0-9]+)/;
+          const xMatch = sharedPost_URL.match(xRegex);
+          if (xMatch && xMatch[1]) {
+            const postId = xMatch[1];
+            formData.append('type', 'x');
+            formData.append('url', postId);
+          } 
+          // 其他未定義的連結類型
+          else {
+            alert("無法提取 貼文 ID，URL 不是youtube/ig/x");
+          }
+        }
       }
-
-    } else if (postType === 'share') {
-      formData.append('url', ytURL_sharedPost);
+    } else {
+      formData.append('type', postType);
+      if (postType === 'image' && postImage) {
+        formData.append('image', postImage);
+      } else if (postType === 'share') {
+        formData.append('url', sharedPost_URL);
+      }
     }
 
     try {
@@ -302,7 +316,8 @@ function Home() {
     } catch (error) {
       console.error('解析 JSON 失敗:', error);
     }
-  }, [postContent, postType, postImage, ytURL_sharedPost, loadPosts]);
+  }, [postContent, postType, postImage, sharedPost_URL, loadPosts]);
+
 
   return (
     <>
@@ -327,8 +342,8 @@ function Home() {
               postType={postType}
               setPostType={setPostType}
               setPostImage={setPostImage}
-              ytURL_sharedPost={ytURL_sharedPost}
-              setytURL_sharedPost={setytURL_sharedPost}
+              sharedPost_URL={sharedPost_URL}
+              setsharedPost_URL={setsharedPost_URL}
             />
           )}
           <div id="posts">

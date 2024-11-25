@@ -1,5 +1,4 @@
 <?php
-
 require 'vendor/autoload.php'; // PHPMailer 的自動載入
 
 header('Content-Type: application/json');

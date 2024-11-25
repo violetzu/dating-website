@@ -1,17 +1,16 @@
-// 元件 <發文區塊>(打字、貼照片、轉PO)
-const PostForm = ({ submitPost, postContent, setPostContent, postType, setPostType, setPostImage, ytURL_sharedPost, setytURL_sharedPost }) => {
+const PostForm = ({ submitPost, postContent, setPostContent, postType, setPostType, setPostImage, sharedPost_URL, setsharedPost_URL }) => {
     return (
         <form id="post-form" onSubmit={submitPost}>
             {/* 內文(content) */}
             <textarea id="post-content" value={postContent} onChange={(e) => setPostContent(e.target.value)} placeholder="分享新鮮事..." />
 
-            {/* 轉貼不可添加圖片 / youtube */}
-            {postType != 'share' && (
+            {/* 轉貼不可添加多媒體 */}
+            {postType !== 'share' && (
                 <>
-                    {/* 變更貼文屬性('image' / 'youtube') */}
+                    {/* 變更貼文屬性('image' / 'youtube' / 'instagram' / 'x') */}
                     <select id="post-type" value={postType} onChange={(e) => setPostType(e.target.value)}>
-                        <option value="image">圖片</option>
-                        <option value="youtube">YouTube</option>
+                        <option value="image">圖片</option>          
+                        <option value="URL">URL</option>
                     </select>
 
                     {/* 貼文屬性為'image'時才有的選項 */}
@@ -21,10 +20,16 @@ const PostForm = ({ submitPost, postContent, setPostContent, postType, setPostTy
                         </div>
                     )}
 
-                    {/* 貼文屬性為'youtube'時才有的選項 */}
-                    {postType === 'youtube' && (
-                        <div id="youtube-input">
-                            <input type="text" id="youtube-url" value={ytURL_sharedPost} onChange={(e) => setytURL_sharedPost(e.target.value)} placeholder="請輸入youtube影片連結" />
+                    {/* 貼文屬性為 'URL' 時才有的選項 */}
+                    {postType === 'URL' && (
+                        <div id="url-input">
+                            <input
+                                type="text"
+                                id="url-url"
+                                value={sharedPost_URL}
+                                onChange={(e) => setsharedPost_URL(e.target.value)}
+                                placeholder="請輸入 youtube/IG貼文/X貼文 連結"
+                            />
                         </div>
                     )}
                 </>
@@ -32,7 +37,7 @@ const PostForm = ({ submitPost, postContent, setPostContent, postType, setPostTy
 
             {postType === 'share' && (
                 <div id="share-info">
-                    <p>正在分享貼文編號{ytURL_sharedPost}</p>
+                    <p>正在分享貼文編號 {sharedPost_URL}</p>
                 </div>
             )}
 

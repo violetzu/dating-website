@@ -16,8 +16,13 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
 
             {/* 照片、YT、分享只會擇一顯示 */}
             {/* 照片 */}
-            {post.type === 'image' && post.url && <div className="post-image"><img src={post.url} alt="Post Image" /></div>}
-            {/* 鑲嵌的youtube影片 */}
+            {post.type === 'image' && post.url && (
+                <div className="post-image">
+                    <img src={post.url} alt="Post Image" />
+                </div>
+            )}
+
+            {/* 鑲嵌的 YouTube 影片 */}
             {post.type === 'youtube' && (
                 <div className="post-youtube">
                     <iframe
@@ -30,7 +35,24 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
                 </div>
             )}
 
+            {/* 鑲嵌的 Instagram 貼文 */}
+            {post.type === 'instagram' && post.url && (
+                <div className="post-instagram">
+                    <blockquote className="instagram-media" data-instgrm-permalink={`https://www.instagram.com/p/${post.url}/`} data-instgrm-version="14">
+                    </blockquote>
+                    <script async src="https://www.instagram.com/embed.js"></script>
+                </div>
+            )}
 
+            {/* 鑲嵌的 X (Twitter) 貼文 */}
+            {post.type === 'x' && post.url && (
+                <div className="post-x">
+                    <blockquote className="twitter-tweet">
+                        <a href={`https://twitter.com/i/status/${post.url}`}></a>
+                    </blockquote>
+                    <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
+                </div>
+            )}
 
             {/* 貼文屬性為'share'時才有的區塊(才會有.shared_post) */}
             {post.type === 'share' && post.shared_post && (

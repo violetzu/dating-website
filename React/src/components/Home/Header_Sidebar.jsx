@@ -22,24 +22,29 @@ const Header = ({ currentViewUsername, thisUsername, logout, resetPostForm, myUs
     </header>
 );
 
+import Chat from "../Chat";
 // 元件 <側欄>
 const Sidebar = ({ currentViewUsername, userBio, userTags }) => (
-    <aside className="sidebar">
-        <h3 id="username-sidebar">{currentViewUsername ? currentViewUsername : '私訊區域'}</h3>
-        <div id="sidebar-item"></div>
-
-        {/* 進入各用戶個人主頁欲顯示之細項 */}
+    <div className="sidebar-container">
+      <aside className="sidebar">
+        <h3 id="username-sidebar">{currentViewUsername || '聊天室'}</h3>
         {currentViewUsername && (
-            <div id="user-details">
-                <p id="user-bio">{userBio}</p>
-                <div id="user-tags">
-                    {userTags.map(tag => (
-                        <span className="user-tag" key={tag}>{tag}</span>
-                    ))}
-                </div>
+          <div id="user-details">
+            <p id="user-bio">{userBio}</p>
+            <div id="user-tags">
+              {userTags.map((tag) => (
+                <span className="user-tag" key={tag}>
+                  {tag}
+                </span>
+              ))}
             </div>
+          </div>
         )}
-    </aside>
-);
+      </aside>
+      {!currentViewUsername && <Chat />} {/* 嵌入聊天區域 */}
+    </div>
+  );
 
-export { Header, Sidebar };
+  
+  
+export { Header, Sidebar};
