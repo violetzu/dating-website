@@ -219,12 +219,8 @@ function Home() {
       if (data.success) {
         // 重置留言打字區
         document.getElementById(`comment-content-${postId}`).value = ''; // 清空輸入框
-
-        // 實際張貼留言
-        loadComments(postId);
-
-        // 更新留言數
-        updatePostDetails(postId);
+        loadComments(postId); // 更新留言
+        updatePostDetails(postId); // 更新留言數
       } else {
         alert('留言失敗: ' + data.message);
       }
@@ -235,16 +231,9 @@ function Home() {
 
   // 動作 <分享貼文>
   const sharePost = (postId) => {
-    // 設置貼文類型
-    setPostType('share');
-
-    // 存入欲分享之貼文id
-    setsharedPost_URL(postId);
-
-    // 跳到頁面最上方(因為發文表單在頁面最上方)
-    window.scrollTo(0, 0);
-
-    //alert("sharing post " + postId + " !"); //LOOK AT ME!!!!!!!
+    setPostType('share'); // 設置貼文類型
+    setsharedPost_URL(postId); // 存入欲分享之貼文id
+    window.scrollTo(0, 0); // 跳到頁面最上方(因為發文表單在頁面最上方)
   };
 
   // 動作 <送出貼文/重置發文表單>

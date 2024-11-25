@@ -7,7 +7,7 @@ const PostForm = ({ submitPost, postContent, setPostContent, postType, setPostTy
             {/* 轉貼不可添加多媒體 */}
             {postType !== 'share' && (
                 <>
-                    {/* 變更貼文屬性('image' / 'youtube' / 'instagram' / 'x') */}
+                    {/* 變更貼文屬性('image' / URL) */}
                     <select id="post-type" value={postType} onChange={(e) => setPostType(e.target.value)}>
                         <option value="image">圖片</option>          
                         <option value="URL">URL</option>

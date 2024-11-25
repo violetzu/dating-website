@@ -1,12 +1,11 @@
+.htaccess
 /php/.htaccess
 /php/db_connect.php
 /php/send_mail.php
 /php/mail.php
 /php/vendor/
-/php/composer.json
-/php/composer.lock
 /post_picture/
 /hMailServer/
 /WebSocket/node_modules/
-.htaccess
+/WebSocket/.env
 vite.svg
