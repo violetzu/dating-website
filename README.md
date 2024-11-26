@@ -26,14 +26,16 @@ react網頁架構及資料庫架構都會放在 [React內的readme](https://gith
 - [index.html](https://github.com/violetzu/dating-website/tree/main/index.html) 及 [assets資料夾](https://github.com/violetzu/dating-website/tree/main/assets) 是react導出後的實際網頁檔案  
 - [old](https://github.com/violetzu/dating-website/tree/main/old/)是轉換為React開發前的初始版本，現已棄用但可供參考
 
-# 各個指令的交互作用
+# Github相關教學
+
+### 各個指令的交互作用
 我覺得有這張圖比較知道在幹嘛 來源：[https://ithelp.ithome.com.tw/articles/10271811](https://ithelp.ithome.com.tw/articles/10271811)
 ![image](https://github.com/user-attachments/assets/d88b1720-4b37-47c2-a8c7-9ee156b5c80a)
 
-# 第一次clone到自己電腦
+### 第一次clone到自己電腦
 `git clone https://github.com/violetzu/dating-website.git`
 
-# 每次修改時(有合作者權限)
+### 每次修改時(有合作者權限)
 ***修改時請確保目錄在dating-website***
 
 1. 先拉取遠程倉庫的更改並嘗試自動合併：
@@ -69,6 +71,7 @@ react網頁架構及資料庫架構都會放在 [React內的readme](https://gith
 - 同時取消暫存區和工作目錄的所有修改 如果你想一次取消暫存區和工作目錄中的所有更改，可以依次使用：  
       `git reset --hard` `git clean -fd` 第一個命令會重置暫存區和已修改的檔案到上次提交的狀態，第二個命令會移除所有未追蹤的檔案和資料夾。
 
+### -
 完成專案階段編譯`npm run build`
 
 
