@@ -38,9 +38,19 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
             {/* 鑲嵌的 Instagram 貼文 */}
             {post.type === 'instagram' && post.url && (
                 <div className="post-instagram">
-                    <blockquote className="instagram-media" data-instgrm-permalink={`https://www.instagram.com/p/${post.url}/`} data-instgrm-version="14">
+                    {post.type === 'instagram' && post.url && (
+                        <iframe
+                            src={`https://www.instagram.com/p/${post.url}/embed`}
+                            title="Instagram Post"
+                            frameBorder="0"
+                            scrolling="no"
+                            allowTransparency="true"
+                            allow="encrypted-media"
+                        />
+                    )}
+                    {/* <blockquote className="instagram-media" data-instgrm-permalink={`https://www.instagram.com/p/${post.url}/`} data-instgrm-version="14">
                     </blockquote>
-                    <script async src="https://www.instagram.com/embed.js"></script>
+                    <script async src="https://www.instagram.com/embed.js"></script> */}
                 </div>
             )}
 
