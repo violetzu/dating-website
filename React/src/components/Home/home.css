@@ -217,6 +217,12 @@ iframe {
     margin-top: 10px;
 }
 
+.post-instagram iframe {
+    width: 100%; /* 寬度設成與框同寬(所以可以發長圖) */
+    aspect-ratio: 1 / 1.3; /* 保持1:1.3的比例(餿主意) */
+    margin-top: 10px;
+}
+
 .post-footer {
     font-size: 14px;
     color: #65676b;

@@ -253,7 +253,7 @@ function Home() {
         const videoId = ytMatch[1];
         formData.append('type', 'youtube');
         formData.append('url', videoId);
-      } 
+      }
       // Instagram 檢測
       else {
         const igRegex = /(?:https?:\/\/)?(?:www\.)?instagram\.com\/p\/([a-zA-Z0-9_-]+)/;
@@ -262,7 +262,7 @@ function Home() {
           const postId = igMatch[1];
           formData.append('type', 'instagram');
           formData.append('url', postId);
-        } 
+        }
         // X 檢測
         else {
           const xRegex = /(?:https?:\/\/)?(?:www\.)?x\.com\/(?:[^\/]+)\/status\/([0-9]+)/;
@@ -271,7 +271,7 @@ function Home() {
             const postId = xMatch[1];
             formData.append('type', 'x');
             formData.append('url', postId);
-          } 
+          }
           // 其他未定義的連結類型
           else {
             alert("無法提取 貼文 ID，URL 不是youtube/ig/x");
