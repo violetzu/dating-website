@@ -346,6 +346,7 @@ function Home() {
                 showComments={showComments}
                 submitComment={submitComment}
                 sharePost={sharePost}
+                postOwner={currentViewUsername == thisUsername}
               />
             ))}
           </div>

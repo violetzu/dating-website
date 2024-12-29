@@ -1,5 +1,5 @@
 // 元件 <貼文> checkUserName用在PO文用戶名稱處
-const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submitComment, sharePost, isShared = false }) => {
+const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submitComment, sharePost, postOwner, isShared = false }) => {
     const likesText = getLikeText(post.liked_by_user, post.likes_count, isShared);
 
     return (
@@ -9,6 +9,7 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
                     {post.username}
                 </span>
                 <span className="post-datetime">{post.created_at}</span>
+                {postOwner && !isShared && <span className="post-settings"><button>編輯</button></span>}
             </div>
 
             {/* 貼文內文(caption) */}
@@ -77,6 +78,7 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
                         showComments={showComments}
                         submitComment={submitComment}
                         sharePost={sharePost}
+                        postOwner={postOwner}
                         isShared={true}
                     />
                 </div>
