@@ -307,6 +307,26 @@ function Home() {
     }
   }, [postContent, postType, postImage, sharedPost_URL, loadPosts]);
 
+  // 動作 <點讚>
+  const deletePost = useCallback(async (postId = null) => {
+    try {
+      const response = await fetch('/php/delete_post.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ post_id: postId }),
+      });
+
+      const data = await response.json();
+      console.log(data.message);
+
+      // 刷新個人頁面貼文
+      loadPosts(thisUsername);
+    } catch (error) {
+      console.error('解析 JSON 失敗:', error);
+    }
+  }, []);
 
   return (
     <>
@@ -346,7 +366,8 @@ function Home() {
                 showComments={showComments}
                 submitComment={submitComment}
                 sharePost={sharePost}
-                postOwner={currentViewUsername == thisUsername}
+                postOwner={currentViewUsername === thisUsername}
+                deletePost={deletePost}
               />
             ))}
           </div>
