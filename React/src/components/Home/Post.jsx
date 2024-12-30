@@ -1,10 +1,9 @@
 import { useState } from "react";
 
 // 元件 <貼文> checkUserName用在PO文用戶名稱處
-const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submitComment, sharePost, postOwner, deletePost, isShared = false }) => {
+const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submitComment, sharePost, postOwner, showEditMode, deletePost, submitEditedPost, isShared = false }) => {
     const likesText = getLikeText(post.liked_by_user, post.likes_count, isShared);
-    const [edit, setEdit] = useState(false);
-    const [editedContent, setEditedContent] = useState('');
+      const [editedContent, setEditedContent] = useState(''); //欲編輯的新貼文內文
 
     return (
         <div className="post" id={`post-${post.id}`} key={post.id}>
@@ -14,8 +13,8 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
                 </span>
                 <span className="post-datetime">{post.created_at}</span>
                 {postOwner && !isShared && <span className="post-settings">
-                    {!edit && <button onClick={() => setEdit(!edit)}>編輯</button>}
-                    {edit && <button id="deletePost-button" onClick={() => deletePost(post.id)}>刪除</button>}
+                    {!post.showEditMode ? <button onClick={() => showEditMode(post.id)}>編輯</button> :
+                        <button id="deletePost-button" onClick={() => deletePost(post.id)}>刪除</button>}
                 </span>}
             </div>
 
@@ -23,20 +22,20 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
 
             {/* 貼文內文(caption) */}
             <div className="post-content">
-                {!edit ? post.content :
-                    <form>
-                        <textarea id="post-content" value={editedContent} onChange={(e) => setEditContent(e.target.value)} placeholder={post.content} />
+                {!post.showEditMode ? post.content :
+                    <form onSubmit={(e) => submitEditedPost(e, post.id, editedContent)}>
+                        <textarea id="post-content" value={editedContent} onChange={(e) => setEditedContent(e.target.value)} placeholder={post.content} />
                         {/* 互動工具列(確認、取消) */}
                         <div className="post-actions">
-                            <button onClick={() => showComments(post.id)}>確認</button>
-                            <button onClick={() => setEdit(!edit)}>取消</button>
+                            <button type="submit">確認</button>
+                            <button onClick={() => {showEditMode(post.id); setEditedContent('');}}>取消</button>
                         </div>
                     </form>
                 }
             </div>
 
             {/* 編輯模式下這些東西都不會被顯示 */}
-            {!edit && <>
+            {!post.showEditMode && <>
                 {/* 照片、YT、分享只會擇一顯示 */}
                 {/* 照片 */}
                 {post.type === 'image' && post.url && (

@@ -173,7 +173,7 @@ function Home() {
   const showComments = (postId) => {
     setPosts((prevPosts) =>
       prevPosts.map((post) =>
-        post.id === postId ? { ...post, showComments: !post.showComments } : post
+        post.id === postId ? { ...post, editedContent: !post.showComments } : post
       )
     );
 
@@ -307,7 +307,16 @@ function Home() {
     }
   }, [postContent, postType, postImage, sharedPost_URL, loadPosts]);
 
-  // 動作 <點讚>
+  // 動作 <開關貼文編輯模式>
+  const showEditMode = (postId) => {
+    setPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === postId ? { ...post, showEditMode: !post.showEditMode } : post
+      )
+    );
+  };
+
+  // 動作 <刪除貼文>
   const deletePost = useCallback(async (postId = null) => {
     try {
       const response = await fetch('/php/delete_post.php', {
@@ -323,6 +332,35 @@ function Home() {
 
       // 刷新個人頁面貼文
       loadPosts(thisUsername);
+    } catch (error) {
+      console.error('解析 JSON 失敗:', error);
+    }
+  }, []);
+
+  // 動作 <送出已編輯貼文>
+  const submitEditedPost = useCallback(async (e, postId = null, newContent) => {
+    e.preventDefault();
+
+    // 將貼文內容加入資料庫
+    const formData = new FormData();
+    formData.append('postId', postId);
+    formData.append('content', newContent);
+
+    try {
+      // 實際送出貼文至後台
+      const response = await fetch('/php/edit_post.php', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      // 清空表單，重置到預設狀態並發布
+      if (data.success) {
+        console.log('編輯成功: ' + data.message);
+      } else {
+        alert('編輯失敗: ' + data.message);
+      }
     } catch (error) {
       console.error('解析 JSON 失敗:', error);
     }
@@ -367,7 +405,9 @@ function Home() {
                 submitComment={submitComment}
                 sharePost={sharePost}
                 postOwner={currentViewUsername === thisUsername}
+                showEditMode={showEditMode}
                 deletePost={deletePost}
+                submitEditPost={submitEditedPost}
               />
             ))}
           </div>
