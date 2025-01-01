@@ -11,3 +11,7 @@
 {"username":"456","message":"123"}
 {"username":"yee","message":"yo"}
 {"username":"marimo","message":"56666"}
+{"username":"marimo","message":"/早安"}
+{"username":"AI","message":"\n早安! (Zǎo'ān)\n\n* 早 (Zǎo) - early, morning\n* 安 (Ān) - peaceful, safe\n\nSo, \"早安\" (Zǎo'ān) means \"good morning\" or \"peaceful morning\"."}
+{"username":"marimo","message":"/I m boring"}
+{"username":"AI","message":"Oh no! 😔 Being bored can be tough. Is there anything you're interested in or want to talk about? I'm here to listen and help if I can. Sometimes talking about what's on your mind can help pass the time and make you feel more engaged. Let me know if there's anything specific you'd like to chat about."}
