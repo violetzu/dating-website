@@ -173,7 +173,7 @@ function Home() {
   const showComments = (postId) => {
     setPosts((prevPosts) =>
       prevPosts.map((post) =>
-        post.id === postId ? { ...post, editedContent: !post.showComments } : post
+        post.id === postId ? { ...post, showComments: !post.showComments } : post
       )
     );
 
