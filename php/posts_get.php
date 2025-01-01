@@ -5,22 +5,14 @@ include 'session.php'; //確保登入
 $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 20;
 $username = isset($_GET['username']) ? $_GET['username'] : null;
 
-// 基本查詢語句，包含是否有username參數的查詢條件
+// 基本查詢語句，根據是否有username參數決定查詢條件
 $query = "
     SELECT posts.id, posts.username, posts.content, posts.type, posts.url, posts.created_at, posts.share_count,
            COUNT(DISTINCT likes.id) AS likes_count,
-           COUNT(DISTINCT comments.id) AS comments_count,
-           CASE WHEN EXISTS(SELECT 1 FROM likes WHERE likes.post_id = posts.id AND likes.username = ?) THEN 1 ELSE 0 END AS liked_by_user,
-           shared_posts.id AS shared_post_id, shared_posts.username AS shared_post_username,
-           shared_posts.content AS shared_post_content, shared_posts.created_at AS shared_post_created_at,
-           COUNT(DISTINCT shared_likes.id) AS shared_likes_count,
-           COUNT(DISTINCT shared_comments.id) AS shared_comments_count
+           COUNT(DISTINCT comments.id) AS comments_count
     FROM posts
     LEFT JOIN likes ON posts.id = likes.post_id
     LEFT JOIN comments ON posts.id = comments.post_id
-    LEFT JOIN posts AS shared_posts ON posts.type = 'share' AND posts.url = shared_posts.id
-    LEFT JOIN likes AS shared_likes ON shared_posts.id = shared_likes.post_id
-    LEFT JOIN comments AS shared_comments ON shared_posts.id = shared_comments.post_id
 ";
 
 if ($username) {
@@ -36,9 +28,9 @@ $query .= "
 $stmt = $conn->prepare($query);
 
 if ($username) {
-    $stmt->bind_param('ssi', $_SESSION['username'], $username, $limit);
+    $stmt->bind_param('si', $username, $limit);
 } else {
-    $stmt->bind_param('si', $_SESSION['username'], $limit);
+    $stmt->bind_param('i', $limit);
 }
 
 if (!$stmt) {
@@ -52,22 +44,33 @@ $result = $stmt->get_result();
 
 $posts = [];
 while ($row = $result->fetch_assoc()) {
-    // 檢查是否為分享類型並填充分享帖子的資訊
-    if ($row['type'] === 'share' && !empty($row['shared_post_id'])) {
-        $row['shared_post'] = [
-            'id' => $row['shared_post_id'],
-            'username' => $row['shared_post_username'],
-            'content' => $row['shared_post_content'],
-            'created_at' => $row['shared_post_created_at'],
-            'likes_count' => $row['shared_likes_count'],
-            'comments_count' => $row['shared_comments_count']
-        ];
-    } else {
-        $row['shared_post'] = null;
+    // 對每個帖子單獨查詢點贊狀態
+    $like_query = "SELECT EXISTS(SELECT 1 FROM likes WHERE post_id = ? AND username = ?) AS liked_by_user";
+    $like_stmt = $conn->prepare($like_query);
+    $like_stmt->bind_param('is', $row['id'], $_SESSION['username']);
+    $like_stmt->execute();
+    $like_result = $like_stmt->get_result();
+    $row['liked_by_user'] = $like_result->fetch_assoc()['liked_by_user'];
+    
+    // 如果帖子是分享類型，查詢被分享的帖子
+    if ($row['type'] === 'share') {
+        $shared_post_id = $row['url'];
+        $shared_post_query = "
+            SELECT posts.id, posts.username, posts.content, posts.type, posts.url, posts.created_at, posts.share_count,
+                   COUNT(DISTINCT likes.id) AS likes_count,
+                   COUNT(DISTINCT comments.id) AS comments_count
+            FROM posts
+            LEFT JOIN likes ON posts.id = likes.post_id
+            LEFT JOIN comments ON posts.id = comments.post_id
+            WHERE posts.id = ?
+            GROUP BY posts.id
+        ";
+        $shared_post_stmt = $conn->prepare($shared_post_query);
+        $shared_post_stmt->bind_param('i', $shared_post_id);
+        $shared_post_stmt->execute();
+        $shared_post_result = $shared_post_stmt->get_result();
+        $row['shared_post'] = $shared_post_result->fetch_assoc();
     }
-
-    // 刪除臨時的共享帖子字段
-    unset($row['shared_post_id'], $row['shared_post_username'], $row['shared_post_content'], $row['shared_post_created_at'], $row['shared_likes_count'], $row['shared_comments_count']);
 
     $posts[] = $row;
 }

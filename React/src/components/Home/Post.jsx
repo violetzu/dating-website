@@ -50,7 +50,6 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
                         <iframe
                             src={`https://www.youtube.com/embed/${post.url}`}
                             title="YouTube video player"
-                            frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                         />
@@ -64,15 +63,13 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
                             <iframe
                                 src={`https://www.instagram.com/p/${post.url}/embed`}
                                 title="Instagram Post"
-                                frameBorder="0"
-                                scrolling="no"
                                 allowTransparency="true"
                                 allow="encrypted-media"
                             />
                         )}
                         {/* <blockquote className="instagram-media" data-instgrm-permalink={`https://www.instagram.com/p/${post.url}/`} data-instgrm-version="14">
-                    </blockquote>
-                    <script async src="https://www.instagram.com/embed.js"></script> */}
+                        </blockquote>
+                        <script async src="https://www.instagram.com/embed.js"></script> */}
                     </div>
                 )}
 

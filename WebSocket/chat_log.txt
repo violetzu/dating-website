@@ -3,3 +3,11 @@
 {"username":"小白","message":"我愛軟體工程"}
 {"username":"marimo","message":"好懶得做喔"}
 {"username":"marimo","message":"：（"}
+{"username":"yee","message":"J個是公開群聊嗎"}
+{"username":"yee","message":"看起來是齁"}
+{"username":"yee","message":"o4"}
+{"username":"yee","message":"欸這個區塊時不時會閃一下欸"}
+{"username":"marimo","message":"問就是網路不穩重連了:D"}
+{"username":"456","message":"123"}
+{"username":"yee","message":"yo"}
+{"username":"marimo","message":"56666"}
