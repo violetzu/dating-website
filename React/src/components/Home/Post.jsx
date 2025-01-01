@@ -3,7 +3,7 @@ import { useState } from "react";
 // 元件 <貼文> checkUserName用在PO文用戶名稱處
 const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submitComment, sharePost, postOwner, showEditMode, deletePost, submitEditedPost, isShared = false }) => {
     const likesText = getLikeText(post.liked_by_user, post.likes_count, isShared);
-      const [editedContent, setEditedContent] = useState(''); //欲編輯的新貼文內文
+    const [editedContent, setEditedContent] = useState(''); //欲編輯的新貼文內文
 
     return (
         <div className="post" id={`post-${post.id}`} key={post.id}>
@@ -22,17 +22,41 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
 
             {/* 貼文內文(caption) */}
             <div className="post-content">
-                {!post.showEditMode ? post.content :
-                    <form onSubmit={(e) => submitEditedPost(e, post.id, editedContent)}>
-                        <textarea id="post-content" value={editedContent} onChange={(e) => setEditedContent(e.target.value)} placeholder={post.content} />
-                        {/* 互動工具列(確認、取消) */}
+                {!post.showEditMode ? (
+                    post.content
+                ) : (
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault(); // 阻止默認提交行為
+                            if (!editedContent.trim()) {
+                                alert('內容不能為空');
+                                return;
+                            }
+                            submitEditedPost(post.id, editedContent); // 提交編輯內容
+                        }}
+                    >
+                        <textarea
+                            id="post-content"
+                            value={editedContent}
+                            onChange={(e) => setEditedContent(e.target.value)}
+                            placeholder={post.content}
+                        />
                         <div className="post-actions">
                             <button type="submit">確認</button>
-                            <button onClick={() => {showEditMode(post.id); setEditedContent('');}}>取消</button>
+                            <button
+                                type="button" // 明確類型，避免誤觸發提交
+                                onClick={() => {
+                                    showEditMode(post.id); // 退出編輯模式
+                                    setEditedContent(''); // 清空已編輯的內容
+                                }}
+                            >
+                                取消
+                            </button>
                         </div>
                     </form>
-                }
+                )}
             </div>
+
 
             {/* 編輯模式下這些東西都不會被顯示 */}
             {!post.showEditMode && <>

@@ -338,8 +338,7 @@ function Home() {
   }, []);
 
   // 動作 <送出已編輯貼文>
-  const submitEditedPost = useCallback(async (e, postId = null, newContent) => {
-    e.preventDefault();
+  const submitEditedPost = useCallback(async (postId, newContent) => {
 
     // 將貼文內容加入資料庫
     const formData = new FormData();
@@ -357,9 +356,11 @@ function Home() {
 
       // 清空表單，重置到預設狀態並發布
       if (data.success) {
-        console.log('編輯成功: ' + data.message);
+        console.log('編輯成功');
+        showEditMode(post.id); // 退出編輯模式
+        setEditedContent(''); // 清空已編輯的內容
       } else {
-        alert('編輯失敗: ' + data.message);
+        alert('編輯失敗');
       }
     } catch (error) {
       console.error('解析 JSON 失敗:', error);
@@ -407,7 +408,7 @@ function Home() {
                 postOwner={currentViewUsername === thisUsername}
                 showEditMode={showEditMode}
                 deletePost={deletePost}
-                submitEditPost={submitEditedPost}
+                submitEditedPost={submitEditedPost}
               />
             ))}
           </div>

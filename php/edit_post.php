@@ -4,13 +4,13 @@ include 'db_connect.php'; //連接資料庫
 include 'session.php'; //確保登入
 
 $username = $_SESSION['username'];
-$post_id = $_POST['postId']
+$post_id = $_POST['postId'];
 $content = $_POST['content'];
 
 // 將編輯過的貼文內容插入到數據庫
 $sql = "UPDATE Posts SET content = ? WHERE id = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('si', $content, $post_id);
+$stmt->bind_param('is', $content, $post_id);
 $stmt->execute();
 
 if ($stmt->affected_rows > 0) {
