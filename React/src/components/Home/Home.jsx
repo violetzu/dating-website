@@ -357,8 +357,7 @@ function Home() {
       // 清空表單，重置到預設狀態並發布
       if (data.success) {
         console.log('編輯成功');
-        showEditMode(post.id); // 退出編輯模式
-        setEditedContent(''); // 清空已編輯的內容
+        loadPosts(thisUsername)
       } else {
         alert('編輯失敗');
       }

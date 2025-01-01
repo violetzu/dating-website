@@ -33,6 +33,7 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
                                 return;
                             }
                             submitEditedPost(post.id, editedContent); // 提交編輯內容
+                            showEditMode(post.id);
                         }}
                     >
                         <textarea
