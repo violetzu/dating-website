@@ -197,6 +197,32 @@ header button:hover {
     font-size: 12px;
 }
 
+.post-header .post-settings button {
+    background: none;
+    border: none;
+    color: white;
+    background-color: #96addc;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.post-settings button:hover {
+    color: white;
+    background-color: #4267b2;
+}
+
+#deletePost-button{
+    background-color: #dc9696;
+}
+
+#deletePost-button:hover{
+    background-color: #b24242;
+}
+
 .post-content {
     margin: 10px 0;
     font-size: 16px;
