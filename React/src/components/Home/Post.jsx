@@ -34,6 +34,7 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
                             }
                             submitEditedPost(post.id, editedContent); // 提交編輯內容
                             showEditMode(post.id);
+                            setEditedContent('');
                         }}
                     >
                         <textarea
@@ -109,21 +110,24 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
                 )}
 
                 {/* 貼文屬性為'share'時才有的區塊(才會有.shared_post) */}
-                {post.type === 'share' && post.shared_post && (
+                {post.type === 'share' && (
                     <div className="shared-post-container">
-                        {/* !!![生成]內嵌貼文物件(被分享的貼文)!!! */}
-                        <Post
-                            key={`shared-${post.id}-${post.shared_post.id}`}
-                            post={post.shared_post}
-                            checkUserPage={checkUserPage}
-                            pickLike={pickLike}
-                            getLikeText={getLikeText}
-                            showComments={showComments}
-                            submitComment={submitComment}
-                            sharePost={sharePost}
-                            postOwner={postOwner}
-                            isShared={true}
-                        />
+                        {post.shared_post ?
+                            {/* !!![生成]內嵌貼文物件(被分享的貼文)!!! */ }
+                            (<Post
+                                key={`shared-${post.id}-${post.shared_post.id}`}
+                                post={post.shared_post}
+                                checkUserPage={checkUserPage}
+                                pickLike={pickLike}
+                                getLikeText={getLikeText}
+                                showComments={showComments}
+                                submitComment={submitComment}
+                                sharePost={sharePost}
+                                postOwner={postOwner}
+                                isShared={true}
+                            />) :
+                            <span>此貼文已被刪除!</span>
+                        }
                     </div>
                 )}
 
