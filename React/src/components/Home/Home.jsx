@@ -353,11 +353,14 @@ function Home() {
       });
 
       const data = await response.json();
+      alert(thisUsername);
 
       // 清空表單，重置到預設狀態並發布
       if (data.success) {
         console.log('編輯成功');
+        alert(thisUsername);
         loadPosts(thisUsername)
+        alert(thisUsername);
       } else {
         alert('編輯失敗');
       }
