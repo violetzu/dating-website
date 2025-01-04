@@ -20,24 +20,4 @@ const Header = ({ thisUsername, logout, searchName, setSearchName, checkUserPage
     </header>
 );
 
-// 元件 <側欄>
-const Sidebar = ({ currentViewUsername, userBio, userTags }) => (
-    <aside className="sidebar">
-        <h3 id="username-sidebar">{currentViewUsername ? currentViewUsername : ''}</h3>
-        <div id="sidebar-item"></div>
-
-        {/* 進入各用戶個人主頁欲顯示之細項 */}
-        {currentViewUsername && (
-            <div id="user-details">
-                <p id="user-bio">{userBio}</p>
-                <div id="user-tags">
-                    {userTags.map(tag => (
-                        <span className="user-tag" key={tag}>{tag}</span>
-                    ))}
-                </div>
-            </div>
-        )}
-    </aside>
-);
-
-export { Header, Sidebar };
+export { Header };
