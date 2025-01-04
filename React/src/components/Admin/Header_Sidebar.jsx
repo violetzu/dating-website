@@ -1,5 +1,5 @@
 // 元件 <當前網頁最上方>
-const Header = ({ thisUsername, logout, searchName, setSearchName, checkUserPage }) => (
+const Header = ({ thisUsername, logout, searchName, setSearchName, checkUserPage, getUser }) => (
     <header>
         {/* 標題LOGO */}
         <div className="header-left">
@@ -12,9 +12,9 @@ const Header = ({ thisUsername, logout, searchName, setSearchName, checkUserPage
             <button id="search-button" onClick={() => checkUserPage(searchName)}>搜尋</button>
         </div>
 
-        {/* 個人資料快捷鍵 */}
+        {/* 用戶列表快捷鍵 */}
         <div className="header-right">
-            <button id="loadpost-setting">管理員 {thisUsername}</button>
+            <button id="loadpost-setting" onClick={getUser}>用戶列表</button>
             <button id="logout-button" onClick={logout}>登出</button>
         </div>
     </header>

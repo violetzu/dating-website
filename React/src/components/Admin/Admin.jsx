@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from './Header_Sidebar';
 import Post from './Post';
+import UserCard from './UserCard';
 import './admin.css';
 
 function MenuComponent() {
@@ -10,6 +11,8 @@ function MenuComponent() {
   const [currentViewUsername, setCurrentViewUsername] = useState('');
   const [posts, setPosts] = useState([]);
   const [searchName, setSearchName] = useState('');
+  const [showUsers, setShowUsers] = useState(false);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     fetchUserInfo();
@@ -170,6 +173,43 @@ function MenuComponent() {
     }
   }, []);
 
+  // 動作 <取得用戶清單>
+  const getUsers = useCallback(async (limit = 20) => {
+    setShowUsers(!showUsers);
+
+    if (showUsers) {
+      const response = await fetch(`/php/users_get.php?limit=${limit}`);
+
+      const data = await response.json();
+      if (data.success) {
+        setUsers(data.users);
+      } else {
+        alert('載入失敗: ' + data.message);
+      }
+
+      // 用checkUserPage抓取個簽與標籤添加進users裡的每個user
+      users.forEach( async (User) => {
+        const info = await fetch('/php/userdisplay.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username: User.username })
+        });
+
+        if (info.success) {
+          setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+              user.id === User.id ? { ...user, bio: info.bio, tags: info.tags } : user
+            )
+          );
+        } else {
+          console.error('獲取用戶明細失敗: ' + info.message);
+        }
+      })
+    }
+  }, [])
+
   return (
     <div className='admin'>
       <Header
@@ -178,20 +218,34 @@ function MenuComponent() {
         searchName={searchName}
         setSearchName={setSearchName}
         checkUserPage={checkUserPage}
+        getUsers={getUsers}
+        setUsers={setUsers}
       />
       <div className="container">
         <div className="main-content">
           <h2 id="posts-title">{currentViewUsername ? `${currentViewUsername}的貼文` : '推薦貼文'}</h2>
-          <div id="posts">
-            {posts.map(post => (
-              <Post
-                key={post.id}
-                post={post}
-                checkUserPage={checkUserPage}
-                showComments={showComments}
-              />
-            ))}
-          </div>
+
+          {!showUsers ?
+            <div id="posts">
+              {posts.map(post => (
+                <Post
+                  key={post.id}
+                  post={post}
+                  checkUserPage={checkUserPage}
+                  showComments={showComments}
+                />
+              ))}
+            </div> :
+            <div id="users">
+              {users.map(user => (
+                <UserCard
+                  key={user.id}
+                  user={user}
+                />
+              ))}
+            </div>
+          }
+
         </div>
       </div>
     </div>
