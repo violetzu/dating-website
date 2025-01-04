@@ -5,19 +5,11 @@ import Post from './Post';
 import './admin.css';
 
 function MenuComponent() {
-  const [selectedMenu, setSelectedMenu] = useState(null);
   const navigate = useNavigate();
   const [thisUsername, setThisUsername] = useState('');
   const [currentViewUsername, setCurrentViewUsername] = useState('');
   const [posts, setPosts] = useState([]);
-  const [userBio, setUserBio] = useState('');
-  const [userTags, setUserTags] = useState([]);
   const [searchName, setSearchName] = useState('');
-  const [postType, setPostType] = useState('image'); //貼文類型
-  const [postContent, setPostContent] = useState('');
-  const [postImage, setPostImage] = useState(null); //照片來源(資料型態為blob, 儲存的是"檔案"物件)
-  const [ytURL_sharedPost, setytURL_sharedPost] = useState(''); //youtube網址或被分享貼文的id
-
 
   useEffect(() => {
     fetchUserInfo();
@@ -83,7 +75,7 @@ function MenuComponent() {
     }
   }, [navigate]);
 
-  // 動作 <顯示用戶個人主頁資訊>
+  // 動作 <顯示用戶個人主頁資訊(僅貼文)>
   const checkUserPage = useCallback(async (username) => {
     try {
       const response = await fetch('/php/userdisplay.php', {
@@ -95,8 +87,6 @@ function MenuComponent() {
       });
       const data = await response.json();
       if (data.success) {
-        setUserBio(data.bio);
-        setUserTags(data.tags);
         setCurrentViewUsername(username);
 
         // 加載所選用戶的貼文
@@ -108,25 +98,6 @@ function MenuComponent() {
       }
     } catch (error) {
       console.error('Error fetching user details:', error);
-    }
-  }, []);
-
-  // 動作 <更新貼文數據>
-  const updatePostDetails = useCallback(async (postId) => {
-    try {
-      const response = await fetch(`/php/post_details_get.php?post_id=${postId}`);
-      const data = await response.json();
-      if (data.success) {
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, ...data.post } : post
-          )
-        );
-      } else {
-        console.error('更新貼文詳情失敗: ' + data.message);
-      }
-    } catch (error) {
-      console.error('解析 JSON 失敗:', error);
     }
   }, []);
 
@@ -199,10 +170,6 @@ function MenuComponent() {
     }
   }, []);
 
-  const handleMenuClick = (menu) => {
-    setSelectedMenu(menu);
-  };
-
   return (
     <div className='admin'>
       <Header
@@ -212,17 +179,6 @@ function MenuComponent() {
         setSearchName={setSearchName}
         checkUserPage={checkUserPage}
       />
-      <h1>管理員介面</h1>
-      <p>點留言數就可以顯示留言呦<br />這裡先放一個主頁狀況的overveiw而已<br />之後應該還要像下面的選單一樣可以查看用戶之類的(or刪貼文嗎?)</p><hr />
-      <ul>
-        <li onClick={() => handleMenuClick('Menu1')}>發文及留言統計</li>
-        <li onClick={() => handleMenuClick('Menu2')}>選單二</li>
-        <li onClick={() => handleMenuClick('Menu3')}>用戶查詢</li>
-        <li onClick={() => handleMenuClick('Menu4')}>選單四</li>
-      </ul>
-      <div>
-        {selectedMenu && <p>你選擇了: {selectedMenu}</p>}
-      </div>
       <div className="container">
         <div className="main-content">
           <h2 id="posts-title">{currentViewUsername ? `${currentViewUsername}的貼文` : '推薦貼文'}</h2>
