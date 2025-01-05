@@ -77,7 +77,7 @@ function MenuComponent() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ username })
       });
       const data = await response.json();
       if (data.success) {
@@ -201,6 +201,23 @@ function MenuComponent() {
     }
   }, [])
 
+  const banUser = useCallback(async (userId, userIdentity) => {
+    const response = await fetch('/php/ban_unban_user.php', {
+      method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: userId, user_identity: userIdentity })
+    });
+
+    if (response.success) {
+      alert('用戶' + userId + '已停權.');
+    } else {
+      console.error("操作失敗." + response.message);
+      alert('發生錯誤.');
+    }
+  }, [])
+
   return (
     <div className='admin'>
       <Header
@@ -232,11 +249,11 @@ function MenuComponent() {
                 <UserCard
                   key={user.id}
                   user={user}
+                  banUser={banUser}
                 />
               ))}
             </div>
           }
-
         </div>
       </div>
     </div>

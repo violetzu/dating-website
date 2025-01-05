@@ -4,7 +4,7 @@ include 'session.php'; //確保登入
 
 $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 20;
 
-$query = "SELECT id, username, identity FROM users"
+$query = "SELECT id, username, identity, email FROM users"
 
 $query .= "
     GROUP BY id
