@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from './Header_Sidebar';
+import { fetchUsername } from '../general_function';
 import Post from './Post';
 import UserCard from './UserCard';
 import './admin.css';
@@ -20,17 +21,7 @@ function MenuComponent() {
   }, []);
 
   const fetchUserInfo = useCallback(async () => {
-    try {
-      const response = await fetch('/php/get_user_info.php');
-      const data = await response.json();
-      if (data.success) {
-        setThisUsername(data.username);
-      } else {
-        navigate('/login');
-      }
-    } catch (error) {
-      console.error('解析 JSON 失敗:', error);
-    }
+    fetchUsername(setThisUsername);
   }, [navigate]);
 
   // 動作 <加載貼文>
