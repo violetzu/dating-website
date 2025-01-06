@@ -113,7 +113,7 @@ const Post = ({ post, checkUserPage, pickLike, getLikeText, showComments, submit
                 {post.type === 'share' && (
                     <div className="shared-post-container">
                         {post.shared_post ?
-                            {/* !!![生成]內嵌貼文物件(被分享的貼文)!!! */ }
+                            /* !!![生成]內嵌貼文物件(被分享的貼文)!!! */ 
                             (<Post
                                 key={`shared-${post.id}-${post.shared_post.id}`}
                                 post={post.shared_post}
