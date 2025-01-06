@@ -1,5 +1,5 @@
 // 元件 <當前網頁最上方>
-const Header = ({ thisUsername, logout, searchName, setSearchName, checkUserPage }) => (
+const Header = ({ thisUsername, logout, searchName, setSearchName, checkUserPage, getUser }) => (
     <header>
         {/* 標題LOGO */}
         <div className="header-left">
@@ -12,32 +12,12 @@ const Header = ({ thisUsername, logout, searchName, setSearchName, checkUserPage
             <button id="search-button" onClick={() => checkUserPage(searchName)}>搜尋</button>
         </div>
 
-        {/* 個人資料快捷鍵 */}
+        {/* 用戶列表快捷鍵 */}
         <div className="header-right">
-            <button id="loadpost-setting">管理員 {thisUsername}</button>
+            <button id="loadpost-setting" onClick={getUser}>用戶列表</button>
             <button id="logout-button" onClick={logout}>登出</button>
         </div>
     </header>
 );
 
-// 元件 <側欄>
-const Sidebar = ({ currentViewUsername, userBio, userTags }) => (
-    <aside className="sidebar">
-        <h3 id="username-sidebar">{currentViewUsername ? currentViewUsername : ''}</h3>
-        <div id="sidebar-item"></div>
-
-        {/* 進入各用戶個人主頁欲顯示之細項 */}
-        {currentViewUsername && (
-            <div id="user-details">
-                <p id="user-bio">{userBio}</p>
-                <div id="user-tags">
-                    {userTags.map(tag => (
-                        <span className="user-tag" key={tag}>{tag}</span>
-                    ))}
-                </div>
-            </div>
-        )}
-    </aside>
-);
-
-export { Header, Sidebar };
+export { Header };

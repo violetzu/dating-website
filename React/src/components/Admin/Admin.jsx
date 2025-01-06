@@ -1,23 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from './Header_Sidebar';
+import { fetchUsername } from '../general_function';
 import Post from './Post';
+import UserCard from './UserCard';
 import './admin.css';
 
 function MenuComponent() {
-  const [selectedMenu, setSelectedMenu] = useState(null);
   const navigate = useNavigate();
   const [thisUsername, setThisUsername] = useState('');
   const [currentViewUsername, setCurrentViewUsername] = useState('');
   const [posts, setPosts] = useState([]);
-  const [userBio, setUserBio] = useState('');
-  const [userTags, setUserTags] = useState([]);
   const [searchName, setSearchName] = useState('');
-  const [postType, setPostType] = useState('image'); //貼文類型
-  const [postContent, setPostContent] = useState('');
-  const [postImage, setPostImage] = useState(null); //照片來源(資料型態為blob, 儲存的是"檔案"物件)
-  const [ytURL_sharedPost, setytURL_sharedPost] = useState(''); //youtube網址或被分享貼文的id
-
+  const [showUsers, setShowUsers] = useState(false);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     fetchUserInfo();
@@ -25,17 +21,7 @@ function MenuComponent() {
   }, []);
 
   const fetchUserInfo = useCallback(async () => {
-    try {
-      const response = await fetch('/php/get_user_info.php');
-      const data = await response.json();
-      if (data.success) {
-        setThisUsername(data.username);
-      } else {
-        navigate('/login');
-      }
-    } catch (error) {
-      console.error('解析 JSON 失敗:', error);
-    }
+    fetchUsername(setThisUsername);
   }, [navigate]);
 
   // 動作 <加載貼文>
@@ -83,7 +69,7 @@ function MenuComponent() {
     }
   }, [navigate]);
 
-  // 動作 <顯示用戶個人主頁資訊>
+  // 動作 <顯示用戶個人主頁資訊(僅貼文)>
   const checkUserPage = useCallback(async (username) => {
     try {
       const response = await fetch('/php/userdisplay.php', {
@@ -91,12 +77,10 @@ function MenuComponent() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ username })
       });
       const data = await response.json();
       if (data.success) {
-        setUserBio(data.bio);
-        setUserTags(data.tags);
         setCurrentViewUsername(username);
 
         // 加載所選用戶的貼文
@@ -108,25 +92,6 @@ function MenuComponent() {
       }
     } catch (error) {
       console.error('Error fetching user details:', error);
-    }
-  }, []);
-
-  // 動作 <更新貼文數據>
-  const updatePostDetails = useCallback(async (postId) => {
-    try {
-      const response = await fetch(`/php/post_details_get.php?post_id=${postId}`);
-      const data = await response.json();
-      if (data.success) {
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, ...data.post } : post
-          )
-        );
-      } else {
-        console.error('更新貼文詳情失敗: ' + data.message);
-      }
-    } catch (error) {
-      console.error('解析 JSON 失敗:', error);
     }
   }, []);
 
@@ -199,9 +164,59 @@ function MenuComponent() {
     }
   }, []);
 
-  const handleMenuClick = (menu) => {
-    setSelectedMenu(menu);
-  };
+  // 動作 <取得用戶清單>
+  const getUsers = useCallback(async (limit = 20) => {
+    setShowUsers(!showUsers);
+
+    if (showUsers) {
+      const response = await fetch(`/php/users_get.php?limit=${limit}`);
+
+      const data = await response.json();
+      if (data.success) {
+        setUsers(data.users);
+      } else {
+        alert('載入失敗: ' + data.message);
+      }
+
+      // 用checkUserPage抓取個簽與標籤添加進users裡的每個user
+      users.forEach( async (User) => {
+        const info = await fetch('/php/userdisplay.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username: User.username })
+        });
+
+        if (info.success) {
+          setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+              user.id === User.id ? { ...user, bio: info.bio, tags: info.tags } : user
+            )
+          );
+        } else {
+          console.error('獲取用戶明細失敗: ' + info.message);
+        }
+      })
+    }
+  }, [])
+
+  const banUser = useCallback(async (userId, userIdentity) => {
+    const response = await fetch('/php/ban_unban_user.php', {
+      method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: userId, user_identity: userIdentity })
+    });
+
+    if (response.success) {
+      alert('用戶' + userId + '已停權.');
+    } else {
+      console.error("操作失敗." + response.message);
+      alert('發生錯誤.');
+    }
+  }, [])
 
   return (
     <div className='admin'>
@@ -211,31 +226,34 @@ function MenuComponent() {
         searchName={searchName}
         setSearchName={setSearchName}
         checkUserPage={checkUserPage}
+        getUsers={getUsers}
+        setUsers={setUsers}
       />
-      <h1>管理員介面</h1>
-      <p>點留言數就可以顯示留言呦<br />這裡先放一個主頁狀況的overveiw而已<br />之後應該還要像下面的選單一樣可以查看用戶之類的(or刪貼文嗎?)</p><hr />
-      <ul>
-        <li onClick={() => handleMenuClick('Menu1')}>發文及留言統計</li>
-        <li onClick={() => handleMenuClick('Menu2')}>選單二</li>
-        <li onClick={() => handleMenuClick('Menu3')}>用戶查詢</li>
-        <li onClick={() => handleMenuClick('Menu4')}>選單四</li>
-      </ul>
-      <div>
-        {selectedMenu && <p>你選擇了: {selectedMenu}</p>}
-      </div>
       <div className="container">
         <div className="main-content">
           <h2 id="posts-title">{currentViewUsername ? `${currentViewUsername}的貼文` : '推薦貼文'}</h2>
-          <div id="posts">
-            {posts.map(post => (
-              <Post
-                key={post.id}
-                post={post}
-                checkUserPage={checkUserPage}
-                showComments={showComments}
-              />
-            ))}
-          </div>
+
+          {!showUsers ?
+            <div id="posts">
+              {posts.map(post => (
+                <Post
+                  key={post.id}
+                  post={post}
+                  checkUserPage={checkUserPage}
+                  showComments={showComments}
+                />
+              ))}
+            </div> :
+            <div id="users">
+              {users.map(user => (
+                <UserCard
+                  key={user.id}
+                  user={user}
+                  banUser={banUser}
+                />
+              ))}
+            </div>
+          }
         </div>
       </div>
     </div>

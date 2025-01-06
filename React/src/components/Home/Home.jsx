@@ -335,7 +335,7 @@ function Home() {
     } catch (error) {
       console.error('解析 JSON 失敗:', error);
     }
-  }, []);
+  }, [thisUsername]);
 
   // 動作 <送出已編輯貼文>
   const submitEditedPost = useCallback(async (postId, newContent) => {
@@ -353,21 +353,18 @@ function Home() {
       });
 
       const data = await response.json();
-      alert(thisUsername);
 
       // 清空表單，重置到預設狀態並發布
       if (data.success) {
         console.log('編輯成功');
-        alert(thisUsername);
         loadPosts(thisUsername)
-        alert(thisUsername);
       } else {
         alert('編輯失敗');
       }
     } catch (error) {
       console.error('解析 JSON 失敗:', error);
     }
-  }, []);
+  }, [thisUsername]);
 
   return (
     <>
