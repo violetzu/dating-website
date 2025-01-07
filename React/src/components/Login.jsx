@@ -46,6 +46,8 @@ function Login() {
         navigate('/about');
       } else if (responseData.success && responseData.action === 'admin') {
         navigate('/admin');
+      } else if (responseData.success && responseData.action === 'ban') {
+        alert('你被ban了')
       } else {
         alert(responseData.message);
       }

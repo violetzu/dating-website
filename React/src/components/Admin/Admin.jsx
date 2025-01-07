@@ -187,21 +187,28 @@ function MenuComponent() {
   
 
   const banUser = useCallback(async (userId, userIdentity) => {
-    const response = await fetch('/php/ban_unban_user.php', {
-      method: 'POST',
+    try {
+      const response = await fetch('/php/ban_unban_user.php', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ user_id: userId, user_identity: userIdentity })
-    });
-
-    if (response.success) {
-      alert('用戶' + userId + '已停權.');
-    } else {
-      console.error("操作失敗." + response.message);
-      alert('發生錯誤.');
+        body: JSON.stringify({ user_id: userId, user_identity: userIdentity }),
+      });
+  
+      const data = await response.json();
+  
+      if (data.success) {
+        alert(`用戶 ${userId} 已停權.`);
+      } else {
+        console.error('操作失敗: ', data.message);
+        alert('發生錯誤: ' + data.message);
+      }
+    } catch (error) {
+      console.error('請求失敗: ', error);
+      alert('發生網絡錯誤，請稍後再試。');
     }
-  }, [])
+  }, []);
 
   return (
     <div className='admin'>
@@ -239,11 +246,7 @@ function MenuComponent() {
               {users.length > 0 ? (
                 <ul>
                   {users.map((user) => (
-                    <li key={user.id}>
-                      <p>用戶名: {user.username}</p>
-                      <p>個簽: {user.bio || '未提供'}</p>
-                      <p>標籤: {user.tags ? user.tags.join(', ') : '未提供'}</p>
-                    </li>
+                    <UserCard key={user.id} user={user} banUser={banUser} />
                   ))}
                 </ul>
               ) : (

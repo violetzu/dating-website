@@ -32,10 +32,13 @@ if (!empty($user) && !empty($pass)) {
             if ($identity == 0) {
                 $_SESSION['username'] = $user;
                 echo json_encode(['success' => true, 'action' => 'admin']);
-            } else {
+            } elseif ($identity == 1){
                 // 普通用户登录
                 $_SESSION['username'] = $user;
                 echo json_encode(['success' => true, 'action' => 'login']);
+            } elseif ($identity == -1){
+                // $_SESSION['username'] = $user;
+                echo json_encode(['success' => true, 'action' => 'ban']);
             }
         } else {
             echo json_encode(['success' => false, 'message' => '密碼錯誤']);

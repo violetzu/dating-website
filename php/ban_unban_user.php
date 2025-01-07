@@ -2,29 +2,37 @@
 include 'db_connect.php'; // 連接資料庫
 include 'session.php'; // 確保登入
 
-$user_id = $input['user_id'];
-$user_identity = $input['user_identity'];
+$input = json_decode(file_get_contents('php://input'), true);
+$user_id = intval($input['user_id']);
+$user_identity = intval($input['user_identity']);
 
-$stmt = $conn->prepare("SET identity = ? FROM users WHERE id = ? AND identity <> 0"); //確保不會變更到管理員的帳號
+// 準備 SQL 語句，確保不會影響管理員
+$sql = "
+    UPDATE users 
+    SET identity = ? 
+    WHERE id = ? 
+    AND identity <> 0";
+$stmt = $conn->prepare($sql);
 
-// 確定是要停權還是解除
-// (雖然可以用乘以-1的方式實作，而且管理員的0也通，但是應該還是這樣限制成固定答案比較保險)
-if ($user_identity == 1){
-    $stmt->bind_param('ii', -1, $user_id);
-} elseif ($user_identity == -1){
-    $stmt->bind_param('ii', 1, $user_id);
+// 確定是停權還是解除
+if ($user_identity == 1) { // 停權
+    $new_identity = -1;
+} elseif ($user_identity == -1) { // 解除停權
+    $new_identity = 1;
 } else {
-    echo json_encode(['success' => false, 'message' => '管理員身分不可更動.']);
+    echo json_encode(['success' => false, 'message' => '管理員身分不可更動']);
+    exit;
 }
 
-$stmt->execute();
+$stmt->bind_param('ii', $new_identity, $user_id);
 
-if ($stmt->affected_rows > 0){
-    echo json_encode(['success' => true, 'message' => '權限變更成功.']);
+// 執行語句
+if ($stmt->execute() && $stmt->affected_rows > 0) {
+    echo json_encode(['success' => true, 'message' => '權限變更成功']);
 } else {
-    echo json_encode(['success' => false, 'message' => '權限變更失敗.']);
+    echo json_encode(['success' => false, 'message' => '權限變更失敗或無變更']);
 }
 
-$stmt->close();  
-$conn->close();  
+$stmt->close();
+$conn->close();
 ?>

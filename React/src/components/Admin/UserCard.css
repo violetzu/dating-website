@@ -1,0 +1,90 @@
+/* 父容器樣式 */
+#userList {
+    display: flex;
+    flex-wrap: wrap; /* 自動換行排列 */
+    gap: 20px; /* 卡片之間的間距 */
+    justify-content: center; /* 水平居中 */
+    padding: 20px;
+    background-color: #f9f9f9; /* 背景顏色 */
+}
+
+/* 單個用戶卡片 */
+.userCard {
+    background-color: #ffffff; /* 卡片背景色 */
+    border: 1px solid #e0e0e0; /* 邊框顏色 */
+    border-radius: 8px; /* 圓角 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 輕微陰影 */
+    width: 300px; /* 固定寬度 */
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 內容靠左對齊 */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* 增加交互效果 */
+}
+
+.userCard:hover {
+    transform: translateY(-5px); /* 滑動效果 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* 懸停陰影 */
+}
+
+/* 卡片標頭樣式 */
+.userCard-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* 左右兩端對齊 */
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.userCard-header span {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333333;
+}
+
+.userCard-header button {
+    background-color: #ff4d4f; /* 按鈕背景 */
+    color: #ffffff; /* 按鈕文字 */
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.userCard-header button:hover {
+    background-color: #d9363e; /* 懸停背景色 */
+}
+
+/* 用戶詳情樣式 */
+#user-details {
+    width: 100%;
+    margin-top: 8px;
+}
+
+#user-details p {
+    font-size: 14px;
+    color: #666666;
+    margin: 4px 0;
+}
+
+#user-tags {
+    margin-top: 8px;
+}
+
+.user-tag {
+    display: inline-block;
+    background-color: #f0f0f0;
+    color: #333333;
+    border-radius: 12px;
+    padding: 4px 10px;
+    font-size: 12px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.user-tag:hover {
+    background-color: #d9d9d9;
+}
