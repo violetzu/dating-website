@@ -1,9 +1,6 @@
 // 元件 <貼文> checkUserName用在PO文用戶名稱處
-const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUsers, isShared = false }) => {
+const Post = ({ post, checkUserPage, showComments, isShared = false }) => {
     const likesText = `${post.likes_count}人說讚`;
-
-    // loadLikedUsers(post.id);
-    // loadSharedUsers(post.id);
 
     return (
         <div className="post" id={`post-${post.id}`} key={post.id}>
@@ -87,13 +84,12 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                     <div className="wholiked statistic-box" id={`wholiked-${post.id}`}>
                         <h4>點讚用戶</h4>
 
-                        {/* 從資料庫抓有點讚的用戶 */}
-                        {post.wholiked && post.wholiked.map(likedUser => (
-                            // 元件 <單個用戶名>
-                            <div className="comment" key={likedUser.id}>
+                        {/* 顯示按讚的用戶 */}
+                        {post.wholiked && post.wholiked.map((likedUser, index) => (
+                            <div className="comment" key={index}>
                                 <div className="comment-header">
-                                    <span className="comment-username" onClick={() => checkUserPage(likedUser.username)}>
-                                        {likedUser.username}
+                                    <span className="comment-username" onClick={() => checkUserPage(likedUser)}>
+                                        {likedUser}
                                     </span>
                                 </div>
                             </div>
@@ -104,13 +100,12 @@ const Post = ({ post, checkUserPage, showComments, loadLikedUsers, loadSharedUse
                     <div className="whoshared statistic-box" id={`sharedUser-${post.id}`}>
                         <h4>分享用戶</h4>
 
-                        {/* 從資料庫抓有點讚的用戶 */}
-                        {post.whoshared && post.whoshared.map(sharedUser => (
-                            // 元件 <單個用戶名>
-                            <div className="comment" key={sharedUser.id}>
+                        {/* 顯示分享的用戶 */}
+                        {post.whoshared && post.whoshared.map((sharedUser, index) => (
+                            <div className="comment" key={index}>
                                 <div className="comment-header">
-                                    <span className="comment-username" onClick={() => checkUserPage(sharedUser.username)}>
-                                        {sharedUser.username}
+                                    <span className="comment-username" onClick={() => checkUserPage(sharedUser)}>
+                                        {sharedUser}
                                     </span>
                                 </div>
                             </div>

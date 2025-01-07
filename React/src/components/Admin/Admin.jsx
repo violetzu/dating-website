@@ -25,36 +25,28 @@ function MenuComponent() {
   }, [navigate]);
 
   // 動作 <加載貼文>
-  const loadPosts = useCallback(async (username = null, limit = 20) => {
+  const loadPosts = useCallback(async (username = null, limit = 50) => {
     try {
-      // 設置向php回傳貼文顯示的最大數目、位於哪個用戶的個人主頁之參數
-      let url = `/php/posts_get.php?limit=${limit}`;
-      if (username) {
-        if (typeof username == 'string') {
-          url += `&username=${encodeURIComponent(username)}`;
+        // 設置向php回傳貼文顯示的最大數目、位於哪個用戶的個人主頁之參數
+        let url = `/php/admin_posts_get.php?limit=${limit}`;
+        if (username) {
+            if (typeof username == 'string') {
+                url += `&username=${encodeURIComponent(username)}`;
+            }
         }
-      }
 
-      // 送出並擷取php回傳資訊
-      const response = await fetch(url);
-      const data = await response.json();
-      if (data.success) {
-        setPosts(data.posts);
-
-        // bc chat says so(直接用data.posts確保下面兩個元件使用的是完全更新的posts state)
-        // Once posts are loaded, load the liked and shared users for each post
-        // Assuming posts contain a unique post ID
-        data.posts.forEach((post) => {
-          loadLikedUsers(post.id);  // Call loadLikedUsers after posts are loaded
-          loadSharedUsers(post.id); // Call loadSharedUsers after posts are loaded
-        });
-      } else {
-        console.error('獲取貼文失敗:', data.message);
-      }
+        // 送出並擷取php回傳資訊
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.success) {
+            setPosts(data.posts);
+        } else {
+            console.error('獲取貼文失敗:', data.message);
+        }
     } catch (error) {
-      console.error('解析 JSON 失敗:', error);
+        console.error('解析 JSON 失敗:', error);
     }
-  }, []);
+}, []);
 
   // 動作 <登出作業>
   const logout = useCallback(async () => {
@@ -128,44 +120,6 @@ function MenuComponent() {
     }
   }, []);
 
-  // 動作 <查看點讚用戶名單>
-  const loadLikedUsers = useCallback(async (postId) => {
-    try {
-      const response = await fetch(`/php/post_details_who_liked.php?post_id=${postId}`);
-      const data = await response.json();
-      if (data.success) {
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, wholiked: data.names } : post
-          )
-        );
-      } else {
-        console.error('獲取按讚用戶失敗: ' + data.message); //php修正後要改成這個
-      }
-    } catch (error) {
-      console.error('解析 JSON 失敗:', error);
-    }
-  }, []);
-
-  // 動作 <查看分享用戶名單>
-  const loadSharedUsers = useCallback(async (postId) => {
-    try {
-      const response = await fetch(`/php/post_details_who_shared.php?post_id=${postId}`);
-      const data = await response.json();
-      if (data.success) {
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, whoshared: data.names } : post
-          )
-        );
-      } else {
-        console.error('獲取分享用戶失敗: ' + data.message); //php修正後要改成這個
-      }
-    } catch (error) {
-      console.error('解析 JSON 失敗:', error);
-    }
-  }, []);
-
   // 動作 <取得用戶清單>
   const getUsers = useCallback(async () => {
     try {
@@ -184,8 +138,6 @@ function MenuComponent() {
     setShowUsers((prev) => !prev);
   }, [showUsers]);
   
-  
-
   const banUser = useCallback(async (userId, userIdentity) => {
         try {
             const response = await fetch('/php/ban_unban_user.php', {
