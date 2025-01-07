@@ -1,5 +1,5 @@
 import React from 'react';
-import './UserCard.css'
+import './UserCard.css';
 
 const UserCard = ({ user, banUser }) => {
     return (
@@ -10,9 +10,12 @@ const UserCard = ({ user, banUser }) => {
 
                 {/* 僅允許對非管理員進行操作 */}
                 {user.identity !== 0 && (
-                    <button onClick={() => banUser(user.id, user.identity)}>
-                        {user.identity >= 0 ? '停權' : '解除停權'}
-                    </button>
+                    <button
+                    onClick={() => banUser(user.id, user.identity)}
+                    // disabled={user.identity < 0} // 如果用戶已停權，按鈕禁用
+                >
+                    {user.identity >= 0 ? '停權' : '解除停權'}
+                </button>
                 )}
             </div>
 

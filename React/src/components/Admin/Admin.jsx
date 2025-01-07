@@ -187,28 +187,40 @@ function MenuComponent() {
   
 
   const banUser = useCallback(async (userId, userIdentity) => {
-    try {
-      const response = await fetch('/php/ban_unban_user.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ user_id: userId, user_identity: userIdentity }),
-      });
-  
-      const data = await response.json();
-  
-      if (data.success) {
-        alert(`用戶 ${userId} 已停權.`);
-      } else {
-        console.error('操作失敗: ', data.message);
-        alert('發生錯誤: ' + data.message);
-      }
-    } catch (error) {
-      console.error('請求失敗: ', error);
-      alert('發生網絡錯誤，請稍後再試。');
-    }
-  }, []);
+        try {
+            const response = await fetch('/php/ban_unban_user.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ user_id: userId, user_identity: userIdentity }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert(data.message);
+
+                // 更新用戶狀態
+                setUsers((prevUsers) =>
+                    prevUsers.map((user) =>
+                        user.id === userId
+                            ? { ...user, identity: userIdentity >= 0 ? -1 : 1 } // 更新 identity 狀態
+                            : user
+                    )
+                );
+            } else {
+                console.error('操作失敗: ', data.message);
+                alert('發生錯誤: ' + data.message);
+            }
+        } catch (error) {
+            console.error('請求失敗: ', error);
+            alert('發生網絡錯誤，請稍後再試。');
+        }
+    },
+    [setUsers]
+);
+
 
   return (
     <div className='admin'>
