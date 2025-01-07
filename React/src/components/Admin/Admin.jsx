@@ -168,40 +168,51 @@ function MenuComponent() {
 
   // 動作 <取得用戶清單>
   const getUsers = useCallback(async (limit = 20) => {
-    setShowUsers(!showUsers);
-
-    if (showUsers) {
-      const response = await fetch(`/php/users_get.php?limit=${limit}`);
-
-      const data = await response.json();
-      if (data.success) {
-        setUsers(data.users);
-      } else {
-        alert('載入失敗: ' + data.message);
-      }
-
-      // 用checkUserPage抓取個簽與標籤添加進users裡的每個user
-      users.forEach( async (User) => {
-        const info = await fetch('/php/userdisplay.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ username: User.username })
-        });
-
-        if (info.success) {
-          setUsers((prevUsers) =>
-            prevUsers.map((user) =>
-              user.id === User.id ? { ...user, bio: info.bio, tags: info.tags } : user
-            )
+    if (!showUsers) {
+      try {
+        // 加載用戶列表
+        // const response = await fetch(`/php/users_get.php?limit=${limit}`);
+        const response = await fetch(`/php/users_get.php`);
+        const data = await response.json();
+  
+        if (data.success) {
+          const fetchedUsers = data.users;
+  
+          // 批量加載用戶詳細資訊
+          const detailedUsers = await Promise.all(
+            fetchedUsers.map(async (user) => {
+              const detailResponse = await fetch('/php/userdisplay.php', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: user.username }),
+              });
+  
+              const detailData = await detailResponse.json();
+  
+              if (detailData.success) {
+                return { ...user, bio: detailData.bio, tags: detailData.tags };
+              } else {
+                console.error(`無法加載用戶詳細資訊: ${user.username}`);
+                return user; // 保留原始用戶數據
+              }
+            })
           );
+  
+          setUsers(detailedUsers);
         } else {
-          console.error('獲取用戶明細失敗: ' + info.message);
+          alert('載入失敗: ' + data.message);
         }
-      })
+      } catch (error) {
+        console.error('獲取用戶數據失敗:', error);
+      }
     }
-  }, [])
+  
+    // 切換顯示狀態
+    setShowUsers((prev) => !prev);
+  }, [showUsers]);
+  
 
   const banUser = useCallback(async (userId, userIdentity) => {
     const response = await fetch('/php/ban_unban_user.php', {
@@ -236,27 +247,38 @@ function MenuComponent() {
         <div className="main-content">
           <h2 id="posts-title">{currentViewUsername ? `${currentViewUsername}的貼文` : '推薦貼文'}</h2>
 
-          {!showUsers ?
+          {!showUsers ? (
             <div id="posts">
-              {posts.map(post => (
-                <Post
-                  key={post.id}
-                  post={post}
-                  checkUserPage={checkUserPage}
-                  showComments={showComments}
-                />
-              ))}
-            </div> :
-            <div id="users">
-              {users.map(user => (
-                <UserCard
-                  key={user.id}
-                  user={user}
-                  banUser={banUser}
-                />
-              ))}
+              {posts.length > 0 ? (
+                posts.map((post) => (
+                  <Post
+                    key={post.id}
+                    post={post}
+                    checkUserPage={checkUserPage}
+                    showComments={showComments}
+                  />
+                ))
+              ) : (
+                <p>目前沒有貼文。</p>
+              )}
             </div>
-          }
+          ) : (
+            <div id="users">
+              {users.length > 0 ? (
+                <ul>
+                  {users.map((user) => (
+                    <li key={user.id}>
+                      <p>用戶名: {user.username}</p>
+                      <p>個簽: {user.bio || '未提供'}</p>
+                      <p>標籤: {user.tags ? user.tags.join(', ') : '未提供'}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>目前沒有用戶。</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
