@@ -328,7 +328,12 @@ function Home() {
       });
 
       const data = await response.json();
-      console.log(data.message);
+      if (data.success) {
+        alert('刪除成功');
+        loadPosts(thisUsername)
+      } else {
+        alert('刪除失敗');
+      }
 
       // 刷新個人頁面貼文
       loadPosts(thisUsername);
