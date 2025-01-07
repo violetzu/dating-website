@@ -1,9 +1,9 @@
 // 元件 <當前網頁最上方>
-const Header = ({ thisUsername, logout, searchName, setSearchName, checkUserPage, getUser }) => (
+const Header = ({ thisUsername, loadPosts, logout, searchName, setSearchName, checkUserPage, getUser }) => (
     <header>
         {/* 標題LOGO */}
         <div className="header-left">
-            <div id="home-link" style={{ cursor: 'pointer' }}><h1>交友軟體 後台</h1></div>
+            <div id="home-link" onClick={loadPosts} style={{ cursor: 'pointer' }}><h1>交友軟體 後台</h1></div>
         </div>
 
         {/* 檢索區塊 */}

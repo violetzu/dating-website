@@ -30,7 +30,9 @@ function MenuComponent() {
       // 設置向php回傳貼文顯示的最大數目、位於哪個用戶的個人主頁之參數
       let url = `/php/posts_get.php?limit=${limit}`;
       if (username) {
-        url += `&username=${username}`;
+        if (typeof username == 'string') {
+          url += `&username=${encodeURIComponent(username)}`;
+        }
       }
 
       // 送出並擷取php回傳資訊
@@ -222,6 +224,7 @@ function MenuComponent() {
     <div className='admin'>
       <Header
         thisUsername={thisUsername}
+        loadPosts={loadPosts}
         logout={logout}
         searchName={searchName}
         setSearchName={setSearchName}
