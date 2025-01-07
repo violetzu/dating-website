@@ -13,7 +13,7 @@ import { fetchUsername } from '../general_function';
 // 架構 <主頁> 串聯全部元件與動作，相當於main
 function Home() {
   const navigate = useNavigate();
-  const [thisUsername, setThisUsername] = useState('');
+  const [thisUsername, setThisUsername] = useState('user');
   const [currentViewUsername, setCurrentViewUsername] = useState('');
   const [posts, setPosts] = useState([]);
   const [userBio, setUserBio] = useState('');
