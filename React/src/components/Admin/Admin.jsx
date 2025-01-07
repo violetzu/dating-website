@@ -167,51 +167,23 @@ function MenuComponent() {
   }, []);
 
   // 動作 <取得用戶清單>
-  const getUsers = useCallback(async (limit = 20) => {
-    if (!showUsers) {
-      try {
-        // 加載用戶列表
-        // const response = await fetch(`/php/users_get.php?limit=${limit}`);
-        const response = await fetch(`/php/users_get.php`);
-        const data = await response.json();
+  const getUsers = useCallback(async () => {
+    try {
+      const response = await fetch(`/php/users_get.php`);
+      const data = await response.json();
   
-        if (data.success) {
-          const fetchedUsers = data.users;
-  
-          // 批量加載用戶詳細資訊
-          const detailedUsers = await Promise.all(
-            fetchedUsers.map(async (user) => {
-              const detailResponse = await fetch('/php/userdisplay.php', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username: user.username }),
-              });
-  
-              const detailData = await detailResponse.json();
-  
-              if (detailData.success) {
-                return { ...user, bio: detailData.bio, tags: detailData.tags };
-              } else {
-                console.error(`無法加載用戶詳細資訊: ${user.username}`);
-                return user; // 保留原始用戶數據
-              }
-            })
-          );
-  
-          setUsers(detailedUsers);
-        } else {
-          alert('載入失敗: ' + data.message);
-        }
-      } catch (error) {
-        console.error('獲取用戶數據失敗:', error);
+      if (data.success) {
+        setUsers(data.users); // 後端返回的數據已包含詳細資訊
+      } else {
+        alert('載入失敗: ' + data.message);
       }
+    } catch (error) {
+      console.error('獲取用戶數據失敗:', error);
     }
   
-    // 切換顯示狀態
     setShowUsers((prev) => !prev);
   }, [showUsers]);
+  
   
 
   const banUser = useCallback(async (userId, userIdentity) => {
